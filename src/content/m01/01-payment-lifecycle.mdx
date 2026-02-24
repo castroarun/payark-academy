@@ -1,0 +1,137 @@
+# How a Payment Flows: End to End
+
+Every time you transfer money — whether tapping your phone to pay for coffee or wiring funds across the globe — a complex chain of events unfolds behind the scenes. Understanding this chain is the foundation of everything in payment systems engineering.
+
+## What Is a Payment?
+
+At its core, a **payment** is a transfer of value from one party (the **originator** or **payer**) to another (the **beneficiary** or **payee**). That sounds simple, but the infrastructure required to make it happen reliably, securely, and at scale is anything but.
+
+A payment is not just "moving money." It is an **instruction** that travels through multiple systems, gets validated, transformed, cleared, and finally settled — with an audit trail every step of the way.
+
+## The Five Stages
+
+Every payment, whether domestic or cross-border, passes through five fundamental stages:
+
+1. **Initiation**
+2. **Validation**
+3. **Clearing**
+4. **Settlement**
+5. **Reconciliation**
+
+Let's walk through each one.
+
+---
+
+## Stage 1: Initiation
+
+The payment lifecycle begins when the **originator instructs their bank** to make a payment. This instruction can come from a corporate treasury system, a mobile banking app, or even a paper form at a branch counter.
+
+The bank creates a **payment message** — a structured data packet that describes the payment. In the world of cross-border payments, this message might be:
+
+- **pain.001** — an ISO 20022 Payment Initiation message (customer to bank)
+- **MT101** — a legacy SWIFT message for payment initiation
+
+The message contains essential details: who is paying, who is receiving, how much, in what currency, and when the payment should be executed.
+
+## Stage 2: Validation
+
+Before the bank sends the payment anywhere, it runs a series of checks:
+
+- **Funds availability** — Does the originator's account have sufficient balance?
+- **Compliance screening** — Is the beneficiary on any sanctions lists (OFAC, EU, UN)? Does the transaction trigger any anti-money laundering (AML) alerts?
+- **Format validation** — Is the payment message correctly structured? Are all mandatory fields present?
+- **Business rules** — Does the payment comply with the bank's internal policies (e.g., transaction limits, approved currencies)?
+
+If any check fails, the payment is rejected or held for manual review. This stage is critical because once a payment enters the clearing network, reversing it becomes difficult or impossible.
+
+## Stage 3: Clearing
+
+**Clearing** is the process of exchanging payment instructions between banks. It answers the question: *"Who owes what to whom?"*
+
+The originator's bank sends the payment instruction to a **clearing network** — an intermediary system that collects instructions from multiple banks, validates them, and calculates the obligations between participants.
+
+For domestic payments, this is typically a national clearing house:
+- **FAST** (Singapore) — real-time retail payments
+- **MEPS+** (Singapore) — large-value RTGS
+- **CHAPS** (UK) — same-day sterling payments
+- **UPI** (India) — unified mobile payments
+- **NEFT** (India) — batch electronic transfers
+
+For cross-border payments, the instructions travel through the **SWIFT network** and may pass through one or more **correspondent banks**.
+
+It is important to understand that clearing is about **instructions**, not money. No actual funds move during clearing — that happens next.
+
+## Stage 4: Settlement
+
+**Settlement** is the actual movement of funds between bank accounts. This is where money truly changes hands.
+
+In most systems, settlement happens at the **central bank**. Each participating bank holds a settlement account at the central bank. When a payment is settled:
+
+1. The central bank **debits** the sending bank's settlement account
+2. The central bank **credits** the receiving bank's settlement account
+
+This transfer is final, irrevocable, and guaranteed by the central bank — a concept known as **settlement finality**.
+
+There are two main approaches to settlement:
+
+- **RTGS (Real-Time Gross Settlement)** — Each payment is settled individually, in real-time. Used for large-value payments.
+- **DNS (Deferred Net Settlement)** — Payments are accumulated over a period, net positions are calculated, and only the net amounts are settled. Used for high-volume, lower-value payments.
+
+## Stage 5: Reconciliation
+
+After settlement, both the sending and receiving banks **verify their records**. Reconciliation ensures that:
+
+- Every payment instruction sent was processed correctly
+- The amounts debited and credited match
+- No payments were lost, duplicated, or altered
+- The bank's internal ledger matches the central bank's records
+
+Reconciliation typically happens at **end of day (EOD)** but can also run intraday for critical systems. Discrepancies trigger investigation workflows.
+
+---
+
+## Domestic vs Cross-Border
+
+**Domestic payments** are relatively straightforward: the payment flows through a single national clearing network and settles at one central bank. The originator and beneficiary are in the same country, using the same currency.
+
+**Cross-border payments** are more complex. They involve:
+
+- Multiple currencies (requiring FX conversion)
+- Multiple clearing and settlement systems
+- **Correspondent banking** — intermediary banks that bridge the gap between banks in different countries
+- The **SWIFT network** for messaging between banks
+- Potentially different regulatory regimes and compliance requirements
+
+A cross-border payment chain might look like:
+
+**Originator** → **Originator Bank** → **Correspondent Bank A** → **Correspondent Bank B** → **Beneficiary Bank** → **Beneficiary**
+
+Each hop adds time, cost, and complexity.
+
+---
+
+## A Real-World Example
+
+Let's trace what happens when you send **SGD 100 from DBS to OCBC** using FAST in Singapore:
+
+1. **Initiation** — You open the DBS app and enter the transfer details. DBS creates a payment message.
+2. **Validation** — DBS checks your balance, screens the transaction, and validates the message format.
+3. **Clearing** — DBS sends the instruction to FAST (operated by the Banking Computer Services division). FAST validates and forwards it to OCBC.
+4. **Settlement** — The funds are settled through MEPS+ (Singapore's RTGS). MAS debits DBS's settlement account and credits OCBC's.
+5. **Reconciliation** — Both DBS and OCBC verify the transaction against their internal records at EOD.
+
+The entire process takes **seconds** for the end user, but involves multiple systems, checks, and settlement mechanisms working in concert.
+
+---
+
+## Key Terms
+
+- **Originator (Payer)** — The party sending the payment
+- **Beneficiary (Payee)** — The party receiving the payment
+- **Intermediary** — Any bank or system between the originator and beneficiary
+- **Debit** — A reduction in an account balance (money going out)
+- **Credit** — An increase in an account balance (money coming in)
+- **Value Date** — The date when funds become available to the beneficiary
+- **Settlement Finality** — The point at which a payment is irrevocable and unconditional
+
+> **Key Takeaway:** A payment is not a single event — it is a lifecycle. Understanding the five stages (Initiation, Validation, Clearing, Settlement, Reconciliation) is essential because every component in a payment system maps to one or more of these stages. When you build payment software, you are building infrastructure that participates in this lifecycle.

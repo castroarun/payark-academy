@@ -1,0 +1,189 @@
+# Correspondent Banking: Nostro, Vostro, and SWIFT
+
+Cross-border payments are fundamentally more complex than domestic ones. When you send money to someone in another country, your bank probably does not have a direct connection to the recipient's bank. So how does the money get there? The answer is **correspondent banking** — a network of relationships between banks that enables money to flow across borders.
+
+## Why Correspondent Banking Exists
+
+Not every bank can maintain direct relationships with every other bank in the world. There are roughly 25,000 financial institutions across 200+ countries. Establishing bilateral agreements, technical connections, and regulatory compliance with each one is impractical.
+
+Instead, banks establish relationships with a smaller number of **correspondent banks** — typically large, internationally active banks that have broad networks of their own. These correspondents act as intermediaries, providing services on behalf of banks that do not have a direct presence in a particular country or currency.
+
+Think of it like air travel: not every city has direct flights to every other city. Instead, you fly through hub airports. Correspondent banks are the hubs of international finance.
+
+## What Is a Correspondent Bank?
+
+A **correspondent bank** is a financial institution that provides services on behalf of another bank (the **respondent bank**). These services include:
+
+- **Payment processing** — Receiving and forwarding payment instructions
+- **Account services** — Holding accounts (nostro/vostro) for the respondent bank
+- **Foreign exchange** — Converting currencies as part of cross-border payments
+- **Cash management** — Managing liquidity positions for the respondent
+
+The correspondent bank acts as an agent, executing transactions in its local market that the respondent bank cannot do directly.
+
+---
+
+## Nostro and Vostro Accounts
+
+At the heart of correspondent banking are two types of accounts that are actually the **same account viewed from different perspectives**:
+
+### Nostro Account — "Our Account at Your Bank"
+
+The word *nostro* comes from Latin, meaning "ours." A **nostro account** is an account that a bank holds **at another bank**, typically in the other bank's local currency.
+
+**Example:** DBS (Singapore) holds a GBP account at HSBC (UK). From DBS's perspective, this is their **nostro account** — their money, held at HSBC, denominated in British pounds.
+
+DBS uses this nostro account to make and receive GBP payments. When DBS needs to send GBP to a beneficiary in the UK, it instructs HSBC to debit its nostro account and pay the beneficiary.
+
+### Vostro Account — "Your Account at Our Bank"
+
+The word *vostro* means "yours." A **vostro account** is the mirror image of a nostro account — it is the same account, but viewed from the correspondent bank's perspective.
+
+**Example:** The same GBP account that DBS calls their "nostro at HSBC" is called a "vostro account for DBS" from HSBC's perspective. HSBC holds this account on its books as a liability — it is DBS's money that HSBC is holding.
+
+### The Mirror Relationship
+
+| Perspective | What They Call It | Meaning |
+|-------------|-------------------|---------|
+| DBS (account holder) | Nostro account | "Our account at your bank" |
+| HSBC (account provider) | Vostro account | "Your account at our bank" |
+
+This mirror relationship is fundamental. Every nostro account at one bank is simultaneously a vostro account at the other. When you hear "nostro/vostro," remember: same account, two viewpoints.
+
+---
+
+## How a Cross-Border Payment Works
+
+Let's trace a real example. Say a company in Singapore (originator) wants to pay a supplier in London (beneficiary) GBP 50,000.
+
+**Actors:**
+- **Originator** — Singapore company
+- **DBS** — Originator's bank (Singapore)
+- **HSBC** — DBS's correspondent in the UK (holds DBS's nostro account)
+- **Barclays** — Beneficiary's bank (UK)
+- **Beneficiary** — London supplier
+
+**Payment flow:**
+
+1. The originator instructs DBS to pay GBP 50,000 to the beneficiary's account at Barclays
+2. DBS creates a SWIFT MT103 message with the payment details
+3. DBS sends the MT103 to HSBC (its UK correspondent)
+4. HSBC receives the instruction and **debits DBS's nostro account** by GBP 50,000
+5. HSBC sends the GBP 50,000 to Barclays through the UK domestic clearing system (CHAPS or FPS)
+6. Barclays **credits the beneficiary's account** with GBP 50,000
+7. The beneficiary receives the funds
+
+In this flow, HSBC is the bridge between the Singapore banking system and the UK banking system. DBS does not need a direct connection to Barclays — HSBC handles the local leg.
+
+---
+
+## The SWIFT Network
+
+**SWIFT** — the Society for Worldwide Interbank Financial Telecommunication — is the backbone of international banking communication. Founded in 1973 and headquartered in Belgium, SWIFT connects over 11,000 financial institutions in 200+ countries.
+
+### What SWIFT Is (and Is Not)
+
+This is a critical distinction: **SWIFT is a messaging network, not a payment system.** SWIFT does not hold accounts, does not settle payments, and does not move money. It carries the **instructions** that tell banks what to do.
+
+Think of SWIFT as the postal service for banks. It delivers messages reliably and securely, but the actual transfer of funds happens through clearing and settlement systems.
+
+### SWIFT Codes (BIC)
+
+Every institution on the SWIFT network is identified by a **BIC** (Bank Identifier Code), also known as a SWIFT code. A BIC is either **8 or 11 characters** long:
+
+| Position | Meaning | Example |
+|----------|---------|---------|
+| 1-4 | Bank code | `DBSS` (DBS) |
+| 5-6 | Country code | `SG` (Singapore) |
+| 7-8 | Location code | `SG` |
+| 9-11 | Branch code (optional) | `XXX` or specific branch |
+
+**Example:** `DBSSSGSG` is DBS Bank in Singapore. `HSBCGB2L` is HSBC in the UK.
+
+The 8-character code identifies the head office. The 11-character code identifies a specific branch.
+
+### Key SWIFT Message Types
+
+SWIFT uses a numbering system for its message types. The most important for payments:
+
+- **MT103** — Single Customer Credit Transfer. This is the workhorse of cross-border payments. It carries the full details of a customer payment: originator, beneficiary, amount, currency, charges, and payment purpose.
+
+- **MT202** — General Financial Institution Transfer. Used for bank-to-bank movements that are not directly related to a customer payment (e.g., funding a nostro account).
+
+- **MT202COV** — Cover Payment. A variant of MT202 specifically used in cover payment methods, where the bank-to-bank settlement travels separately from the customer instruction.
+
+- **MT199** — Free Format Message. Used for general correspondence between banks — payment investigations, queries, amendment requests, and ad-hoc communications.
+
+### Migration to ISO 20022 (MX Messages)
+
+SWIFT is in the process of migrating from legacy MT messages to **ISO 20022 MX messages**. The new format uses **XML** (structured markup language), providing significantly richer data than the fixed-format MT messages.
+
+Key replacements:
+
+| Legacy MT | ISO 20022 MX | Purpose |
+|-----------|-------------|---------|
+| MT103 | **pacs.008** | Customer credit transfer |
+| MT202 | **pacs.009** | Financial institution transfer |
+| MT900/MT910 | **camt.054** | Debit/credit notifications |
+| MT940/MT950 | **camt.053** | Statement of account |
+
+The migration to ISO 20022 is not just a technical format change — it enables **richer data** for compliance screening, **better straight-through processing**, and **improved interoperability** between payment systems worldwide.
+
+---
+
+## Payment Chains: Serial vs Cover
+
+When a payment travels through multiple correspondent banks, there are two main methods for routing:
+
+### Serial Method
+
+In the **serial method**, the payment message (MT103) passes through **each bank in the chain sequentially**:
+
+**Originator Bank** → **Correspondent 1** → **Correspondent 2** → **Beneficiary Bank**
+
+Each bank in the chain receives the full MT103, processes it, and forwards it to the next bank. Settlement happens at each hop — Correspondent 1 debits the originator bank's nostro, then instructs Correspondent 2, and so on.
+
+**Advantages:** Simple, each bank in the chain sees the full payment details
+**Disadvantages:** Slower (each bank processes sequentially), each intermediary can deduct fees
+
+### Cover Method
+
+In the **cover method**, the payment instruction and the settlement travel on **separate paths**:
+
+- The **MT103** (customer instruction) is sent directly from the originator bank to the beneficiary bank
+- The **MT202COV** (cover payment for settlement) is sent through the correspondent chain
+
+This means the beneficiary bank receives the payment details immediately, even though the actual settlement is still working its way through the correspondent chain.
+
+**Advantages:** Faster notification to beneficiary bank, beneficiary bank has full details upfront
+**Disadvantages:** More complex, requires coordination between two message paths
+
+---
+
+## Liquidity Management
+
+Banks must carefully manage the **liquidity** in their nostro accounts. Having too much money sitting in a nostro account means that capital is idle and not earning a return. Having too little means payments will fail or be delayed.
+
+Key liquidity management activities include:
+
+- **Forecasting** — Predicting expected payment volumes and directions to plan funding
+- **Pre-funding** — Transferring funds to nostro accounts before the business day starts
+- **Intraday monitoring** — Tracking nostro balances throughout the day and topping up as needed
+- **End-of-day sweeping** — Moving excess funds from nostro accounts back to the head office
+
+Poor liquidity management is a leading cause of cross-border payment delays. When a bank's nostro runs dry, all outgoing payments in that currency queue up until the account is funded.
+
+---
+
+## Key Terms
+
+- **BIC (Bank Identifier Code)** — The 8 or 11 character code identifying a financial institution on the SWIFT network
+- **SWIFT** — Society for Worldwide Interbank Financial Telecommunication; the global messaging network for banks
+- **Correspondent bank** — A bank that provides services on behalf of another bank (the respondent)
+- **Respondent bank** — A bank that uses a correspondent bank's services
+- **Intermediary bank** — Any bank in the payment chain between the originator and beneficiary banks
+- **Cover method** — Payment method where customer instruction (MT103) and settlement (MT202COV) travel on separate paths
+- **Serial method** — Payment method where the MT103 passes through each bank in the chain sequentially
+- **Payment chain** — The full sequence of banks involved in routing a payment from originator to beneficiary
+
+> **Key Takeaway:** Correspondent banking is the plumbing of international finance. It works through a network of nostro/vostro account relationships that enable banks to send and receive payments in currencies and countries where they do not have a direct presence. SWIFT provides the messaging backbone but does not move money — actual settlement depends on clearing and settlement systems in each country. Understanding this architecture is essential because every cross-border payment system you build must account for correspondent chains, nostro funding, message routing, and the distinction between serial and cover payment methods.
