@@ -25,6 +25,9 @@ const mdxModules: Record<string, React.ComponentType> = {
   "03-correspondent-banking": dynamic(
     () => import("@/content/m01/03-correspondent-banking.mdx")
   ),
+  "04-lab-mt103-mapping": dynamic(
+    () => import("@/content/m01/04-lab-mt103-mapping.mdx")
+  ),
 };
 
 // ─────────────────────────────────────────────────────────────

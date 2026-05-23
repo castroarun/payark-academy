@@ -1,0 +1,181 @@
+# Lab: Map a Real SWIFT MT103 Message Field by Field
+
+In the previous lessons, you learned how cross-border payments flow through correspondent banking chains and how SWIFT provides the messaging backbone. Now it is time to get hands-on with the actual message format that carries those payment instructions across the globe.
+
+The **MT103** is a SWIFT message type used for **Single Customer Credit Transfers**. It is the most widely used message in international payments — every time a bank sends funds on behalf of a customer to a beneficiary at another bank, an MT103 carries the instruction. The message contains everything the receiving bank needs: who is paying, who is being paid, how much, in what currency, which banks are involved, and who bears the charges.
+
+In this lab, you will dissect a complete MT103 message field by field, trace the payment chain, and understand the role of every party involved.
+
+---
+
+## The Scenario
+
+**Whitfield & Partners Ltd**, a consulting firm in London, is paying an invoice of **SGD 125,000.00** to their supplier **Oceanic Trading Pte Ltd** in Singapore. The payment is routed through correspondent banks in New York and Singapore. The value date is **24 February 2026**.
+
+---
+
+## The MT103 Message
+
+Below is the complete SWIFT MT103 message for this payment. Study it carefully before proceeding to the exercises.
+
+```swift
+{1:F01BARCGB22AXXX0000000000}
+{2:I103DBSSSGSGXXXXN}
+{3:{108:MT103-2602240001}}
+{4:
+:20:WPL2602240001
+:23B:CRED
+:32A:260224SGD125000,00
+:33B:SGD125000,00
+:50K:/GB29BARC20035394859271
+WHITFIELD AND PARTNERS LTD
+14 QUEEN VICTORIA STREET
+LONDON EC4N 4TQ
+UNITED KINGDOM
+:52A:BARCGB22
+:53A:CITIUS33
+:56A:DBSSSGSG
+:57A:DBSSSGSG
+:59:/SG53DBSS0289347856
+OCEANIC TRADING PTE LTD
+8 MARINA BOULEVARD
+LEVEL 32 MARINA BAY FINANCIAL CENTRE
+SINGAPORE 018981
+:70:/INV/2026-0847
+CONSULTING SERVICES JAN 2026
+:71A:SHA
+:72:/REC/PAYMENT FOR INVOICE 2026-0847
+//URGENT SAME DAY VALUE REQUESTED
+-}
+```
+
+---
+
+## Field-by-Field Mapping
+
+Use the table below to map each field. The **Your Analysis** column is for you to write, in your own words, what each field tells you about this payment.
+
+| Field Tag | Field Name | Value | Your Analysis |
+|-----------|-----------|-------|---------------|
+| :20: | Transaction Reference Number | `WPL2602240001` | |
+| :23B: | Bank Operation Code | `CRED` | |
+| :32A: | Value Date / Currency / Amount | `260224SGD125000,00` | |
+| :33B: | Currency / Instructed Amount | `SGD125000,00` | |
+| :50K: | Ordering Customer | Whitfield and Partners Ltd, London | |
+| :52A: | Ordering Institution (BIC) | `BARCGB22` | |
+| :53A: | Sender's Correspondent | `CITIUS33` | |
+| :56A: | Intermediary Institution | `DBSSSGSG` | |
+| :57A: | Account With Institution | `DBSSSGSG` | |
+| :59: | Beneficiary Customer | Oceanic Trading Pte Ltd, Singapore | |
+| :70: | Remittance Information | Invoice 2026-0847, consulting services | |
+| :71A: | Details of Charges | `SHA` | |
+| :72: | Sender to Receiver Information | Urgent same day value requested | |
+
+---
+
+## Exercise Tasks
+
+### Task 1: Identify the Payment Amount and Currency
+
+Look at fields **:32A:** and **:33B:**.
+
+- What is the payment currency?
+- What is the payment amount?
+- Field :32A: combines three pieces of information into a single value. Break `260224SGD125000,00` into its three components: the date (YYMMDD format), the currency code (ISO 4217), and the amount. Write out each one.
+- Why might :32A: and :33B: show different values in some payments? Think about what happens when a currency conversion is involved — :33B: shows the **instructed** amount (what the customer asked to send), while :32A: shows the **settlement** amount (what actually moves on the value date). In this case they match. Under what circumstances would they differ?
+
+### Task 2: Trace the Payment Chain
+
+This is the most important exercise. Using fields **:52A:**, **:53A:**, **:56A:**, **:57A:**, and **:59:**, map out the complete chain of institutions involved in this payment.
+
+Identify each party by their BIC code and role:
+
+| Role | BIC | Institution | Country |
+|------|-----|-------------|---------|
+| Ordering Institution | `BARCGB22` | Barclays Bank | United Kingdom |
+| Sender's Correspondent | `CITIUS33` | Citibank | United States |
+| Intermediary Institution | `DBSSSGSG` | DBS Bank | Singapore |
+| Account With Institution | `DBSSSGSG` | DBS Bank | Singapore |
+| Beneficiary Bank | `DBSSSGSG` | DBS Bank | Singapore |
+
+Now answer these questions:
+
+1. Why does the payment route through **Citibank in New York** (CITIUS33)? Think about which currency this payment is denominated in (SGD) and which correspondent banking relationships Barclays would need to settle in Singapore dollars.
+2. The **Intermediary Institution** (:56A:) and **Account With Institution** (:57A:) are both DBS Singapore. Why are both fields present when they point to the same bank? Consider that in more complex payment chains, these could be different — :56A: is the next hop in the chain, while :57A: is the bank where the beneficiary's account is held.
+3. How many banks are involved in total between the ordering customer and the beneficiary customer?
+
+### Task 3: Who Pays the Fees?
+
+Field **:71A:** contains the value `SHA`.
+
+There are three possible charge codes in an MT103:
+
+| Code | Meaning | Who Pays |
+|------|---------|----------|
+| **SHA** | Shared | Originator pays their bank's fees; beneficiary pays their bank's fees; correspondent charges are deducted from the transfer amount |
+| **OUR** | Ours | Originator pays all fees (including correspondent and beneficiary bank fees). The beneficiary receives the full amount. |
+| **BEN** | Beneficiary | Beneficiary pays all fees. All charges are deducted from the payment amount before it reaches the beneficiary. |
+
+For this payment:
+
+1. Under the SHA arrangement, if Citibank charges USD 15 and DBS charges SGD 20 in correspondent fees, who absorbs those costs?
+2. If the ordering customer wanted Oceanic Trading to receive exactly SGD 125,000.00 with no deductions, which charge code should they have used?
+3. Under PSD2 regulations in Europe, certain charge codes are restricted for payments within the EEA. Which code is mandated for intra-EEA SEPA payments?
+
+### Task 4: Value Date and Its Significance
+
+Field **:32A:** begins with `260224`, which is the **value date** in YYMMDD format.
+
+1. Convert this to a human-readable date.
+2. What does the value date represent? It is not the date the message was sent — it is the date when the **settlement** is expected to occur and the beneficiary's bank should make funds available.
+3. Look at field :72: — it contains the text "URGENT SAME DAY VALUE REQUESTED." What does this tell you about the originator's expectations? How does this relate to cut-off times for same-day settlement?
+4. If this MT103 was sent at 16:30 London time on 24 February 2026, would same-day value in Singapore be realistic? Consider the time zone difference (Singapore is UTC+8, London is UTC+0).
+
+### Task 5: Draw the Payment Flow
+
+Using the information you have extracted, draw a diagram showing the complete payment flow. Your diagram should include:
+
+- All five parties (ordering customer, ordering bank, correspondent, intermediary/beneficiary bank, beneficiary)
+- The direction of the MT103 message
+- The direction of fund movements (nostro/vostro debits and credits)
+- The currencies involved at each leg
+
+Your diagram should follow this structure:
+
+```
+Whitfield & Partners    Barclays (BARCGB22)    Citibank (CITIUS33)    DBS (DBSSSGSG)    Oceanic Trading
+    [Originator]  --->  [Ordering Bank]   --->  [Correspondent]  --->  [Beneficiary Bank]  --->  [Beneficiary]
+                        Debits customer         Debits Barclays        Credits Oceanic
+                        account                 nostro account         Trading account
+```
+
+Label each arrow with: (a) what message or instruction is being sent, and (b) what account movement occurs.
+
+---
+
+## Bonus Challenge: MT103 vs MT202
+
+The MT103 is a **customer** credit transfer — it carries a payment on behalf of a bank's customer. The MT202 is a **financial institution** transfer — it is used for bank-to-bank payments that are not tied to a specific customer transaction (for example, funding a nostro account or settling an interbank obligation).
+
+If this same SGD 125,000 were being moved as an MT202 instead of an MT103:
+
+1. Which fields would **disappear entirely**? Think about which fields are specific to customer information.
+2. Which fields would **remain**? Think about which fields describe the bank-to-bank routing.
+3. When would a bank use an MT202COV (cover payment) **alongside** an MT103? How does the cover method differ from the serial method you traced in Task 2?
+4. In the ISO 20022 world, what are the MX equivalents of MT103 and MT202? (Hint: you covered this in the correspondent banking lesson.)
+
+---
+
+## Key Terms
+
+- **MT103** — SWIFT message type for Single Customer Credit Transfers; the standard message for cross-border customer payments
+- **BIC (SWIFT Code)** — 8 or 11 character Bank Identifier Code used to identify financial institutions on the SWIFT network
+- **Value Date** — The date on which settlement occurs and funds should be made available to the beneficiary
+- **SHA/OUR/BEN** — Charge codes that determine how correspondent banking fees are allocated between the originator and beneficiary
+- **Ordering Institution** — The bank sending the payment on behalf of its customer (field :52A:)
+- **Sender's Correspondent** — The correspondent bank used by the ordering institution to settle the payment (field :53A:)
+- **Intermediary Institution** — A bank in the payment chain between the sender's correspondent and the beneficiary's bank (field :56A:)
+- **Account With Institution** — The bank where the beneficiary holds their account (field :57A:)
+- **Remittance Information** — Free-text or structured information about the purpose of the payment, often containing invoice references (field :70:)
+
+> **Key Takeaway:** An MT103 is more than a message — it is a complete set of instructions that tells every bank in the chain exactly what to do. By reading a single MT103, you can reconstruct the entire payment: who is paying, who is being paid, which banks are involved, how much money is moving, when it should arrive, and who is paying the fees. This ability to read and interpret SWIFT messages is a foundational skill for anyone working in payment systems engineering.

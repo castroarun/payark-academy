@@ -14,7 +14,7 @@ export const m01Content: ContentStep[] = [
     title: "Payment Lifecycle Explained",
     duration: "15 min",
     source: "youtube",
-    youtubeId: "SoaAjRViVsI",
+    youtubeId: "gzTYbl2Kwuk",
   },
   {
     id: "m01-step-2",
@@ -34,7 +34,7 @@ export const m01Content: ContentStep[] = [
     title: "Clearing vs Settlement Deep Dive",
     duration: "18 min",
     source: "youtube",
-    youtubeId: "TNnhXpFRaiM",
+    youtubeId: "Dr7qzPG24i4",
   },
   {
     id: "m01-step-4",
@@ -54,7 +54,7 @@ export const m01Content: ContentStep[] = [
     title: "Correspondent Banking & Nostro/Vostro Accounts",
     duration: "20 min",
     source: "youtube",
-    youtubeId: "FXm0JMqjKrA",
+    youtubeId: "dVlaATdoRwc",
   },
   {
     id: "m01-step-6",
@@ -64,7 +64,7 @@ export const m01Content: ContentStep[] = [
     title: "Map a Real SWIFT MT103 Message Field by Field",
     duration: "45 min",
     source: "lab",
-    mdxSlug: "01-lab-mt103-mapping",
+    mdxSlug: "04-lab-mt103-mapping",
   },
   {
     id: "m01-step-7",
