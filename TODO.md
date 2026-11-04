@@ -14,12 +14,12 @@ Cross-session source of truth for pending work. Last updated: 2026-11-04.
   - Dashboard card + header nav links ("Payments" / "Build an LLM")
 - **Next:**
   - [x] Redesign mockups done — see `docs/mockups/llm-track/DECISIONS.md`
-  - [x] Built the chosen design (2026-11-04, local only — not yet deployed): layout C (Player) +
+  - [x] Built and deployed the chosen design (2026-11-04): layout C (Player) +
         Midnight accent, light + dark toggle — `src/components/llm/Player.tsx`, `src/app/llm/llm.css`
   - [x] All 11 YouTube videos split into parts along the author's chapters — `src/data/llm/videos.ts`
   - [x] Video progress tracks itself (YouTube IFrame API): resume point saved, ticks off at 90%
-  - [ ] Click through in a browser (play/resume a part, chapter jump, light/dark, mobile width)
-  - [ ] Deploy to Vercel + commit/push
+  - [ ] Click through in a browser (play/resume a part, chapter ticks, light/dark, mobile width)
+  - [x] Committed to `main` and deployed: https://payark-academy.vercel.app/llm
   - [ ] Confirm prerequisite chain (currently: 2←0, 3←1, 4←2+3, 8←6+7, 11←8+9, others linear)
   - [ ] Optional: per-module quizzes (reuse `QuizEngine`)
   - [ ] Optional: notes attached to video timestamps (suggested in the doc's appendix)
