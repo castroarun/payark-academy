@@ -1,9 +1,15 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export default function LoginPage() {
   const handleGoogleLogin = async () => {
+    // Local preview mode: no auth backend, go straight in.
+    if (!isSupabaseConfigured) {
+      window.location.href = "/";
+      return;
+    }
     const supabase = createClient();
     await supabase.auth.signInWithOAuth({
       provider: "google",

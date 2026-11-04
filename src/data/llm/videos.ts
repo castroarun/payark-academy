@@ -1,0 +1,307 @@
+// ─────────────────────────────────────────────────────────────
+// Course videos, split into logical parts.
+//
+// Chapters are copied from each video's YouTube description (fetched 2026-11-04).
+// Parts group those chapters by topic. Where the author marked his own
+// sections ("Part 1/2/3", "SECTION 1–4", "PART 2"), the parts follow them.
+// Times are "h:mm:ss" or "mm:ss" strings so they can be checked against YouTube.
+// ─────────────────────────────────────────────────────────────
+
+export interface VideoPartDef {
+  title: string;
+  start: string;
+  end: string;
+}
+
+export interface VideoDef {
+  youtubeId: string;
+  title: string;
+  author: string;
+  length: string;
+  chapters: [string, string][];
+  parts: VideoPartDef[];
+}
+
+export const VIDEOS: Record<string, VideoDef> = {
+  intro: {
+    youtubeId: "zjkBMFhNj_g",
+    title: "Intro to Large Language Models",
+    author: "Karpathy",
+    length: "59:48",
+    chapters: [
+      ["0:00", "Intro: Large Language Model (LLM) talk"], ["0:20", "LLM inference"], ["4:17", "LLM training"],
+      ["8:58", "LLM dreams"], ["11:22", "How do they work?"], ["14:14", "Finetuning into an assistant"],
+      ["17:52", "Summary so far"], ["21:05", "Appendix: comparisons, labeling docs, RLHF, synthetic data, leaderboard"],
+      ["25:43", "LLM scaling laws"], ["27:43", "Tool use (browser, calculator, interpreter, DALL-E)"],
+      ["33:32", "Multimodality (vision, audio)"], ["35:00", "Thinking, System 1/2"],
+      ["38:02", "Self-improvement, LLM AlphaGo"], ["40:45", "LLM customization, GPTs store"], ["42:15", "LLM OS"],
+      ["45:43", "LLM security intro"], ["46:14", "Jailbreaks"], ["51:30", "Prompt injection"],
+      ["56:23", "Data poisoning"], ["58:37", "LLM security conclusions"], ["59:23", "Outro"],
+    ],
+    parts: [
+      { title: "What an LLM is", start: "0:00", end: "25:43" },
+      { title: "The future of LLMs", start: "25:43", end: "45:43" },
+      { title: "LLM security", start: "45:43", end: "59:48" },
+    ],
+  },
+  deepDive: {
+    youtubeId: "7xTGNNLPyMI",
+    title: "Deep Dive into LLMs like ChatGPT",
+    author: "Karpathy",
+    length: "3:31:23",
+    chapters: [
+      ["0:00", "Introduction"], ["1:00", "Pretraining data (internet)"], ["7:47", "Tokenization"],
+      ["14:27", "Neural network I/O"], ["20:11", "Neural network internals"], ["26:01", "Inference"],
+      ["31:09", "GPT-2: training and inference"], ["42:52", "Llama 3.1 base model inference"],
+      ["59:23", "Pretraining to post-training"], ["1:01:06", "Post-training data (conversations)"],
+      ["1:20:32", "Hallucinations, tool use, knowledge/working memory"], ["1:41:46", "Knowledge of self"],
+      ["1:46:56", "Models need tokens to think"], ["2:01:11", "Tokenization revisited: models struggle with spelling"],
+      ["2:04:53", "Jagged intelligence"], ["2:07:28", "Supervised finetuning to reinforcement learning"],
+      ["2:14:42", "Reinforcement learning"], ["2:27:47", "DeepSeek-R1"], ["2:42:07", "AlphaGo"],
+      ["2:48:26", "Reinforcement learning from human feedback (RLHF)"], ["3:09:39", "Preview of things to come"],
+      ["3:15:15", "Keeping track of LLMs"], ["3:18:34", "Where to find LLMs"], ["3:21:46", "Grand summary"],
+    ],
+    parts: [
+      { title: "Pretraining: data, tokens and the neural network", start: "0:00", end: "31:09" },
+      { title: "Base models: GPT-2 and Llama 3.1", start: "31:09", end: "59:23" },
+      { title: "Post-training: conversations, hallucinations, tool use", start: "59:23", end: "1:41:46" },
+      { title: "LLM psychology: self-knowledge, tokens to think, spelling", start: "1:41:46", end: "2:07:28" },
+      { title: "Reinforcement learning, DeepSeek-R1 and AlphaGo", start: "2:07:28", end: "2:48:26" },
+      { title: "RLHF, what's next, and a grand summary", start: "2:48:26", end: "3:31:23" },
+    ],
+  },
+  micrograd: {
+    youtubeId: "VMj-3S1tku0",
+    title: "Zero to Hero #1: building micrograd",
+    author: "Karpathy",
+    length: "2:25:52",
+    chapters: [
+      ["0:00", "Intro"], ["0:25", "micrograd overview"], ["8:08", "Derivative of a simple function with one input"],
+      ["14:12", "Derivative of a function with multiple inputs"], ["19:09", "Starting the core Value object and its visualization"],
+      ["32:10", "Manual backpropagation example #1: simple expression"], ["51:10", "Preview of a single optimization step"],
+      ["52:52", "Manual backpropagation example #2: a neuron"], ["1:09:02", "Implementing the backward function for each operation"],
+      ["1:17:32", "Implementing the backward function for a whole expression graph"],
+      ["1:22:28", "Fixing a backprop bug when one node is used multiple times"],
+      ["1:27:05", "Breaking up a tanh, exercising with more operations"], ["1:39:31", "The same thing in PyTorch: comparison"],
+      ["1:43:55", "Building a neural net library (MLP) in micrograd"], ["1:51:04", "Creating a tiny dataset, writing the loss function"],
+      ["1:57:56", "Collecting all of the parameters of the neural net"], ["2:01:12", "Gradient descent by hand, training the network"],
+      ["2:14:03", "Summary, how to go towards modern neural nets"], ["2:16:46", "Walkthrough of the full micrograd code"],
+      ["2:21:10", "Real stuff: PyTorch's backward pass for tanh"], ["2:24:39", "Conclusion"], ["2:25:20", "Outtakes"],
+    ],
+    parts: [
+      { title: "Derivatives and the Value object", start: "0:00", end: "32:10" },
+      { title: "Backpropagation by hand", start: "32:10", end: "1:09:02" },
+      { title: "Automating backprop, and the same in PyTorch", start: "1:09:02", end: "1:43:55" },
+      { title: "Building and training a neural net library", start: "1:43:55", end: "2:25:52" },
+    ],
+  },
+  makemore1: {
+    youtubeId: "PaCmpygFfXo",
+    title: "Zero to Hero #2: building makemore (bigram)",
+    author: "Karpathy",
+    length: "1:57:45",
+    chapters: [
+      ["0:00", "Intro"], ["3:03", "Reading and exploring the dataset"], ["6:24", "Exploring the bigrams in the dataset"],
+      ["9:24", "Counting bigrams in a Python dictionary"], ["12:45", "Counting bigrams in a 2D torch tensor (\"training the model\")"],
+      ["18:19", "Visualizing the bigram tensor"], ["20:54", "Replacing the (S) and (E) tokens with a single . token"],
+      ["24:02", "Sampling from the model"], ["36:17", "Vectorized normalization of the rows, tensor broadcasting"],
+      ["50:14", "Loss function: negative log likelihood"], ["1:00:50", "Model smoothing with fake counts"],
+      ["1:02:57", "Part 2, the neural network approach: intro"], ["1:05:26", "Creating the bigram dataset for the neural net"],
+      ["1:10:01", "One-hot encodings"], ["1:13:53", "One linear layer of neurons with matrix multiplication"],
+      ["1:18:46", "Softmax: turning outputs into probabilities"], ["1:26:17", "Summary, preview, reference to micrograd"],
+      ["1:35:49", "Vectorized loss"], ["1:38:36", "Backward and update, in PyTorch"], ["1:42:55", "Putting everything together"],
+      ["1:47:49", "Note: one-hot encoding just selects a row of the weight matrix"],
+      ["1:50:18", "Note: model smoothing as regularization loss"], ["1:54:31", "Sampling from the neural net"],
+      ["1:56:16", "Conclusion"],
+    ],
+    parts: [
+      { title: "The counting approach: a bigram model", start: "0:00", end: "1:02:57" },
+      { title: "The neural network approach", start: "1:02:57", end: "1:57:45" },
+    ],
+  },
+  makemore2: {
+    youtubeId: "TCH_1BHY58I",
+    title: "Zero to Hero #3: makemore Part 2 — MLP",
+    author: "Karpathy",
+    length: "1:15:39",
+    chapters: [
+      ["0:00", "Intro"], ["1:48", "Bengio et al. 2003 (MLP language model) paper walkthrough"],
+      ["9:03", "(Re-)building the training dataset"], ["12:19", "Implementing the embedding lookup table"],
+      ["18:35", "The hidden layer, and torch.Tensor internals: storage, views"], ["29:15", "Implementing the output layer"],
+      ["29:53", "Implementing the negative log likelihood loss"], ["32:17", "Summary of the full network"],
+      ["32:49", "Introducing F.cross_entropy and why"], ["37:56", "Training loop, overfitting one batch"],
+      ["41:25", "Training on the full dataset, minibatches"], ["45:40", "Finding a good initial learning rate"],
+      ["53:20", "Train/val/test splits and why"], ["1:00:49", "Experiment: larger hidden layer"],
+      ["1:05:27", "Visualizing the character embeddings"], ["1:07:16", "Experiment: larger embedding size"],
+      ["1:11:46", "Summary of the final code"], ["1:13:24", "Sampling from the model"], ["1:14:55", "Google Colab notebook"],
+    ],
+    parts: [
+      { title: "Building the MLP: paper, embeddings, layers", start: "0:00", end: "32:17" },
+      { title: "Training it well: loss, learning rate, splits", start: "32:17", end: "1:15:39" },
+    ],
+  },
+  makemore3: {
+    youtubeId: "P6sfmUTpUmc",
+    title: "Zero to Hero #4: Activations & Gradients, BatchNorm",
+    author: "Karpathy",
+    length: "1:55:57",
+    chapters: [
+      ["0:00", "Intro"], ["1:22", "Starter code"], ["4:19", "Fixing the initial loss"], ["12:59", "Fixing the saturated tanh"],
+      ["27:53", "Calculating the init scale: Kaiming init"], ["40:40", "Batch normalization"],
+      ["1:03:07", "Batch normalization: summary"], ["1:04:50", "Real example: ResNet-50 walkthrough"],
+      ["1:14:10", "Summary of the lecture"], ["1:18:35", "Part 2: PyTorch-ifying the code"],
+      ["1:26:51", "Viz #1: forward pass activation statistics"], ["1:30:54", "Viz #2: backward pass gradient statistics"],
+      ["1:32:07", "The fully linear case of no non-linearities"], ["1:36:15", "Viz #3: parameter activation and gradient statistics"],
+      ["1:39:55", "Viz #4: update:data ratio over time"], ["1:46:04", "Bringing back batchnorm, looking at the visualizations"],
+      ["1:51:34", "Summary of the lecture, for real"],
+    ],
+    parts: [
+      { title: "Fixing initialization: loss, saturated tanh, Kaiming init", start: "0:00", end: "40:40" },
+      { title: "Batch normalization", start: "40:40", end: "1:18:35" },
+      { title: "PyTorch-ifying the code and diagnostic plots", start: "1:18:35", end: "1:55:57" },
+    ],
+  },
+  makemore4: {
+    youtubeId: "q8SA3rM6ckI",
+    title: "Zero to Hero #5: Becoming a Backprop Ninja",
+    author: "Karpathy",
+    length: "1:55:24",
+    chapters: [
+      ["0:00", "Intro: why you should care, and fun history"], ["7:26", "Starter code"],
+      ["13:01", "Exercise 1: backproping the atomic compute graph"], ["1:05:17", "Digression: Bessel's correction in batchnorm"],
+      ["1:26:31", "Exercise 2: cross entropy loss backward pass"], ["1:36:37", "Exercise 3: batch norm layer backward pass"],
+      ["1:50:02", "Exercise 4: putting it all together"], ["1:54:24", "Outro"],
+    ],
+    parts: [
+      { title: "Why backprop by hand, and exercise 1", start: "0:00", end: "1:05:17" },
+      { title: "Exercises 2–4: cross-entropy, batchnorm, all together", start: "1:05:17", end: "1:55:24" },
+    ],
+  },
+  wavenet: {
+    youtubeId: "t3YJ5hKiMQ0",
+    title: "Zero to Hero #6: Building a WaveNet",
+    author: "Karpathy",
+    length: "56:21",
+    chapters: [
+      ["0:00", "Intro"], ["1:40", "Starter code walkthrough"], ["6:56", "Fixing the learning rate plot"],
+      ["9:16", "PyTorch-ifying: layers, containers, torch.nn, fun bugs"], ["17:11", "Overview: WaveNet"],
+      ["19:33", "Bumping the context size to 8"], ["19:55", "Re-running the baseline on block_size 8"],
+      ["21:36", "Implementing WaveNet"], ["37:41", "Training the WaveNet: first pass"], ["38:50", "Fixing a batchnorm1d bug"],
+      ["45:21", "Re-training with the bug fix"], ["46:07", "Scaling up the WaveNet"], ["46:58", "Experimental harness"],
+      ["47:44", "WaveNet with dilated causal convolutions"], ["51:34", "torch.nn"],
+      ["52:28", "The development process of building deep neural nets"], ["54:17", "Going forward"],
+      ["55:26", "Improve on my loss!"],
+    ],
+    parts: [
+      { title: "Cleaning up the code with layers and containers", start: "0:00", end: "21:36" },
+      { title: "Implementing and scaling the WaveNet", start: "21:36", end: "56:21" },
+    ],
+  },
+  gpt: {
+    youtubeId: "kCc8FmEb1nY",
+    title: "Zero to Hero #7: Let's build GPT",
+    author: "Karpathy",
+    length: "1:56:20",
+    chapters: [
+      ["0:00", "Intro: ChatGPT, Transformers, nanoGPT, Shakespeare"], ["7:52", "Reading and exploring the data"],
+      ["9:28", "Tokenization, train/val split"], ["14:27", "Data loader: batches of chunks of data"],
+      ["22:11", "Simplest baseline: bigram language model, loss, generation"], ["34:53", "Training the bigram model"],
+      ["38:00", "Porting the code to a script"], ["42:13", "Version 1: averaging past context with for loops"],
+      ["47:11", "The trick in self-attention: matrix multiply as weighted aggregation"], ["51:54", "Version 2: matrix multiply"],
+      ["54:42", "Version 3: adding softmax"], ["58:26", "Minor code cleanup"], ["1:00:18", "Positional encoding"],
+      ["1:02:00", "The crux: version 4, self-attention"], ["1:11:38", "Note 1: attention as communication"],
+      ["1:12:46", "Note 2: attention has no notion of space"], ["1:13:40", "Note 3: no communication across the batch"],
+      ["1:14:14", "Note 4: encoder blocks vs. decoder blocks"], ["1:15:39", "Note 5: attention vs. self- vs. cross-attention"],
+      ["1:16:56", "Note 6: why divide by sqrt(head_size)"], ["1:19:11", "Inserting a self-attention block into the network"],
+      ["1:21:59", "Multi-headed self-attention"], ["1:24:25", "Feedforward layers"], ["1:26:48", "Residual connections"],
+      ["1:32:51", "LayerNorm (and its relationship to batchnorm)"], ["1:37:49", "Scaling up the model, adding dropout"],
+      ["1:42:39", "Encoder vs. decoder vs. both Transformers"], ["1:46:22", "Quick walkthrough of nanoGPT"],
+      ["1:48:53", "Back to ChatGPT: pretraining vs. finetuning, RLHF"], ["1:54:32", "Conclusions"],
+    ],
+    parts: [
+      { title: "Data, tokenization and a bigram baseline", start: "0:00", end: "42:13" },
+      { title: "The trick behind self-attention", start: "42:13", end: "1:19:11" },
+      { title: "From attention to a full Transformer", start: "1:19:11", end: "1:56:20" },
+    ],
+  },
+  tokenizer: {
+    youtubeId: "zduSFxRajkE",
+    title: "Zero to Hero #8: Let's build the GPT Tokenizer",
+    author: "Karpathy",
+    length: "2:13:34",
+    chapters: [
+      ["0:00", "Intro: tokenization, GPT-2 paper, tokenization-related issues"], ["5:50", "Tokenization by example (tiktokenizer)"],
+      ["14:56", "Strings in Python, Unicode code points"], ["18:15", "Unicode byte encodings: ASCII, UTF-8, UTF-16, UTF-32"],
+      ["22:47", "Daydreaming: deleting tokenization"], ["23:50", "Byte Pair Encoding (BPE) walkthrough"],
+      ["27:02", "Starting the implementation"], ["28:35", "Counting consecutive pairs, finding the most common pair"],
+      ["30:36", "Merging the most common pair"], ["34:58", "Training the tokenizer: the while loop, compression ratio"],
+      ["39:20", "The tokenizer is a completely separate stage"], ["42:47", "Decoding tokens to strings"],
+      ["48:21", "Encoding strings to tokens"], ["57:36", "Regex patterns to force splits across categories"],
+      ["1:11:38", "tiktoken library, GPT-2 vs. GPT-4 regex"], ["1:14:59", "OpenAI's GPT-2 encoder.py walkthrough"],
+      ["1:18:26", "Special tokens, GPT-2/GPT-4 differences"], ["1:25:28", "minbpe exercise: write your own GPT-4 tokenizer"],
+      ["1:28:42", "sentencepiece, used to train the Llama 2 vocabulary"], ["1:43:27", "Choosing the vocabulary size"],
+      ["1:48:11", "Training new tokens, prompt compression"], ["1:49:58", "Multimodal tokenization with vector quantization"],
+      ["1:51:41", "The quirks of LLM tokenization, explained"], ["2:10:20", "Final recommendations"],
+    ],
+    parts: [
+      { title: "Why tokenization matters: Unicode and UTF-8", start: "0:00", end: "23:50" },
+      { title: "Building Byte Pair Encoding", start: "23:50", end: "57:36" },
+      { title: "GPT-2/GPT-4 tokenizers: regex, tiktoken, special tokens", start: "57:36", end: "1:28:42" },
+      { title: "sentencepiece, vocabulary size and tokenizer quirks", start: "1:28:42", end: "2:13:34" },
+    ],
+  },
+  gpt2: {
+    youtubeId: "l8pRSuU81PU",
+    title: "Zero to Hero #9: Let's reproduce GPT-2 (124M)",
+    author: "Karpathy",
+    length: "4:01:26",
+    chapters: [
+      ["0:00", "Intro: let's reproduce GPT-2 (124M)"], ["3:39", "Exploring the GPT-2 (124M) OpenAI checkpoint"],
+      ["13:47", "Section 1: implementing the GPT-2 nn.Module"], ["28:08", "Loading the Hugging Face GPT-2 parameters"],
+      ["31:00", "Forward pass to get logits"], ["33:31", "Sampling init, prefix tokens, tokenization"], ["37:02", "Sampling loop"],
+      ["41:47", "Sample, auto-detect the device"], ["45:50", "Let's train: data batches (B,T) → logits (B,T,C)"],
+      ["52:53", "Cross entropy loss"], ["56:42", "Optimization loop: overfit a single batch"], ["1:02:00", "Data loader lite"],
+      ["1:06:14", "Parameter sharing: wte and lm_head"], ["1:13:47", "Model initialization: std 0.02, residual init"],
+      ["1:22:18", "Section 2: let's make it fast — GPUs, mixed precision"], ["1:28:14", "Tensor Cores, timing the code, TF32"],
+      ["1:39:38", "float16, gradient scalers, bfloat16"], ["1:48:15", "torch.compile, Python overhead, kernel fusion"],
+      ["2:00:18", "Flash attention"], ["2:06:54", "Nice/ugly numbers: vocab size 50257 → 50304"],
+      ["2:14:55", "Section 3: hyperparameters, AdamW, gradient clipping"], ["2:21:06", "Learning rate schedule: warmup + cosine decay"],
+      ["2:26:21", "Batch size schedule, weight decay, FusedAdamW"], ["2:34:09", "Gradient accumulation"],
+      ["2:46:52", "Distributed data parallel (DDP)"], ["3:10:21", "Datasets used in GPT-2, GPT-3, FineWeb (EDU)"],
+      ["3:23:10", "Validation split, validation loss, sampling"], ["3:28:23", "Evaluation: HellaSwag, starting the run"],
+      ["3:43:05", "Section 4: results in the morning — GPT-2, GPT-3 repro"], ["3:56:21", "llm.c: the same in raw C/CUDA"],
+      ["3:59:39", "Summary, build-nanogpt GitHub repo"],
+    ],
+    parts: [
+      { title: "Section 1: implementing GPT-2", start: "0:00", end: "1:22:18" },
+      { title: "Section 2: making it fast", start: "1:22:18", end: "2:14:55" },
+      { title: "Section 3: hyperparameters, DDP, data and evals", start: "2:14:55", end: "3:43:05" },
+      { title: "Section 4: results", start: "3:43:05", end: "4:01:26" },
+    ],
+  },
+};
+
+// ─────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────
+
+/** "1:02:57" → 3777 seconds */
+export function toSeconds(time: string): number {
+  return time.split(":").reduce((total, part) => total * 60 + Number(part), 0);
+}
+
+/** 3777 → "1:02:57" */
+export function formatTime(seconds: number): string {
+  const s = Math.max(0, Math.floor(seconds));
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = String(s % 60).padStart(2, "0");
+  return h ? `${h}:${String(m).padStart(2, "0")}:${sec}` : `${m}:${sec}`;
+}
+
+/** Chapters that start inside [start, end) */
+export function chaptersBetween(video: VideoDef, start: number, end: number): { at: number; title: string }[] {
+  return video.chapters
+    .map(([t, title]) => ({ at: toSeconds(t), title }))
+    .filter((c) => c.at >= start && c.at < end);
+}

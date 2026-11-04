@@ -3,15 +3,19 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import type { User } from "@supabase/supabase-js";
 import Button from "@/components/ui/Button";
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+  const [loading, setLoading] = useState(isSupabaseConfigured);
+  const [supabase] = useState(() =>
+    isSupabaseConfigured ? createClient() : null
+  );
 
   useEffect(() => {
+    if (!supabase) return;
     const getUser = async () => {
       const {
         data: { session },
@@ -29,9 +33,10 @@ export default function Header() {
     });
 
     return () => subscription.unsubscribe();
-  }, [supabase.auth]);
+  }, [supabase]);
 
   const handleLogout = async () => {
+    if (!supabase) return;
     await supabase.auth.signOut();
     window.location.href = "/login";
   };
@@ -65,9 +70,29 @@ export default function Header() {
           </span>
         </Link>
 
+        {/* Track navigation */}
+        <nav className="hidden sm:flex items-center gap-1 mr-auto ml-6">
+          <Link
+            href="/curriculum"
+            className="px-3 py-1.5 rounded-lg text-sm text-t2 hover:text-t1 hover:bg-bg3 no-underline transition-colors"
+          >
+            Payments
+          </Link>
+          <Link
+            href="/llm"
+            className="px-3 py-1.5 rounded-lg text-sm text-t2 hover:text-t1 hover:bg-bg3 no-underline transition-colors"
+          >
+            Build an LLM
+          </Link>
+        </nav>
+
         {/* Right side */}
         <div className="flex items-center gap-3">
-          {loading ? (
+          {!isSupabaseConfigured ? (
+            <span className="text-xs font-mono text-t3 border border-bdr rounded px-2 py-1">
+              LOCAL PREVIEW
+            </span>
+          ) : loading ? (
             <div className="h-8 w-24 bg-bg3 rounded-lg animate-pulse" />
           ) : user ? (
             <>

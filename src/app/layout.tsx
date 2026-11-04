@@ -1,5 +1,5 @@
 import { Outfit, JetBrains_Mono } from "next/font/google";
-import Header from "@/components/layout/Header";
+import AppChrome from "@/components/layout/AppChrome";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -26,10 +26,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${outfit.variable} ${jetbrains.variable}`}>
+    // suppressHydrationWarning: the LLM track sets data-llm-theme on <html> before React loads
+    <html lang="en" className={`${outfit.variable} ${jetbrains.variable}`} suppressHydrationWarning>
       <body className="font-display antialiased bg-bg text-t1 min-h-screen">
-        <Header />
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">{children}</main>
+        <AppChrome>{children}</AppChrome>
       </body>
     </html>
   );

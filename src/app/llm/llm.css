@@ -1,0 +1,205 @@
+/* ─────────────────────────────────────────────────────────────
+   "Build an LLM" track — design tokens and styles (one place).
+   Chosen design: layout C (Player), Midnight accent, light + dark.
+   See docs/mockups/llm-track/DECISIONS.md.
+   Theme is set on <html data-llm-theme="light|dark">.
+   ───────────────────────────────────────────────────────────── */
+
+.llm {
+  /* Light — Midnight */
+  --l-bg: #eef1f7;
+  --l-surface: #ffffff;
+  --l-surface-2: #f5f7fb;
+  --l-border: #dde3ee;
+  --l-text: #131826;
+  --l-muted: #525b6e;
+  --l-faint: #667085;
+  --l-accent: #172554;
+  --l-accent-text: #ffffff;
+  --l-accent-soft: #e7eaf3;
+  --l-accent-ink: #172554;
+  --l-track: #e1e6f0;
+  --l-warn-soft: #fdf3e3;
+  --l-warn-ink: #8a5300;
+  --l-shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 1px 3px rgba(16, 24, 40, 0.06);
+  --l-radius: 14px;
+  --l-radius-sm: 10px;
+  --l-font: var(--font-llm), "Inter", system-ui, sans-serif;
+  --l-mono: var(--font-mono), ui-monospace, monospace;
+
+  min-height: 100vh;
+  background: var(--l-bg);
+  color: var(--l-text);
+  font-family: var(--l-font);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+html[data-llm-theme="dark"] .llm {
+  /* Dark — Midnight: the whole ground is tinted navy */
+  --l-bg: #0a1222;
+  --l-surface: #101b31;
+  --l-surface-2: #16233d;
+  --l-border: #24345a;
+  --l-text: #e9edf5;
+  --l-muted: #aab6cc;
+  --l-faint: #8f9cb5;
+  --l-accent: #a3b8e8;
+  --l-accent-text: #0a1430;
+  --l-accent-soft: #1d2a4a;
+  --l-accent-ink: #b8c8ee;
+  --l-track: #1f2d4d;
+  --l-warn-soft: #2e2416;
+  --l-warn-ink: #f0b860;
+  --l-shadow: none;
+}
+
+.llm a { color: var(--l-accent-ink); }
+.llm h1, .llm h2, .llm h3, .llm p { margin: 0; }
+.llm :focus-visible { outline: 2px solid var(--l-accent); outline-offset: 2px; }
+.llm ::selection { background: var(--l-accent-soft); color: var(--l-text); }
+
+/* ── Building blocks ─────────────────────────────────────────── */
+.llm .card { background: var(--l-surface); border: 1px solid var(--l-border); border-radius: var(--l-radius); box-shadow: var(--l-shadow); }
+.llm .pad { padding: 20px; }
+.llm .muted { color: var(--l-muted); }
+.llm .faint { color: var(--l-faint); }
+.llm .mono { font-family: var(--l-mono); font-size: 12px; }
+.llm .label { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--l-faint); }
+.llm .row { display: flex; align-items: center; gap: 12px; }
+.llm .wrap { flex-wrap: wrap; }
+.llm .stack { display: flex; flex-direction: column; }
+.llm .grow { flex: 1; min-width: 0; }
+
+.llm .btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  border-radius: 999px; padding: 10px 18px; min-height: 44px;
+  border: 1px solid var(--l-border); background: var(--l-surface); color: var(--l-text);
+  font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none;
+}
+.llm .btn:hover { background: var(--l-surface-2); }
+.llm .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.llm .btn.primary { background: var(--l-accent); border-color: var(--l-accent); color: var(--l-accent-text); }
+.llm .btn.primary:hover { filter: brightness(1.08); }
+.llm .btn.small { min-height: 36px; padding: 6px 14px; font-size: 13px; }
+
+.llm .pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid var(--l-border); background: var(--l-surface-2); color: var(--l-muted);
+  border-radius: 999px; padding: 3px 10px; font-size: 12px; font-weight: 500;
+}
+.llm .pill.ok { background: var(--l-accent-soft); border-color: transparent; color: var(--l-accent-ink); }
+.llm .pill.warn { background: var(--l-warn-soft); border-color: transparent; color: var(--l-warn-ink); }
+
+.llm .bar { height: 8px; border-radius: 999px; background: var(--l-track); overflow: hidden; }
+.llm .bar > span { display: block; height: 100%; background: var(--l-accent); border-radius: 999px; transition: width 0.3s; }
+.llm .segbar { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+.llm .segbar > span { height: 8px; border-radius: 4px; background: var(--l-track); overflow: hidden; }
+.llm .segbar > span > span { display: block; height: 100%; background: var(--l-accent); }
+
+.llm .check {
+  width: 24px; height: 24px; border-radius: 50%; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 2px solid var(--l-border); background: var(--l-surface); color: var(--l-faint);
+  font-family: var(--l-mono); font-size: 11px;
+}
+.llm .check.on { background: var(--l-accent); border-color: var(--l-accent); color: var(--l-accent-text); }
+.llm .check.part { border-color: var(--l-accent); }
+.llm .check.small { width: 18px; height: 18px; font-size: 10px; }
+
+.llm .num {
+  width: 32px; height: 32px; border-radius: 9px; flex: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--l-mono); font-size: 12px; font-weight: 500;
+  background: var(--l-surface-2); color: var(--l-muted); border: 1px solid var(--l-border);
+}
+.llm .num.done { background: var(--l-accent-soft); color: var(--l-accent-ink); border-color: transparent; }
+.llm .num.current { background: var(--l-accent); color: var(--l-accent-text); border-color: var(--l-accent); }
+
+.llm .tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--l-border); overflow-x: auto; }
+.llm .tabs button {
+  background: none; border: 0; padding: 10px 0; min-height: 44px; margin-bottom: -1px;
+  font: inherit; font-weight: 500; color: var(--l-muted); cursor: pointer;
+  border-bottom: 2px solid transparent; white-space: nowrap;
+}
+.llm .tabs button[aria-selected="true"] { color: var(--l-text); font-weight: 600; border-bottom-color: var(--l-text); }
+
+.llm .notice { border-radius: var(--l-radius-sm); padding: 12px 16px; font-size: 14px; background: var(--l-warn-soft); color: var(--l-warn-ink); }
+
+/* ── Top bar ─────────────────────────────────────────────────── */
+.llm .topbar { background: var(--l-surface); border-bottom: 1px solid var(--l-border); position: sticky; top: 0; z-index: 20; }
+.llm .topbar-in { max-width: 1400px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+.llm .brand { font-weight: 700; font-size: 17px; color: var(--l-text); text-decoration: none; }
+.llm .back { font-size: 13px; color: var(--l-muted); text-decoration: none; }
+.llm .back:hover { color: var(--l-text); }
+.llm .iconbtn {
+  width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--l-border);
+  background: var(--l-surface); color: var(--l-text); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.llm .iconbtn:hover { background: var(--l-surface-2); }
+
+/* ── Player shell ────────────────────────────────────────────── */
+.llm .shell { display: grid; grid-template-columns: 330px minmax(0, 1fr); max-width: 1400px; margin: 0 auto; min-height: calc(100vh - 66px); }
+.llm .syllabus { border-right: 1px solid var(--l-border); background: var(--l-surface); padding: 12px; position: sticky; top: 66px; height: calc(100vh - 66px); overflow-y: auto; }
+.llm .syl-phase { padding: 14px 10px 6px; }
+.llm .syl-mod {
+  width: 100%; text-align: left; display: flex; gap: 12px; align-items: center;
+  padding: 10px; border-radius: 10px; min-height: 48px; text-decoration: none; color: var(--l-text);
+}
+.llm .syl-mod:hover { background: var(--l-surface-2); }
+.llm .syl-mod[aria-current="page"] { background: var(--l-accent-soft); }
+.llm .syl-steps { list-style: none; margin: 2px 0 8px; padding: 0 0 0 44px; display: flex; flex-direction: column; gap: 1px; }
+.llm .syl-steps button {
+  width: 100%; display: flex; align-items: center; gap: 8px; text-align: left;
+  background: none; border: 0; padding: 6px 8px; border-radius: 8px; min-height: 36px;
+  font: inherit; font-size: 13px; color: var(--l-muted); cursor: pointer;
+}
+.llm .syl-steps button:hover { background: var(--l-surface-2); color: var(--l-text); }
+.llm .syl-steps button[aria-current="step"] { color: var(--l-text); font-weight: 600; background: var(--l-surface-2); }
+
+.llm .main { padding: 28px 32px 80px; display: flex; flex-direction: column; gap: 20px; max-width: 1000px; width: 100%; }
+
+/* ── Lesson ──────────────────────────────────────────────────── */
+.llm .video { position: relative; aspect-ratio: 16 / 9; border-radius: var(--l-radius-sm); overflow: hidden; background: #000; }
+.llm .video > div, .llm .video iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+.llm .video img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; display: block; }
+.llm .video .play {
+  position: absolute; inset: 0; margin: auto; width: 68px; height: 68px; border-radius: 50%;
+  border: 0; background: rgba(0, 0, 0, 0.7); color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.llm .video .play:hover { background: rgba(0, 0, 0, 0.85); }
+.llm .video .watched { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255, 255, 255, 0.25); }
+.llm .video .watched > span { display: block; height: 100%; background: #ff3b30; }
+
+.llm .chapters { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; }
+.llm .chapters button {
+  width: 100%; display: flex; gap: 12px; align-items: center; text-align: left;
+  background: none; border: 0; padding: 8px 10px; border-radius: 8px; min-height: 36px;
+  font: inherit; font-size: 14px; color: var(--l-muted); cursor: pointer;
+}
+.llm .chapters button:hover { background: var(--l-surface-2); color: var(--l-text); }
+.llm .chapters .mono { min-width: 56px; color: var(--l-faint); }
+
+.llm .step {
+  display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px;
+  border: 1px solid var(--l-border); border-radius: var(--l-radius-sm); background: var(--l-surface);
+}
+.llm .step.done { background: var(--l-surface-2); }
+.llm .step .open { background: none; border: 0; padding: 0; font: inherit; font-weight: 600; text-align: left; cursor: pointer; color: var(--l-text); }
+.llm .step.done .open { color: var(--l-muted); }
+.llm .howto { padding-left: 20px; margin: 0; color: var(--l-muted); font-size: 14px; }
+.llm .howto li { margin: 0 0 10px; }
+.llm .howto b { color: var(--l-text); }
+
+/* ── Narrow screens: syllabus moves above the lesson ─────────── */
+@media (max-width: 1000px) {
+  .llm .shell { grid-template-columns: 1fr; }
+  .llm .syllabus { position: static; height: auto; max-height: 360px; border-right: 0; border-bottom: 1px solid var(--l-border); }
+  .llm .topbar { position: static; }
+}
+@media (max-width: 640px) {
+  .llm .main { padding: 20px 16px 60px; }
+  .llm .topbar-in { padding: 12px 16px; gap: 12px; }
+}
