@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import type { User } from "@supabase/supabase-js";
 import Button from "@/components/ui/Button";
+import { TRACK_LIST } from "@/data/tracks";
 
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
@@ -78,12 +79,15 @@ export default function Header() {
           >
             Payments
           </Link>
-          <Link
-            href="/llm"
-            className="px-3 py-1.5 rounded-lg text-sm text-t2 hover:text-t1 hover:bg-bg3 no-underline transition-colors"
-          >
-            Build an LLM
-          </Link>
+          {TRACK_LIST.map((t) => (
+            <Link
+              key={t.id}
+              href={t.basePath}
+              className="px-3 py-1.5 rounded-lg text-sm text-t2 hover:text-t1 hover:bg-bg3 no-underline transition-colors"
+            >
+              {t.navLabel}
+            </Link>
+          ))}
         </nav>
 
         {/* Right side */}

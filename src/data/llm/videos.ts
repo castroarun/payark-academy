@@ -7,20 +7,9 @@
 // Times are "h:mm:ss" or "mm:ss" strings so they can be checked against YouTube.
 // ─────────────────────────────────────────────────────────────
 
-export interface VideoPartDef {
-  title: string;
-  start: string;
-  end: string;
-}
-
-export interface VideoDef {
-  youtubeId: string;
-  title: string;
-  author: string;
-  length: string;
-  chapters: [string, string][];
-  parts: VideoPartDef[];
-}
+import type { VideoDef } from "@/data/tracks/types";
+export type { VideoDef, VideoPartDef } from "@/data/tracks/types";
+export { toSeconds, formatTime, chaptersBetween } from "@/data/tracks/helpers";
 
 export const VIDEOS: Record<string, VideoDef> = {
   intro: {
@@ -280,28 +269,3 @@ export const VIDEOS: Record<string, VideoDef> = {
     ],
   },
 };
-
-// ─────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────
-
-/** "1:02:57" → 3777 seconds */
-export function toSeconds(time: string): number {
-  return time.split(":").reduce((total, part) => total * 60 + Number(part), 0);
-}
-
-/** 3777 → "1:02:57" */
-export function formatTime(seconds: number): string {
-  const s = Math.max(0, Math.floor(seconds));
-  const h = Math.floor(s / 3600);
-  const m = Math.floor((s % 3600) / 60);
-  const sec = String(s % 60).padStart(2, "0");
-  return h ? `${h}:${String(m).padStart(2, "0")}:${sec}` : `${m}:${sec}`;
-}
-
-/** Chapters that start inside [start, end) */
-export function chaptersBetween(video: VideoDef, start: number, end: number): { at: number; title: string }[] {
-  return video.chapters
-    .map(([t, title]) => ({ at: toSeconds(t), title }))
-    .filter((c) => c.at >= start && c.at < end);
-}

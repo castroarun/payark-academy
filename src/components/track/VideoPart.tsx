@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
-import type { LlmVideoPart } from "@/data/llm/curriculum";
+import type { TrackVideoPart as LlmVideoPart } from "@/data/tracks/types";
 
 // ─────────────────────────────────────────────────────────────
 // Plays one part of a YouTube video (start → end) and reports the

@@ -2,14 +2,15 @@
 
 import { usePathname } from "next/navigation";
 import Header from "@/components/layout/Header";
+import { PLAYER_BASE_PATHS } from "@/data/tracks";
 
 /**
- * The PayArk header and centred column wrap every page except the LLM track,
- * which has its own full-width layout and top bar (src/app/llm/layout.tsx).
+ * The PayArk header and centred column wrap every page except the
+ * video courses, which have their own full-width layout and top bar (src/app/llm/layout.tsx).
  */
 export default function AppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  if (pathname === "/llm" || pathname.startsWith("/llm/")) return <>{children}</>;
+  if (PLAYER_BASE_PATHS.some((b) => pathname === b || pathname.startsWith(`${b}/`))) return <>{children}</>;
   return (
     <>
       <Header />

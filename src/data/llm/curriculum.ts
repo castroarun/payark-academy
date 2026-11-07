@@ -1,4 +1,7 @@
-import { VIDEOS, toSeconds } from "./videos";
+import { VIDEOS } from "./videos";
+import type { PhaseInfo, Track, TrackModule, TrackResource, TrackVideoPart } from "@/data/tracks/types";
+import { findModule, videoPartsOf } from "@/data/tracks/helpers";
+export { formatMinutes } from "@/data/tracks/helpers";
 
 // ─────────────────────────────────────────────────────────────
 // Build an LLM from Scratch — Modular Curriculum (12 modules)
@@ -6,58 +9,10 @@ import { VIDEOS, toSeconds } from "./videos";
 // ─────────────────────────────────────────────────────────────
 
 export type LlmPhase = "Foundations" | "Core" | "Scale" | "Applied" | "Capstone";
-export type ResourceType = "video" | "playlist" | "code" | "book" | "course" | "article" | "paper" | "tool" | "dataset";
-export type ResourceRole = "main" | "extra";
-
-export interface LlmVideoPart {
-  videoKey: string;
-  youtubeId: string;
-  /** Seconds into the full video */
-  start: number;
-  end: number;
-  /** 1-based part number and how many parts the whole video has */
-  part: number;
-  partCount: number;
-  partTitle: string;
-  videoTitle: string;
-}
-
-export interface LlmResource {
-  id: string;
-  type: ResourceType;
-  role: ResourceRole;
-  title: string;
-  url: string;
-  /** Who made it, e.g. "Karpathy" */
-  author?: string;
-  /** Approximate length in minutes (videos only) */
-  minutes?: number;
-  note?: string;
-  /** Set when this resource is one part of a split YouTube video */
-  video?: LlmVideoPart;
-}
-
-export interface LlmModule {
-  id: number;
-  slug: string;
-  title: string;
-  phase: LlmPhase;
-  /** Duration range in weeks, e.g. [2, 4] */
-  durationWeeks: [number, number];
-  durationLabel: string;
-  goal: string;
-  resources: LlmResource[];
-  build: string;
-  doneWhen: string;
-  prerequisites: number[];
-  hardware?: string;
-}
-
-export interface PhaseInfo {
-  phase: LlmPhase;
-  color: string;
-  blurb: string;
-}
+export type { ResourceType, ResourceRole, PhaseInfo } from "@/data/tracks/types";
+export type LlmVideoPart = TrackVideoPart;
+export type LlmResource = TrackResource;
+export type LlmModule = TrackModule & { phase: LlmPhase };
 
 export const LLM_TRACK = {
   id: "llm",
@@ -113,33 +68,7 @@ export const ZERO_TO_HERO = {
  * shared: parts 1–2 in Module 0, parts 3–6 in Module 9.
  */
 function videoParts(key: keyof typeof VIDEOS, idPrefix: string, parts?: number[], note?: string): LlmResource[] {
-  const v = VIDEOS[key];
-  const chosen = parts ?? v.parts.map((_, i) => i + 1);
-  return chosen.map((n, i) => {
-    const def = v.parts[n - 1];
-    const start = toSeconds(def.start);
-    const end = toSeconds(def.end);
-    return {
-      id: `${idPrefix}-p${n}`,
-      type: "video",
-      role: "main",
-      title: `${v.title} · Part ${n}: ${def.title}`,
-      author: v.author,
-      url: `https://www.youtube.com/watch?v=${v.youtubeId}&t=${start}s`,
-      minutes: Math.round((end - start) / 60),
-      note: i === 0 ? note : undefined,
-      video: {
-        videoKey: key,
-        youtubeId: v.youtubeId,
-        start,
-        end,
-        part: n,
-        partCount: v.parts.length,
-        partTitle: def.title,
-        videoTitle: v.title,
-      },
-    };
-  });
+  return videoPartsOf(VIDEOS, key, idPrefix, parts, note);
 }
 
 const CS336_PLAYLIST = "https://www.youtube.com/playlist?list=PLoROMvodv4rOY23Y0BoGoBGgQ1zmU_MT_";
@@ -382,7 +311,7 @@ export const llmModules: LlmModule[] = [
 // ─────────────────────────────────────────────────────────────
 
 export function getLlmModule(slugOrId: string): LlmModule | undefined {
-  return llmModules.find((m) => m.slug === slugOrId || String(m.id) === slugOrId);
+  return findModule(llmModules, slugOrId) as LlmModule | undefined;
 }
 
 export function getPhaseInfo(phase: LlmPhase): PhaseInfo {
@@ -394,8 +323,15 @@ export function getYoutubeId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-export function formatMinutes(minutes: number): string {
-  if (minutes < 60) return `${minutes} min`;
-  const hours = minutes / 60;
-  return `~${Number.isInteger(hours) ? hours : hours.toFixed(1)} h`;
-}
+/** The LLM course as a track for the shared player. Storage key unchanged so saved progress stays. */
+export const LLM: Track = {
+  ...LLM_TRACK,
+  basePath: "/llm",
+  storageKey: "payark-llm-progress-v1",
+  buildLabel: "Build",
+  hardwareLabel: "Hardware",
+  navLabel: "Build an LLM",
+  phases: LLM_PHASES,
+  modules: llmModules,
+  videos: VIDEOS,
+};

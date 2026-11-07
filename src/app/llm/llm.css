@@ -195,8 +195,8 @@ html[data-llm-theme="dark"] .llm {
 
 /* ── Narrow screens: syllabus moves above the lesson ─────────── */
 @media (max-width: 1000px) {
-  .llm .shell { grid-template-columns: 1fr; }
-  .llm .syllabus { position: static; height: auto; max-height: 360px; border-right: 0; border-bottom: 1px solid var(--l-border); }
+  .llm .shell { grid-template-columns: minmax(0, 1fr); }
+  .llm .syllabus { position: static; height: auto; max-height: 360px; min-width: 0; border-right: 0; border-bottom: 1px solid var(--l-border); }
   .llm .topbar { position: static; }
 }
 @media (max-width: 640px) {

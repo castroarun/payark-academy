@@ -1,16 +1,10 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { createContext, useCallback, useContext, useRef, useState } from "react";
 import Link from "next/link";
-import {
-  LLM_PHASES,
-  LLM_TRACK,
-  llmModules,
-  formatMinutes,
-  type LlmModule,
-  type LlmResource,
-} from "@/data/llm/curriculum";
-import { VIDEOS, chaptersBetween, formatTime } from "@/data/llm/videos";
+import { TRACKS, type TrackId } from "@/data/tracks";
+import { chaptersBetween, formatMinutes, formatTime } from "@/data/tracks/helpers";
+import type { Track, TrackModule as LlmModule, TrackResource as LlmResource } from "@/data/tracks/types";
 import {
   WATCHED_THRESHOLD,
   canCompleteModule,
@@ -24,13 +18,21 @@ import {
   overallProgressPct,
   playedSeconds,
   stepsDoneCount,
-  useLlmProgress,
+  useTrackProgress,
   watchedShare,
-  type LlmProgress,
-  type LlmStep,
-} from "@/lib/llm-progress";
+  type TrackProgress as LlmProgress,
+  type TrackStep as LlmStep,
+} from "@/lib/track-progress";
 import { useLlmTheme } from "@/lib/llm-theme";
-import VideoPart, { type VideoPartHandle } from "@/components/llm/VideoPart";
+import VideoPart, { type VideoPartHandle } from "@/components/track/VideoPart";
+
+// The course being played; every part of the player reads it from here.
+const TrackContext = createContext<Track | null>(null);
+function useTrack(): Track {
+  const t = useContext(TrackContext);
+  if (!t) throw new Error("Player parts must render inside <Player>");
+  return t;
+}
 
 // ─────────────────────────────────────────────────────────────
 // Layout C — "Player": syllabus on the left, the lesson on the right.
@@ -48,17 +50,18 @@ const RESOURCE_LABEL: Record<LlmResource["type"], string> = {
   dataset: "Dataset",
 };
 
-function stepLabel(step: LlmStep): string {
-  if (step.kind === "build") return "Build";
+function stepLabel(step: LlmStep, buildLabel: string): string {
+  if (step.kind === "build") return buildLabel;
   if (step.kind === "check") return "Self-check";
   return RESOURCE_LABEL[step.resource.type];
 }
 
-function stepShortTitle(step: LlmStep): string {
-  if (step.kind === "build") return "Build";
+function stepShortTitle(step: LlmStep, buildLabel: string): string {
+  if (step.kind === "build") return buildLabel;
   if (step.kind === "check") return "Self-check";
   const v = step.resource.video;
-  return v ? `Part ${v.part}: ${v.partTitle}` : step.resource.title;
+  if (!v) return step.resource.title;
+  return v.partCount > 1 ? `Part ${v.part}: ${v.partTitle}` : v.videoTitle;
 }
 
 const pad2 = (n: number) => String(n).padStart(2, "0");
@@ -78,6 +81,7 @@ const MOON = "M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z";
 
 // ── Progress bar of 12 segments, one per module ──────────────
 function PathBar({ progress }: { progress: LlmProgress }) {
+  const { modules: llmModules } = useTrack();
   const done = llmModules.filter((m) => isModuleDone(progress, m.id)).length;
   return (
     <div className="segbar" role="img" aria-label={`${done} of ${llmModules.length} modules complete`}>
@@ -92,19 +96,21 @@ function PathBar({ progress }: { progress: LlmProgress }) {
 
 function TopBar({ progress }: { progress: LlmProgress }) {
   const { theme, toggle } = useLlmTheme();
+  const track = useTrack();
+  const llmModules = track.modules;
   const done = llmModules.filter((m) => isModuleDone(progress, m.id)).length;
   return (
     <header className="topbar">
       <div className="topbar-in">
         <div className="stack">
           <Link href="/" className="back">← PayArk Academy</Link>
-          <Link href="/llm" className="brand">{LLM_TRACK.title}</Link>
+          <Link href={track.basePath} className="brand">{track.title}</Link>
         </div>
         <div className="grow" style={{ minWidth: 200 }}>
           <PathBar progress={progress} />
         </div>
         <span className="muted" style={{ fontSize: 14 }}>
-          <b style={{ color: "var(--l-text)" }}>{done} of {llmModules.length}</b> modules · {overallProgressPct(progress)}% of the path
+          <b style={{ color: "var(--l-text)" }}>{done} of {llmModules.length}</b> modules · {overallProgressPct(progress, llmModules)}% of the path
         </span>
         <button
           type="button"
@@ -132,9 +138,11 @@ function Syllabus({
   activeStepKey: string;
   onPickStep: (key: string) => void;
 }) {
+  const track = useTrack();
+  const llmModules = track.modules;
   return (
     <nav className="syllabus" aria-label="Syllabus">
-      {LLM_PHASES.map((phase) => (
+      {track.phases.filter((ph) => llmModules.some((m) => m.phase === ph.phase)).map((phase) => (
         <div key={phase.phase}>
           <div className="label syl-phase">{phase.phase}</div>
           {llmModules
@@ -144,7 +152,7 @@ function Syllabus({
               const here = m.id === activeModule.id;
               return (
                 <div key={m.id}>
-                  <Link href={`/llm/${m.slug}`} className="syl-mod" aria-current={here ? "page" : undefined}>
+                  <Link href={`${track.basePath}/${m.slug}`} className="syl-mod" aria-current={here ? "page" : undefined}>
                     <span className={`num ${status === "completed" ? "done" : here ? "current" : ""}`}>
                       {status === "completed" ? <Icon d={TICK} /> : pad2(m.id)}
                     </span>
@@ -166,7 +174,7 @@ function Syllabus({
                           <li key={s.key}>
                             <button type="button" onClick={() => onPickStep(s.key)} aria-current={s.key === activeStepKey ? "step" : undefined}>
                               <span className={`check small ${d ? "on" : ""}`} aria-hidden="true">{d && <Icon d={TICK} size={12} />}</span>
-                              <span className="grow">{stepShortTitle(s)}</span>
+                              <span className="grow">{stepShortTitle(s, track.buildLabel)}</span>
                             </button>
                           </li>
                         );
@@ -196,14 +204,15 @@ function Lesson({
   onDone: () => void;
   onUndo: () => void;
 }) {
-  const { recordWatch } = useLlmProgress();
+  const track = useTrack();
+  const { recordWatch } = useTrackProgress(track.storageKey);
   const videoRef = useRef<VideoPartHandle>(null);
   const done = isStepDone(progress, mod, step);
 
   if (step.kind === "resource" && step.resource.video) {
     const r = step.resource;
     const v = r.video!;
-    const full = VIDEOS[v.videoKey];
+    const full = track.videos[v.videoKey];
     const share = watchedShare(progress, step);
     const resume = progress.watch[r.id]?.pos;
     const chapters = chaptersBetween(full, v.start, v.end);
@@ -229,12 +238,13 @@ function Lesson({
           <div className="grow stack" style={{ gap: 4 }}>
             <div className="row wrap" style={{ gap: 8 }}>
               <span className="label">Watch</span>
-              <span className="pill">Part {v.part} of {v.partCount}</span>
+              {v.partCount > 1 && <span className="pill">Part {v.part} of {v.partCount}</span>}
               {done && <span className="pill ok">Watched</span>}
             </div>
-            <h2 style={{ fontSize: 20, lineHeight: 1.3 }}>{v.partTitle}</h2>
+            <h2 style={{ fontSize: 20, lineHeight: 1.3 }}>{v.partCount > 1 ? v.partTitle : v.videoTitle}</h2>
             <p className="faint" style={{ fontSize: 14 }}>
-              {v.videoTitle} · {r.author} · {formatMinutes(r.minutes ?? 0)} · plays {formatTime(v.start)}–{formatTime(v.end)} of the full video
+              {v.partCount > 1 ? `${v.videoTitle} · ` : ""}{r.author} · {formatMinutes(r.minutes ?? 0)}
+              {v.partCount > 1 ? ` · plays ${formatTime(v.start)}–${formatTime(v.end)} of the full video` : ""}
             </p>
             {r.note && <p className="muted" style={{ fontSize: 14 }}>{r.note}</p>}
             <p className="faint" style={{ fontSize: 13 }}>
@@ -316,16 +326,16 @@ function Lesson({
     return (
       <div className="card pad stack" style={{ gap: 12 }}>
         <div className="row wrap" style={{ gap: 8 }}>
-          <span className="pill warn">Build</span>
+          <span className="pill warn">{track.buildLabel}</span>
           {done && <span className="pill ok">Done</span>}
         </div>
         <p style={{ fontSize: 17, lineHeight: 1.6 }}>{step.text}</p>
-        {mod.hardware && <p className="faint" style={{ fontSize: 14 }}>Hardware: {mod.hardware}</p>}
+        {mod.hardware && <p className="faint" style={{ fontSize: 14 }}>{track.hardwareLabel}: {mod.hardware}</p>}
         <div>
           {done ? (
             <button type="button" className="btn" onClick={onUndo}>Undo</button>
           ) : (
-            <button type="button" className="btn primary" onClick={onDone}>I finished the build</button>
+            <button type="button" className="btn primary" onClick={onDone}>I finished the {track.buildLabel.toLowerCase()}</button>
           )}
         </div>
       </div>
@@ -362,12 +372,14 @@ function Lesson({
 // ── Page ─────────────────────────────────────────────────────
 type Tab = "lesson" | "steps" | "extras" | "about";
 
-export default function Player({ slug }: { slug?: string }) {
-  const { progress, setStepDone, toggleResource } = useLlmProgress();
+export default function Player({ trackId, slug }: { trackId: TrackId; slug?: string }) {
+  const track: Track = TRACKS[trackId];
+  const { progress, setStepDone, toggleResource } = useTrackProgress(track.storageKey);
+  const modules = track.modules;
   const mod =
-    (slug ? llmModules.find((m) => m.slug === slug) : currentModule(progress)) ?? llmModules[0];
+    (slug ? modules.find((m) => m.slug === slug) : currentModule(progress, modules)) ?? modules[0];
   return (
-    <>
+    <TrackContext.Provider value={track}>
       <TopBar progress={progress} />
       {/* key: start fresh (next step, Lesson tab) when the module changes */}
       <ModuleView
@@ -377,7 +389,7 @@ export default function Player({ slug }: { slug?: string }) {
         setStepDone={setStepDone}
         toggleResource={toggleResource}
       />
-    </>
+    </TrackContext.Provider>
   );
 }
 
@@ -392,6 +404,8 @@ function ModuleView({
   setStepDone: (mod: LlmModule, step: LlmStep, value: boolean) => void;
   toggleResource: (id: string) => void;
 }) {
+  const track = useTrack();
+  const llmModules = track.modules;
   const steps = moduleSteps(mod);
   const [pickedKey, setPickedKey] = useState<string | null>(null);
   const [tab, setTab] = useState<Tab>("lesson");
@@ -445,7 +459,7 @@ function ModuleView({
               <span style={{ width: `${pct}%` }} />
             </div>
             <span className="mono faint">
-              {stepsDoneCount(progress, mod)}/{steps.length} steps · step {activeIndex + 1}: {stepLabel(step)}
+              {stepsDoneCount(progress, mod)}/{steps.length} steps · step {activeIndex + 1}: {stepLabel(step, track.buildLabel)}
             </span>
           </div>
           {status === "locked" && missing.length > 0 && (
@@ -454,7 +468,7 @@ function ModuleView({
               {missing.map((m, i) => (
                 <span key={m.id}>
                   {i > 0 && " and "}
-                  <Link href={`/llm/${m.slug}`}>Module {m.id} — {m.title}</Link>
+                  <Link href={`${track.basePath}/${m.slug}`}>Module {m.id} — {m.title}</Link>
                 </span>
               ))}
               . You can still look around.
@@ -498,7 +512,7 @@ function ModuleView({
                   </span>
                   <div className="grow stack" style={{ gap: 4 }}>
                     <span className="label">
-                      {stepLabel(s)}
+                      {stepLabel(s, track.buildLabel)}
                       {s.kind === "resource" && s.resource.minutes ? ` · ${formatMinutes(s.resource.minutes)}` : ""}
                       {share > 0 && !d ? ` · ${Math.round(share * 100)}% watched` : ""}
                     </span>
@@ -561,7 +575,7 @@ function ModuleView({
             </div>
             {mod.hardware && (
               <div className="stack" style={{ gap: 4 }}>
-                <span className="label">Hardware</span>
+                <span className="label">{track.hardwareLabel}</span>
                 <p>{mod.hardware}</p>
               </div>
             )}
@@ -569,7 +583,7 @@ function ModuleView({
               <span className="label">How this works</span>
               <ol className="howto">
                 <li><b>Start at Module 0.</b> Opening the track always takes you to your next step.</li>
-                <li><b>Each module is a few steps:</b> watch or read the main material, do the Build, then the Self-check.</li>
+                <li><b>Each module is a few steps:</b> watch or read the main material, do the {track.buildLabel}, then the Self-check.</li>
                 <li><b>Long videos are split into parts</b> along the author&apos;s own chapters. Each part plays only its section.</li>
                 <li><b>Videos track themselves.</b> Stop halfway and it remembers where; at {WATCHED_THRESHOLD * 100}% it ticks off.</li>
                 <li><b>The Self-check completes the module</b> and unlocks the modules that depend on it.</li>
@@ -580,8 +594,8 @@ function ModuleView({
         )}
 
         <div className="row" style={{ justifyContent: "space-between", borderTop: "1px solid var(--l-border)", paddingTop: 16 }}>
-          {prev ? <Link className="btn small" href={`/llm/${prev.slug}`}>← Module {prev.id}</Link> : <span />}
-          {next ? <Link className="btn small" href={`/llm/${next.slug}`}>Module {next.id}: {next.title} →</Link> : <span />}
+          {prev ? <Link className="btn small" href={`${track.basePath}/${prev.slug}`}>← Module {prev.id}</Link> : <span />}
+          {next ? <Link className="btn small" href={`${track.basePath}/${next.slug}`}>Module {next.id}: {next.title} →</Link> : <span />}
         </div>
       </main>
     </div>

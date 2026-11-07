@@ -1,8 +1,36 @@
 # TODO — PayArk Academy
 
-Cross-session source of truth for pending work. Last updated: 2026-11-04.
+Cross-session source of truth for pending work. Last updated: 2026-11-07.
 
 ## In progress
+
+### "Longevity & Healthspan" track (built and deployed 2026-11-07)
+- **Why:** a free alternative to the paid INFS "Longevity & Healthspan" workshop (₹2,499, 4 h),
+  covering the same topics in more depth: science of ageing, key markers and tests, supplements
+  (evidence vs hype), a 90-day plan, and coaching use. Arun asked for it "just like the LLM course".
+- **Done:**
+  - 11 modules in 6 phases, 19 free expert videos (Attia, Andrew Steele / Royal Institution,
+    Kaeberlein / Optispan, Stuart Phillips, Matt Walker, Layne Norton, Gil Carvalho), about 9 h of
+    main video. Chapters fetched from YouTube 2026-11-07 with yt-dlp. Each module has a Practice
+    step (own labs table, Healthspan Scorecard baseline, zone 2 week, protein log, supplement
+    check…) and a Safety note where labs, drugs or supplements come up.
+  - Data: `src/data/healthspan/curriculum.ts` + `videos.ts`. Pages: `/healthspan`, `/healthspan/[slug]`.
+  - **The player is now shared by every video course.** `src/components/track/Player.tsx` takes a
+    `trackId`; a track supplies its modules, videos, route, storage key and labels
+    (`src/data/tracks/`: types, helpers, registry). Progress lives in `src/lib/track-progress.ts`,
+    one localStorage key per course. The LLM key is unchanged (`payark-llm-progress-v1`), so saved
+    LLM progress still loads. Header nav and dashboard cards list every course from the registry.
+  - Fixed for both courses: on phones the syllabus made the page scroll sideways (485px on a 390px
+    screen). It now fits.
+  - Checked: tsc, eslint, `npm run build` (all 11 pages generated), a data check (part times
+    inside each video, prerequisites, unique ids), and Edge screenshots at desktop and phone widths.
+    Marking a Healthspan step saves only under `payark-healthspan-progress-v1`.
+- **Next:**
+  - [x] Committed and pushed to `main` 2026-11-07 (auto-deploys): https://payark-academy.vercel.app/healthspan
+  - [ ] Play a video part end to end in a real browser (resume point, chapter ticks)
+  - [ ] Optional: a printable Healthspan Scorecard (Module 3) and 90-day plan template (capstone)
+- **Found while testing (old, not from this change):** the dashboard's Payments "Level 1" card
+  links to `/level/1`, which returns 404.
 
 ### Launch the "Build an LLM from Scratch" track
 - **Why:** second curriculum (12 modules, Karpathy Zero to Hero core). Source doc:
@@ -15,7 +43,7 @@ Cross-session source of truth for pending work. Last updated: 2026-11-04.
 - **Next:**
   - [x] Redesign mockups done — see `docs/mockups/llm-track/DECISIONS.md`
   - [x] Built and deployed the chosen design (2026-11-04): layout C (Player) +
-        Midnight accent, light + dark toggle — `src/components/llm/Player.tsx`, `src/app/llm/llm.css`
+        Midnight accent, light + dark toggle — `src/components/track/Player.tsx` (moved 2026-11-07, now shared), `src/app/llm/llm.css`
   - [x] All 11 YouTube videos split into parts along the author's chapters — `src/data/llm/videos.ts`
   - [x] Video progress tracks itself (YouTube IFrame API): resume point saved, ticks off at 90%
   - [ ] Click through in a browser (play/resume a part, chapter ticks, light/dark, mobile width)

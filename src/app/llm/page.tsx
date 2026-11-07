@@ -1,5 +1,5 @@
 import { LLM_TRACK } from "@/data/llm/curriculum";
-import Player from "@/components/llm/Player";
+import Player from "@/components/track/Player";
 
 export const metadata = {
   title: `${LLM_TRACK.title} — PayArk Academy`,
@@ -8,5 +8,5 @@ export const metadata = {
 
 /** Opens the player at the learner's current module (Module 0 on a first visit). */
 export default function LlmTrackPage() {
-  return <Player />;
+  return <Player trackId="llm" />;
 }

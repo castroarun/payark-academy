@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { llmModules, getLlmModule } from "@/data/llm/curriculum";
-import Player from "@/components/llm/Player";
+import Player from "@/components/track/Player";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -24,5 +24,5 @@ export default async function LlmModulePage({ params }: PageProps) {
   const { slug } = await params;
   const mod = getLlmModule(slug);
   if (!mod) notFound();
-  return <Player slug={mod.slug} />;
+  return <Player trackId="llm" slug={mod.slug} />;
 }
