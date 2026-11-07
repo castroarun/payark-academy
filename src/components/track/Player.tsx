@@ -104,7 +104,7 @@ function TopBar({ progress }: { progress: LlmProgress }) {
       <div className="topbar-in">
         <div className="stack">
           <Link href="/" className="back">← PayArk Academy</Link>
-          <Link href={track.basePath} className="brand">{track.title}</Link>
+          <Link href={`${track.basePath}/overview`} className="brand" title="Course overview">{track.title}</Link>
         </div>
         <div className="grow" style={{ minWidth: 200 }}>
           <PathBar progress={progress} />

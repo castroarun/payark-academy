@@ -4,6 +4,8 @@
 // progress tracking and pages are the same for every track.
 // ─────────────────────────────────────────────────────────────
 
+import type { CategoryId } from "@/data/categories";
+
 export type ResourceType = "video" | "playlist" | "code" | "book" | "course" | "article" | "paper" | "tool" | "dataset";
 export type ResourceRole = "main" | "extra";
 
@@ -90,6 +92,8 @@ export interface Track {
   hardwareLabel: string;
   /** Short label for the dashboard and nav */
   navLabel: string;
+  /** Which category the course is listed under (src/data/categories.ts) */
+  category: CategoryId;
   phases: PhaseInfo[];
   modules: TrackModule[];
   videos: Record<string, VideoDef>;

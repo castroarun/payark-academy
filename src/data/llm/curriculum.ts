@@ -331,6 +331,7 @@ export const LLM: Track = {
   buildLabel: "Build",
   hardwareLabel: "Hardware",
   navLabel: "Build an LLM",
+  category: "technology",
   phases: LLM_PHASES,
   modules: llmModules,
   videos: VIDEOS,

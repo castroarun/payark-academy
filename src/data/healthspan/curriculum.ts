@@ -249,6 +249,7 @@ export const HEALTHSPAN: Track = {
   buildLabel: "Practice",
   hardwareLabel: "Safety",
   navLabel: "Healthspan",
+  category: "health",
   phases: HS_PHASES,
   modules: hsModules,
   videos: HS_VIDEOS,
