@@ -30,7 +30,7 @@ function StatusTag({ row }: { row: ModuleRow }) {
 function Row({ row }: { row: ModuleRow }) {
   const body = (
     <>
-      <Thumb id={row.thumbId} label={row.num} />
+      <Thumb id={row.thumbId} tile={row.tile} />
       <div className="modrow-body">
         <div className="row wrap" style={{ gap: 8 }}>
           <span className="mono faint">{row.num}</span>

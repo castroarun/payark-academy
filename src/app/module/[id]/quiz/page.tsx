@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { getModule } from "@/data/curriculum";
@@ -24,13 +24,20 @@ function getQuizQuestions(moduleId: string): QuizQuestion[] {
   }
 }
 
+const noopSubscribe = () => () => {};
+
 export default function QuizPage() {
   const params = useParams();
   const moduleId = params.id as string;
   const moduleData = getModule(moduleId);
 
-  const [questions, setQuestions] = useState<QuizQuestion[]>([]);
+  // Questions are drawn at random, so only in the browser (never during server render).
+  const inBrowser = useSyncExternalStore(noopSubscribe, () => true, () => false);
   const [quizKey, setQuizKey] = useState(0);
+  const questions = useMemo<QuizQuestion[]>(
+    () => (inBrowser && quizKey >= 0 ? getQuizQuestions(moduleId) : []),
+    [inBrowser, moduleId, quizKey]
+  );
   const [finished, setFinished] = useState(false);
   const [result, setResult] = useState<{
     score: number;
@@ -39,15 +46,10 @@ export default function QuizPage() {
   } | null>(null);
 
   const generateQuiz = useCallback(() => {
-    setQuestions(getQuizQuestions(moduleId));
     setQuizKey((k) => k + 1);
     setFinished(false);
     setResult(null);
-  }, [moduleId]);
-
-  useEffect(() => {
-    generateQuiz();
-  }, [generateQuiz]);
+  }, []);
 
   const handleComplete = useCallback(
     (score: number, total: number, passed: boolean) => {
@@ -91,6 +93,8 @@ export default function QuizPage() {
 
   const levelInfo = LEVELS.find((l) => l.level === moduleData.level);
   const levelColor = levelInfo?.color ?? "#3b82f6";
+
+  if (!inBrowser) return null;
 
   if (questions.length === 0) {
     return (

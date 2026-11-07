@@ -20,6 +20,18 @@ import {
 // or from progress saved in this browser.
 // ─────────────────────────────────────────────────────────────
 
+/** A text preview: e.g. kicker "Course", text "Harvard CS50P", in the phase colour. */
+export interface PreviewTile {
+  kicker: string;
+  text: string;
+  color: string;
+}
+
+const TYPE_LABEL: Record<string, string> = {
+  video: "Video", playlist: "Video series", code: "Code", book: "Book", course: "Course",
+  article: "Article", paper: "Paper", tool: "Tool", dataset: "Dataset",
+};
+
 export type RowStatus = "completed" | "in_progress" | "available" | "locked" | "soon";
 
 export interface ModuleRow {
@@ -34,6 +46,8 @@ export interface ModuleRow {
   status: RowStatus;
   pct: number;
   thumbId: string | null;
+  /** Shown instead of a preview when the module has no video */
+  tile: PreviewTile;
 }
 
 export interface ModuleSection {
@@ -70,6 +84,11 @@ export interface CourseSummary {
 }
 
 const pad2 = (n: number) => String(n).padStart(2, "0");
+function tileFor(m: TrackModule, color: string): PreviewTile {
+  const first = m.resources.find((r) => r.role === "main") ?? m.resources[0];
+  return { kicker: first ? TYPE_LABEL[first.type] ?? "Resource" : "Module", text: first?.title ?? m.title, color };
+}
+
 const firstVideoId = (m: TrackModule) => m.resources.find((r) => r.role === "main" && r.video)?.video?.youtubeId ?? null;
 
 export function summarizeTrack(track: Track, p: TrackProgress): CourseSummary {
@@ -109,6 +128,7 @@ export function summarizeTrack(track: Track, p: TrackProgress): CourseSummary {
           status: moduleStatus(p, m),
           pct: moduleProgressPct(p, m),
           thumbId: firstVideoId(m),
+          tile: tileFor(m, ph.color),
         })),
     }));
 
@@ -168,6 +188,7 @@ export function summarizePayments(doneM01: Record<string, boolean>): CourseSumma
           status: m.id === "M01" ? m01Status : "soon",
           pct: m.id === "M01" ? modulePct : 0,
           thumbId: m.id === "M01" ? m01Thumb : null,
+          tile: { kicker: hasLessons ? m.id : `${m.id} · Coming soon`, text: m.shortTitle, color: lv.color },
         };
       }),
   }));

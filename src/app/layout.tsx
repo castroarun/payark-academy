@@ -1,12 +1,17 @@
-import { Outfit, JetBrains_Mono } from "next/font/google";
+import { Inter, Outfit, JetBrains_Mono } from "next/font/google";
+import { LLM_THEME_SCRIPT } from "@/lib/llm-theme";
 import AppChrome from "@/components/layout/AppChrome";
 import "./globals.css";
+// The shared look (colours, light/dark) for every page
+import "./llm/llm.css";
 
 const outfit = Outfit({
   subsets: ["latin"],
   variable: "--font-display",
   weight: ["300", "400", "500", "600", "700", "800", "900"],
 });
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-llm" });
 
 const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
@@ -26,9 +31,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // suppressHydrationWarning: the LLM track sets data-llm-theme on <html> before React loads
-    <html lang="en" className={`${outfit.variable} ${jetbrains.variable}`} suppressHydrationWarning>
+    // suppressHydrationWarning: the theme script sets data-llm-theme on <html> before React loads
+    <html lang="en" className={`${outfit.variable} ${jetbrains.variable} ${inter.variable}`} suppressHydrationWarning>
       <body className="font-display antialiased bg-bg text-t1 min-h-screen">
+        {/* Sets light/dark before first paint */}
+        <script dangerouslySetInnerHTML={{ __html: LLM_THEME_SCRIPT }} />
         <AppChrome>{children}</AppChrome>
       </body>
     </html>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { User } from "@supabase/supabase-js";
 import { TRACKS } from "@/data/tracks";
+import type { PreviewTile } from "@/lib/course-summary";
 import { useLlmTheme } from "@/lib/llm-theme";
 import { createClient } from "@/lib/supabase/client";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
@@ -40,14 +41,19 @@ export const OVERVIEW_HREF = {
 const thumbUrl = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 
 /** A course or module preview: the real YouTube frame of its video, 16:9. */
-export function Thumb({ id, badge, label }: { id: string | null; badge?: string; label?: string }) {
+export function Thumb({ id, badge, tile }: { id: string | null; badge?: string; tile?: PreviewTile }) {
   return (
     <div className="thumb">
       {id ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={thumbUrl(id)} alt="" loading="lazy" />
       ) : (
-        label && <span className="thumb-label">{label}</span>
+        tile && (
+          <span className="thumb-tile" style={{ "--tile": tile.color } as React.CSSProperties}>
+            <span className="kicker">{tile.kicker}</span>
+            <span className="text">{tile.text}</span>
+          </span>
+        )
       )}
       {id && (
         <span className="playmark" aria-hidden="true">

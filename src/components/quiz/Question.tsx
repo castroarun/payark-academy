@@ -95,7 +95,7 @@ export default function Question({
                 className={[
                   "w-7 h-7 rounded-md flex items-center justify-center text-xs font-mono font-bold shrink-0",
                   isSelected
-                    ? "bg-blue text-white"
+                    ? "bg-blue text-on-blue"
                     : "bg-bg3 text-t3",
                 ].join(" ")}
               >

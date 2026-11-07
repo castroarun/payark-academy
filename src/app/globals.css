@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
-@theme inline {
+/* Not "inline": utilities read these as variables, so the new look can
+   re-point them per page (see .llm.legacy in src/app/llm/llm.css). */
+@theme {
   --color-bg: #08090d;
   --color-bg2: #0f1118;
   --color-bg3: #151822;
@@ -11,6 +13,8 @@
   --color-t2: #8b90a0;
   --color-t3: #555a6e;
   --color-blue: #3b82f6;
+  /* Text on a blue fill */
+  --color-on-blue: #ffffff;
   --color-cyan: #06b6d4;
   --color-green: #10b981;
   --color-amber: #f59e0b;
@@ -35,15 +39,16 @@ body {
 ::-webkit-scrollbar {
   width: 6px;
 }
+/* Scrollbars follow the shared look (--l-*) where it applies, else the original colours */
 ::-webkit-scrollbar-track {
-  background: var(--color-bg2);
+  background: var(--l-surface-2, var(--color-bg2));
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-bdr2);
+  background: var(--l-border, var(--color-bdr2));
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-t3);
+  background: var(--l-faint, var(--color-t3));
 }
 
 ::selection {
@@ -80,6 +85,8 @@ body {
   line-height: 1.75;
   color: var(--color-t2);
 }
+.mdx-content ul { list-style: disc; }
+.mdx-content ol { list-style: decimal; }
 .mdx-content ul,
 .mdx-content ol {
   margin: 0.75rem 0;

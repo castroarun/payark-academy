@@ -30,7 +30,18 @@ Cross-session source of truth for pending work. Last updated: 2026-11-07.
   - [ ] Play a video part end to end in a real browser (resume point, chapter ticks)
   - [ ] Optional: a printable Healthspan Scorecard (Module 3) and 90-day plan template (capstone)
 - **Found while testing (old, not from this change):** the dashboard's Payments "Level 1" card
-  links to `/level/1`, which returns 404.
+  linked to `/level/1` (404). Gone: the dashboard was redesigned 2026-11-07 without those cards.
+
+### One look across the whole app (2026-11-07)
+- **Done:** dashboard redesigned (continue card, course cards with video previews, category
+  filter tabs, real totals); a course overview page for every course (`/curriculum`,
+  `/llm/overview`, `/healthspan/overview`); course categories in `src/data/categories.ts`
+  (Technology, Health & fitness, Fintech); the Payments lesson, reading, quiz and sign-in pages
+  now use the same navy look with light/dark (old colour names re-pointed in `.llm.legacy`,
+  `src/app/llm/llm.css`); modules with no video show a text preview tile.
+- Checked: tsc, eslint (0 errors), build, screenshots light/dark, no sideways scroll at 390px.
+- [ ] Optional: rebuild the Payments lessons on the shared video player (chapters, watch tracking)
+- [ ] Confirm category names with Arun (asked "payways": read as pathways)
 
 ### Launch the "Build an LLM from Scratch" track
 - **Why:** second curriculum (12 modules, Karpathy Zero to Hero core). Source doc:
@@ -72,13 +83,13 @@ Cross-session source of truth for pending work. Last updated: 2026-11-07.
 - [x] Production: https://payark-academy.vercel.app (runs in preview mode: no login, open to anyone)
 
 ## Tech debt
-- [ ] 2 pre-existing lint errors (`react-hooks/set-state-in-effect`) in
-      `src/app/module/[id]/[step]/page.tsx` and `src/app/module/[id]/quiz/page.tsx`
+- [x] 2 pre-existing lint errors (`react-hooks/set-state-in-effect`) in the Payments step and
+      quiz pages — fixed 2026-11-07
 - [ ] Next 16 deprecation: rename `src/middleware.ts` → `src/proxy.ts`
 - [ ] `npm audit`: 16 vulnerabilities (1 critical, 12 high) — review and update deps
 - [ ] README: clone URL points to `ArunCastro/payark-academy` (should be `castroarun`);
       LAUNCHPAD block is stale (last updated 2026-02-24); mention the LLM track
-- [ ] Dashboard "Your Stats" hard-codes 44 modules and ignores progress
+- [x] Dashboard "Your Stats" hard-coded 44 modules — replaced 2026-11-07 by totals from real progress
 
 ## Payments track (PayArk)
 - [ ] Modules M02–M44 + capstones S1–S4: content still "Coming Soon"

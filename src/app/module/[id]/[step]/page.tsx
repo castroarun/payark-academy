@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -11,6 +10,7 @@ import Card from "@/components/ui/Card";
 import Button from "@/components/ui/Button";
 import Badge from "@/components/ui/Badge";
 import { LEVELS } from "@/lib/types";
+import { markPaymentsStepDone, usePaymentsSteps } from "@/lib/payments-progress";
 
 // ─────────────────────────────────────────────────────────────
 // MDX content map — dynamically import reading content
@@ -40,26 +40,6 @@ function getContentSteps(moduleId: string): ContentStep[] {
     default:
       return [];
   }
-}
-
-function getLocalProgress(moduleId: string): Record<string, boolean> {
-  if (typeof window === "undefined") return {};
-  try {
-    const raw = localStorage.getItem(`payark-progress-${moduleId}`);
-    return raw ? JSON.parse(raw) : {};
-  } catch {
-    return {};
-  }
-}
-
-function saveLocalProgress(moduleId: string, stepId: string) {
-  if (typeof window === "undefined") return;
-  const progress = getLocalProgress(moduleId);
-  progress[stepId] = true;
-  localStorage.setItem(
-    `payark-progress-${moduleId}`,
-    JSON.stringify(progress)
-  );
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -156,7 +136,6 @@ export default function ContentStepPage() {
   const stepParam = params.step as string;
   const stepOrder = parseInt(stepParam, 10);
 
-  const [completed, setCompleted] = useState(false);
 
   const moduleData: Module | undefined = getModule(moduleId);
   const contentSteps = getContentSteps(moduleId);
@@ -167,13 +146,9 @@ export default function ContentStepPage() {
     : undefined;
   const levelColor = levelInfo?.color ?? "#3b82f6";
 
-  // Check if step is already completed on mount
-  useEffect(() => {
-    if (step) {
-      const progress = getLocalProgress(moduleId);
-      setCompleted(!!progress[step.id]);
-    }
-  }, [moduleId, step]);
+  // Finished steps, read from this browser (updates as soon as a step is marked done)
+  const doneSteps = usePaymentsSteps(moduleId);
+  const completed = !!(step && doneSteps[step.id]);
 
   if (!moduleData || !step) {
     return (
@@ -201,8 +176,7 @@ export default function ContentStepPage() {
   const nextStep = contentSteps.find((s) => s.order === stepOrder + 1);
 
   const handleMarkComplete = () => {
-    saveLocalProgress(moduleId, step.id);
-    setCompleted(true);
+    markPaymentsStepDone(moduleId, step.id);
   };
 
   return (

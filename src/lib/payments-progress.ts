@@ -15,9 +15,27 @@ export const PAYMENTS_CONTENT: Record<string, ContentStep[]> = { M01: m01Content
 
 export const isPaymentsModuleAvailable = (id: string) => id in PAYMENTS_CONTENT;
 
+const CHANGED = "payark-payments-progress";
+
 function subscribeStorage(listener: () => void) {
-  window.addEventListener("storage", listener);
-  return () => window.removeEventListener("storage", listener);
+  window.addEventListener("storage", listener); // other tabs
+  window.addEventListener(CHANGED, listener); // this tab
+  return () => {
+    window.removeEventListener("storage", listener);
+    window.removeEventListener(CHANGED, listener);
+  };
+}
+
+/** Marks one lesson step finished. */
+export function markPaymentsStepDone(moduleId: string, stepId: string) {
+  const key = `payark-progress-${moduleId}`;
+  try {
+    const current = JSON.parse(localStorage.getItem(key) || "{}") as Record<string, boolean>;
+    localStorage.setItem(key, JSON.stringify({ ...current, [stepId]: true }));
+  } catch {
+    // Storage blocked: nothing is saved this visit.
+  }
+  window.dispatchEvent(new Event(CHANGED));
 }
 
 /** Steps finished in one module, e.g. { "m01-step-1": true }. */

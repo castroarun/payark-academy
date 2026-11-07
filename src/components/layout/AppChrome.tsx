@@ -1,23 +1,24 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Header from "@/components/layout/Header";
+import { SiteTopBar } from "@/components/site/SiteParts";
 import { PLAYER_BASE_PATHS } from "@/data/tracks";
 
 /**
- * The PayArk header and centred column wrap every page except the
- * dashboard and the video courses, which have their own full-width layout and top bar
- * (src/app/page.tsx, src/app/llm/layout.tsx).
+ * Every page gets the shared look (.llm, styles in src/app/llm/llm.css).
+ * - Video courses: their own full-width layout and top bar (src/app/llm/layout.tsx).
+ * - Dashboard and Payments overview: draw their own top bar.
+ * - Everything else (Payments lessons, quiz, sign-in): the site top bar and a
+ *   centred column. "legacy" re-points the older pages' colours to the new palette.
  */
 export default function AppChrome({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  // Dashboard and Payments overview use the shared look (src/components/site/SiteShell.tsx)
-  if (pathname === "/" || pathname === "/curriculum") return <>{children}</>;
   if (PLAYER_BASE_PATHS.some((b) => pathname === b || pathname.startsWith(`${b}/`))) return <>{children}</>;
+  if (pathname === "/" || pathname === "/curriculum") return <div className="llm">{children}</div>;
   return (
-    <>
-      <Header />
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-8">{children}</main>
-    </>
+    <div className="llm legacy">
+      <SiteTopBar />
+      <main className="legacy-main">{children}</main>
+    </div>
   );
 }

@@ -55,7 +55,8 @@ html[data-llm-theme="dark"] .llm {
 }
 
 .llm a { color: var(--l-accent-ink); }
-.llm h1, .llm h2, .llm h3, .llm p { margin: 0; }
+/* Low specificity so reading-page typography (.mdx-content) can set its own spacing */
+.llm :where(h1, h2, h3, p) { margin: 0; }
 .llm :focus-visible { outline: 2px solid var(--l-accent); outline-offset: 2px; }
 .llm ::selection { background: var(--l-accent-soft); color: var(--l-text); }
 
@@ -116,7 +117,8 @@ html[data-llm-theme="dark"] .llm {
 .llm .num.done { background: var(--l-accent-soft); color: var(--l-accent-ink); border-color: transparent; }
 .llm .num.current { background: var(--l-accent); color: var(--l-accent-text); border-color: var(--l-accent); }
 
-.llm .tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--l-border); overflow-x: auto; }
+.llm .tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--l-border); overflow-x: auto; scrollbar-width: none; }
+.llm .tabs::-webkit-scrollbar { display: none; }
 .llm .tabs button {
   background: none; border: 0; padding: 10px 0; min-height: 44px; margin-bottom: -1px;
   font: inherit; font-weight: 500; color: var(--l-muted); cursor: pointer;
@@ -278,9 +280,19 @@ html[data-llm-theme="dark"] .llm {
 .llm .modrow.dim { opacity: 0.62; }
 .llm .modrow-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .llm .modrow-body h3 { font-size: 16px; font-weight: 600; }
-.llm .thumb-label {
-  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-  font-family: var(--l-mono); font-size: 18px; color: var(--l-faint); background: var(--l-surface-2);
+/* Text preview for modules with no video: resource type + name over a faint dot pattern */
+.llm .thumb-tile {
+  position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px;
+  padding: 10px 12px; text-align: left;
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--tile) 28%, transparent) 1px, transparent 1.5px) 0 0 / 12px 12px,
+    color-mix(in srgb, var(--tile) 12%, var(--l-surface-2));
+  border-left: 3px solid var(--tile);
+}
+.llm .thumb-tile .kicker { font-size: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--l-muted); }
+.llm .thumb-tile .text {
+  font-size: 13px; font-weight: 600; line-height: 1.3; color: var(--l-text);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
 @media (max-width: 640px) {
   .llm .modrow { grid-template-columns: 112px minmax(0, 1fr); gap: 12px; }
@@ -298,3 +310,34 @@ html[data-llm-theme="dark"] .llm {
   .llm .stats { grid-template-columns: 1fr; }
   .llm .courses { grid-template-columns: 1fr; }
 }
+
+/* ── Older pages (Payments lessons, quiz, sign-in) ───────────────
+   They use the original colour names (bg2, t1, blue…). Inside .legacy
+   those names point at this palette, so they follow light/dark too. */
+.llm.legacy {
+  --color-bg: var(--l-bg);
+  --color-bg2: var(--l-surface);
+  --color-bg3: var(--l-surface-2);
+  --color-bg4: var(--l-track);
+  --color-bdr: var(--l-border);
+  --color-bdr2: var(--l-accent);
+  --color-t1: var(--l-text);
+  --color-t2: var(--l-muted);
+  --color-t3: var(--l-faint);
+  --color-blue: var(--l-accent);
+  --color-on-blue: var(--l-accent-text);
+  --color-cyan: var(--l-accent-ink);
+  --color-green: #047857;
+  --color-amber: #b45309;
+  --color-rose: #be123c;
+  --font-display: var(--l-font);
+}
+html[data-llm-theme="dark"] .llm.legacy {
+  --color-green: #34d399;
+  --color-amber: #fbbf24;
+  --color-rose: #fb7185;
+}
+.llm.legacy a { color: inherit; }
+.llm.legacy .mdx-content a { color: var(--l-accent-ink); text-decoration: underline; }
+.llm .legacy-main { max-width: 1000px; margin: 0 auto; padding: 32px 24px 80px; }
+@media (max-width: 640px) { .llm .legacy-main { padding: 20px 16px 60px; } }
