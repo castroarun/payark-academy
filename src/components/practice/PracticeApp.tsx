@@ -214,15 +214,15 @@ function HomeView({ set, p, allQ, go, startQuiz }: { set: PracticeSet; p: Practi
         <div className="prac-ready">
           <span className="label">Exam readiness</span>
           <b className="prac-big">{Math.round(ready * 100)}%</b>
-          <div className="prac-plates" aria-label="Readiness by module">
+          <div className="prac-rows" aria-label="Readiness by module">
             {set.modules.map((m) => {
-              const r = moduleReadiness(p, m);
+              const r = Math.round(moduleReadiness(p, m) * 100);
               return (
-                <button key={m.id} type="button" className="prac-plate" onClick={() => go({ name: "module", id: m.id })} title={`${m.id} ${m.name}: ${Math.round(r * 100)}% ready`}>
-                  <span className="prac-plate-col" style={{ "--c": m.color } as React.CSSProperties}>
-                    <span style={{ height: `${Math.max(4, Math.round(r * 100))}%` }} />
-                  </span>
-                  <span className="mono faint">{m.id}</span>
+                <button key={m.id} type="button" className="prac-row" onClick={() => go({ name: "module", id: m.id })} title={`${m.id} ${m.name}`}>
+                  <span className="mono">{m.id}</span>
+                  <span className="prac-row-name">{m.name}</span>
+                  <Meter value={r / 100} label={`${m.id} readiness`} />
+                  <span className="mono faint prac-row-pct">{r}%</span>
                 </button>
               );
             })}
@@ -247,10 +247,11 @@ function HomeView({ set, p, allQ, go, startQuiz }: { set: PracticeSet; p: Practi
         </div>
       </section>
 
-      <div className="stats">
-        <div className="card stat"><span className="label">Answers given</span><b>{t.answered}</b></div>
-        <div className="card stat"><span className="label">Accuracy</span><b>{t.accuracy}%</b></div>
-        <div className="card stat"><span className="label">Days practised</span><b>{p.days.length}</b></div>
+      <div className="card prac-stats">
+        <div><span className="label">Answers given</span><b>{t.answered}</b></div>
+        <div><span className="label">Accuracy</span><b>{t.accuracy}%</b></div>
+        <div><span className="label">Days practised</span><b>{p.days.length}</b></div>
+        <div><span className="label">To revisit</span><b>{miss.length}</b></div>
       </div>
 
       <section className="card pad prac-fact" style={{ "--c": fact.m.color } as React.CSSProperties} aria-label="Did you know">
@@ -275,32 +276,31 @@ function ModuleGrid({ title, note, mods, p, go }: { title: string; note: string;
   return (
     <section>
       <div className="section-head"><h2>{title}</h2><span className="faint" style={{ fontSize: 13 }}>{note}</span></div>
-      <div className="prac-mods">
+      <div className="card prac-table" role="list">
+        <div className="prac-trow prac-thead" aria-hidden="true">
+          <span>Module</span><span>Content</span><span>Readiness</span><span>Mock</span><span />
+        </div>
         {mods.map((m) => {
           const r = moduleReadiness(p, m);
           const mock = p.mocks[m.id];
           const qn = moduleQuestions(m).length;
           return (
-            <button key={m.id} type="button" className="card prac-mod" onClick={() => go({ name: "module", id: m.id })}>
-              <div className="row" style={{ justifyContent: "space-between" }}>
-                <span className="row" style={{ gap: 8 }}>
-                  <span className="dot" style={{ background: m.color, width: 10, height: 10 }} aria-hidden="true" />
-                  <b className="mono" style={{ fontSize: 14 }}>{m.id}</b>
-                </span>
-                {m.kind === "mcq" && mock ? (
-                  <span className={`pill ${mock.best >= 60 ? "ok" : "warn"}`}>Best mock {mock.best}%</span>
-                ) : (
-                  <span className="pill">{m.kind === "viva" ? "Viva" : "MCQ"}</span>
-                )}
-              </div>
-              <h3>{m.name}</h3>
-              <p className="mono faint">
-                {m.kind === "viva" ? `${m.viva?.length ?? 0} viva · ${qn} quiz questions` : `${qn} questions · ${m.topics.length} topics`}
-              </p>
-              <div className="row">
-                <div className="grow"><Meter value={r} color={m.color} label={`${m.id} readiness`} /></div>
-                <span className="mono faint">{Math.round(r * 100)}%</span>
-              </div>
+            <button key={m.id} type="button" role="listitem" className="prac-trow" onClick={() => go({ name: "module", id: m.id })}>
+              <span className="prac-tname">
+                <span className="mono">{m.id}</span>
+                <b>{m.name}</b>
+              </span>
+              <span className="mono faint prac-tmeta">
+                {m.kind === "viva" ? `${m.viva?.length ?? 0} viva · ${qn} quiz` : `${qn} questions · ${m.topics.length} topics`}
+              </span>
+              <span className="row prac-tready">
+                <span className="grow"><Meter value={r} label={`${m.id} readiness`} /></span>
+                <span className="mono" style={{ width: 36, textAlign: "right" }}>{Math.round(r * 100)}%</span>
+              </span>
+              <span className={`mono prac-tmock ${m.kind === "mcq" && mock ? "" : "empty"}`}>
+                {m.kind === "viva" ? <span className="faint">n/a</span> : mock ? <span className={mock.best >= 60 ? "prac-ok" : "prac-warn"}>{mock.best}%</span> : <span className="faint">–</span>}
+              </span>
+              <span className="faint prac-tgo" aria-hidden="true"><Icon d={ICONS.arrow} /></span>
             </button>
           );
         })}
@@ -348,7 +348,7 @@ function ModuleView({ set, p, m, go, startQuiz }: { set: PracticeSet; p: Practic
         <h1 style={{ fontSize: 26, marginTop: 6 }}>{m.name}</h1>
         <p className="muted" style={{ marginTop: 4 }}>{m.blurb}</p>
         <div className="row" style={{ marginTop: 14 }}>
-          <div className="grow"><Meter value={r} color={m.color} label={`${m.id} readiness`} /></div>
+          <div className="grow"><Meter value={r} label={`${m.id} readiness`} /></div>
           <span className="mono faint">{Math.round(r * 100)}% ready</span>
         </div>
         <div className="row wrap" style={{ marginTop: 14 }}>
@@ -375,7 +375,7 @@ function ModuleView({ set, p, m, go, startQuiz }: { set: PracticeSet; p: Practic
                 <div className="grow stack" style={{ gap: 6 }}>
                   <h3 style={{ fontSize: 16, fontWeight: 600 }}>{t.title}</h3>
                   <p className="mono faint">{t.qs.length} questions · {Math.round(tm * 100)}% mastered</p>
-                  <div style={{ maxWidth: 360 }}><Meter value={tm} color={m.color} label={`${t.title} mastery`} /></div>
+                  <div style={{ maxWidth: 360 }}><Meter value={tm} label={`${t.title} mastery`} /></div>
                 </div>
                 <button type="button" className="btn" onClick={() => go({ name: "intro", topicId: t.id })}>Learn &amp; quiz <Icon d={ICONS.arrow} /></button>
               </div>
