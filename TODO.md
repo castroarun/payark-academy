@@ -4,6 +4,27 @@ Cross-session source of truth for pending work. Last updated: 2026-11-07.
 
 ## In progress
 
+### "Practice" section: INFS CPT exam coach (built 2026-11-09)
+- **Why:** Arun is preparing for the INFS Certified Personal Trainer exam and wanted scored,
+  interactive practice inside PayArk (not in chat), in the app's own look.
+- **Done:**
+  - Data: `src/data/practice/` (types, `cpt.ts` bank: 255 multiple-choice questions with a reason for
+    every option and a memory hook, 30 viva prompts, a fact + primer per topic; registry `index.ts`).
+    Written from the course notes in Arun's Claude project ("Infs Course", `cpt-exam/` docs).
+  - Pages: `/practice` (all practice sets) and `/practice/[set]` (the coach). Component:
+    `src/components/practice/PracticeApp.tsx`; dashboard + `/practice` cards: `PracticeCards.tsx`.
+  - Modes: topic rounds (fact → primer → questions, explanations after each answer), Today's set
+    (mistakes and unseen first), mistake bank, module mock (25 Q / 25 min, no feedback until the
+    end), full written mock (4 modules, scored per module vs the 60% pass mark), viva drill
+    (answer out loud, tick the key points covered).
+  - Progress in localStorage `payark-practice-cpt-v1` (`src/lib/practice-progress.ts`).
+  - Dashboard "Practice" section, "Practice" in the top nav, styles in the `.prac` part of `llm.css`.
+  - Checked: tsc, eslint, dev-server click-through (round, mock, viva) at desktop and 390px, dark mode.
+    `npm run build` couldn't run in the sandbox (Google Fonts blocked); Vercel builds it.
+- **Next:**
+  - [ ] Move practice progress to the database once Supabase is set up (cross-device)
+  - [ ] Optional: case-study practice (the 2 written cases, 50 marks)
+
 ### "Longevity & Healthspan" track (built and deployed 2026-11-07)
 - **Why:** a free alternative to the paid INFS "Longevity & Healthspan" workshop (₹2,499, 4 h),
   covering the same topics in more depth: science of ageing, key markers and tests, supplements

@@ -93,6 +93,7 @@ export function SiteTopBar() {
           <Link href={OVERVIEW_HREF.payments}>Payments</Link>
           <Link href={OVERVIEW_HREF.llm}>{TRACKS.llm.navLabel}</Link>
           <Link href={OVERVIEW_HREF.healthspan}>{TRACKS.healthspan.navLabel}</Link>
+          <Link href="/practice">Practice</Link>
         </nav>
         {!isSupabaseConfigured ? (
           <span className="pill" title="No database yet: progress is saved in this browser">Local preview</span>

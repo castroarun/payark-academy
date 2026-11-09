@@ -6,6 +6,7 @@ import { CATEGORIES, categoryLabel, type CategoryId } from "@/data/categories";
 import type { CourseSummary } from "@/lib/course-summary";
 import { useCourses } from "@/lib/use-courses";
 import { Icon, ICONS, SiteTopBar, Thumb } from "@/components/site/SiteParts";
+import PracticeCards from "@/components/practice/PracticeCards";
 
 // ─────────────────────────────────────────────────────────────
 // Dashboard: a "continue learning" card for the course you're furthest
@@ -123,6 +124,14 @@ export default function Home({ name }: { name: string }) {
               <Course key={c.id} c={c} />
             ))}
           </div>
+        </section>
+
+        <section aria-labelledby="practice">
+          <div className="section-head">
+            <h2 id="practice">Practice</h2>
+            <Link href="/practice" className="faint" style={{ fontSize: 13 }}>Quiz rounds, mocks and viva drills, scored</Link>
+          </div>
+          <PracticeCards />
         </section>
 
         <section aria-labelledby="my-progress">
