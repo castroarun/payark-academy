@@ -8,7 +8,9 @@ import type { PracticeModule, PracticeSet, PracticeQuestion, PracticeTopic } fro
 // practice set. Holds:
 //   q:        per question — tries, right answers, whether the last answer was right
 //   viva:     per viva prompt — best and last share of key points covered (0–1)
-//   mocks:    per module — best and last mock score (percent)
+//   mocks:    per module — best and last exam-style score (percent): written
+//             mock exams, and viva drills / the full viva for viva modules
+//   plan:     today's three-task study plan (fixed for the day)
 //   sessions: the latest finished rounds, newest first
 //   days:     dates (YYYY-MM-DD) you practised
 // ─────────────────────────────────────────────────────────────
@@ -24,7 +26,10 @@ export interface SessionRecord {
   ts: number;
 }
 
+export interface DailyPlan { day: string; topicId: string; vivaModuleId: string }
+
 export interface PracticeProgress {
+  plan?: DailyPlan;
   q: Record<string, QuestionRecord>;
   viva: Record<string, VivaRecord>;
   mocks: Record<string, MockRecord>;
@@ -68,7 +73,7 @@ function write(key: string, next: PracticeProgress) {
   st.listeners.forEach((l) => l());
 }
 
-const today = () => new Date().toISOString().slice(0, 10);
+export const today = () => new Date().toISOString().slice(0, 10);
 const withDay = (p: PracticeProgress) => (p.days.includes(today()) ? p.days : [...p.days, today()].slice(-400));
 
 export function usePracticeProgress(setId: string) {
@@ -109,7 +114,14 @@ export function usePracticeProgress(setId: string) {
     write(key, { ...p, sessions: [{ ...s, ts: Date.now() }, ...p.sessions].slice(0, 80), days: withDay(p) });
   }, [key]);
 
-  return { progress, recordAnswers, recordViva, recordMock, logSession };
+  /** Set today's plan once per day; later calls the same day keep it. */
+  const ensurePlan = useCallback((make: () => Omit<DailyPlan, "day">) => {
+    const p = read(key);
+    if (p.plan?.day === today()) return;
+    write(key, { ...p, plan: { day: today(), ...make() } });
+  }, [key]);
+
+  return { progress, recordAnswers, recordViva, recordMock, logSession, ensurePlan };
 }
 
 // ── Derived numbers ───────────────────────────────────────────
@@ -175,4 +187,19 @@ export function pickSmart(p: PracticeProgress, pool: IdQuestion[], n: number): I
   const seen = pool.filter((q) => p.q[q.id]?.last === 1).sort((a, b) => p.q[a.id].t - p.q[b.id].t);
   const order = [...wrong.slice(0, Math.ceil(n * 0.4)), ...unseen, ...seen, ...wrong];
   return order.filter((q, i) => order.indexOf(q) === i).slice(0, n);
+}
+
+/** Topics ordered weakest first: lowest mastery, then ones already tried before untouched ones. */
+export function weakestTopics(p: PracticeProgress, set: PracticeSet) {
+  const all = set.modules.flatMap((m) => m.topics.map((t) => {
+    const tried = t.qs.some((_, i) => p.q[`${t.id}-${i}`]);
+    return { m, t, mastery: topicMastery(p, t), tried };
+  }));
+  return all.sort((a, b) => a.mastery - b.mastery || Number(b.tried) - Number(a.tried));
+}
+
+/** Projected exam marks for a module from its latest exam-style score, or null before any. */
+export function projectedMarks(p: PracticeProgress, m: PracticeModule, outOf = 25): number | null {
+  const r = p.mocks[m.id];
+  return r ? Math.round((r.last * outOf) / 100) : null;
 }

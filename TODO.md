@@ -21,6 +21,12 @@ Cross-session source of truth for pending work. Last updated: 2026-11-07.
   - Dashboard "Practice" section, "Practice" in the top nav, styles in the `.prac` part of `llm.css`.
   - Checked: tsc, eslint, dev-server click-through (round, mock, viva) at desktop and 390px, dark mode.
     `npm run build` couldn't run in the sandbox (Google Fonts blocked); Vercel builds it.
+- **2026-11-09 (later): home redesigned as option "D"** (chosen from mockups on Arun's design canvas):
+  readiness donut with the 60% pass tick, Today's 3-task plan (fixed per day, stored as `plan`),
+  modules table with pass-line bars, weakest topics, and "Exam result, projected" (marks out of 25
+  per module from the latest mock exam / viva result, 200 total, pass 120). New: **full viva**
+  (2 prompts per viva module, 2-minute clock per question); viva drills now also record per-module
+  results in `mocks`.
 - **Next:**
   - [ ] Move practice progress to the database once Supabase is set up (cross-device)
   - [ ] Optional: case-study practice (the 2 written cases, 50 marks)
