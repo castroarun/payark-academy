@@ -439,24 +439,26 @@ html[data-llm-theme="dark"] .llm .prac-warn { color: #fbbf24; }
 
 .llm .prac-top { display: flex; flex-wrap: wrap; gap: 16px; }
 .llm .prac-ready-card {
-  flex: 1 1 340px; background: var(--l-accent); color: var(--l-accent-text); border-radius: var(--l-radius);
-  padding: 26px 28px; display: flex; flex-direction: column; gap: 16px; font-size: 14px;
+  flex: 1 1 400px; background: var(--l-accent); color: var(--l-accent-text); border-radius: var(--l-radius);
+  padding: 20px 24px; display: flex; flex-direction: column; gap: 12px; font-size: 14px;
 }
 .llm .prac-ready-card .label { color: inherit; opacity: 0.75; }
 .llm .prac-pass-stroke { stroke: var(--pass); }
 .llm .prac-ready-bar { height: 6px; border-radius: 3px; background: color-mix(in srgb, currentColor 18%, transparent); overflow: hidden; }
 .llm .prac-ready-bar > span { display: block; height: 100%; border-radius: 3px; background: currentColor; }
-.llm .prac-ready-note { opacity: 0.85; line-height: 1.45; }
+.llm .prac-ready-note { opacity: 0.85; line-height: 1.4; font-size: 13px; }
+.llm .prac-donut { flex: none; }
 
 .llm .prac-today { flex: 999 1 560px; min-width: 0; overflow: hidden; }
 .llm .prac-today-head, .llm .prac-table-head {
   display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
-  padding: 16px 22px; border-bottom: 1px solid var(--l-border);
+  padding: 14px 22px; border-bottom: 1px solid var(--l-border);
 }
-.llm .prac-task { display: flex; align-items: center; gap: 16px; padding: 16px 22px; border-top: 1px solid var(--l-border); flex-wrap: wrap; }
+.llm .prac-task { display: flex; align-items: center; gap: 14px; padding: 11px 22px; border-top: 1px solid var(--l-border); }
+.llm .prac-task .btn { padding: 7px 16px; }
 .llm .prac-today-head + .prac-task { border-top: 0; }
 .llm .prac-check {
-  width: 26px; height: 26px; border-radius: 50%; flex: none; display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%; flex: none; display: inline-flex; align-items: center; justify-content: center;
   border: 2px solid var(--l-border); font-size: 13px; font-weight: 700;
 }
 .llm .prac-check.on { background: #0b6b46; border-color: #0b6b46; color: #fff; }
@@ -504,6 +506,8 @@ html[data-llm-theme="dark"] .llm .prac-warn { color: #fbbf24; }
   .llm .prac-papers, .llm .prac-weak { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
+  .llm .prac-task { padding: 11px 16px; gap: 12px; }
+  .llm .prac-task > .mono { display: none; }
   .llm .prac-big { font-size: 44px; }
   .llm .prac-q { font-size: 18px; }
   .llm .prac-weak-row { grid-template-columns: 44px minmax(0, 1fr) 60px 36px; }

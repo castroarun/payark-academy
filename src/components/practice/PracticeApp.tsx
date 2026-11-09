@@ -270,7 +270,7 @@ function HomeView({ set, p, allQ, go, startQuiz, startViva }: { set: PracticeSet
 function Donut({ value, pass }: { value: number; pass: number }) {
   const r = 62, c = 2 * Math.PI * r, v = Math.round(value * 100);
   return (
-    <svg width="148" height="148" viewBox="0 0 148 148" role="img" aria-label={`Exam readiness ${v} percent, pass line at ${pass} percent`} className="prac-donut">
+    <svg width="116" height="116" viewBox="0 0 148 148" role="img" aria-label={`Exam readiness ${v} percent, pass line at ${pass} percent`} className="prac-donut">
       <circle cx="74" cy="74" r={r} fill="none" stroke="currentColor" strokeOpacity="0.16" strokeWidth="12" />
       <circle cx="74" cy="74" r={r} fill="none" stroke="currentColor" strokeWidth="12" strokeLinecap="round"
         strokeDasharray={`${(c * Math.max(0.005, value)).toFixed(1)} ${c.toFixed(1)}`} transform="rotate(-90 74 74)" />
@@ -292,9 +292,9 @@ function ReadinessCard({ set, p }: { set: PracticeSet; p: PracticeProgress }) {
   return (
     <section className="prac-ready-card" aria-label="Exam readiness">
       <span className="label">Exam readiness</span>
-      <div className="row wrap" style={{ gap: 24 }}>
+      <div className="row" style={{ gap: 20 }}>
         <Donut value={ready} pass={set.passPct} />
-        <div className="stack grow" style={{ gap: 10, minWidth: 140 }}>
+        <div className="stack grow" style={{ gap: 10, minWidth: 0 }}>
           {([["Written paper", part("mcq")], ["Viva", part("viva")]] as const).map(([label, v]) => (
             <div key={label} className="stack" style={{ gap: 6 }}>
               <div className="row" style={{ justifyContent: "space-between" }}><span>{label}</span><span className="mono">{Math.round(v * 100)}%</span></div>
@@ -304,7 +304,7 @@ function ReadinessCard({ set, p }: { set: PracticeSet; p: PracticeProgress }) {
         </div>
       </div>
       <p className="prac-ready-note">
-        {gap >= 0 ? `${gap} points above` : `${-gap} points below`} the {set.passPct}% pass line (gold tick). {onTrack} of {set.modules.length} modules are on track.
+        {gap >= 0 ? `${gap} points above` : `${-gap} points below`} the {set.passPct}% pass line (gold tick) · {onTrack} of {set.modules.length} modules on track
       </p>
     </section>
   );
@@ -350,7 +350,7 @@ function TodayCard({ set, p, allQ, go, startQuiz, startViva }: { set: PracticeSe
       {tasks.map((t, i) => (
         <div key={t.key} className="prac-task">
           <span className={`prac-check ${t.done ? "on" : ""}`} aria-hidden="true">{t.done ? "✓" : ""}</span>
-          <div className="stack grow" style={{ gap: 3, minWidth: 220 }}>
+          <div className="stack grow" style={{ gap: 2, minWidth: 0, flexBasis: 320 }}>
             <b style={{ fontSize: 15, fontWeight: 600 }}>{t.title}</b>
             <span className="muted" style={{ fontSize: 13 }}>{t.detail}</span>
           </div>
