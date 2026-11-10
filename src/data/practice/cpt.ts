@@ -5648,6 +5648,987 @@ const MODULES: PracticeModule[] = [
     "tip": "Close with 'functional isn't fancy'."
    }
   ]
+ },
+ {
+  "id": "CASE",
+  "name": "Case Study Project",
+  "kind": "case",
+  "color": "#0d9488",
+  "blurb": "The 50-mark written project: pick and justify tests, design warm-ups and cool-downs, classify level, set variables, write the plan, choose grips and adapt a session. Practice clients only, so you build the skill without a ready-made answer.",
+  "topics": [
+   {
+    "id": "case-tests",
+    "title": "Choosing & Justifying Assessment Tests",
+    "fact": "In the case study, naming a test is worth little. The marks are in 'what it measures' and 'why this test for THIS client rather than another'.",
+    "primer": [
+     "Pick tests that match the client's goal, age, history and complaint, not the most impressive ones.",
+     "For each: name it, say what it measures, and justify it for this client (and why not an alternative).",
+     "Beginners: 8–15RM or good-form bodyweight reps, not a 1RM. Balance: CDC 4-stage. Posture: overhead squat, push and pull (standing row) assessments.",
+     "Body composition: skinfold callipers or circumference plus photos are practical; DEXA is the gold standard; the lecturer distrusts BIA."
+    ],
+    "qs": [
+     {
+      "q": "In part (a), what earns the marks for each test?",
+      "o": [
+       "Naming the test",
+       "What it measures, plus why it suits this client better than other tests",
+       "The longest description",
+       "A test from outside the course"
+      ],
+      "a": 1,
+      "w": [
+       "A bare name shows recall, not application.",
+       "Correct. The brief asks you to justify the choice for this specific client.",
+       "Length isn't marked; answers are capped at 5–7 lines.",
+       "You can cite outside tests, but course tests with a client-specific rationale are what's asked."
+      ],
+      "h": "Measure + why THIS client."
+     },
+     {
+      "q": "Neha, 52, retired teacher. Walks 30 min daily, never lifted, mild knee stiffness in the mornings. Goal: strength and balance, 3 days a week. Which trio of tests fits her best?",
+      "o": [
+       "1RM back squat, Cooper 12-min run, DEXA",
+       "CDC 4-stage balance test, overhead squat assessment, a bodyweight or 8–15RM strength test",
+       "Hydrostatic weighing, 1RM deadlift, sprint test",
+       "BIA scan only"
+      ],
+      "a": 1,
+      "w": [
+       "A 1RM is unsafe for a beginner, the run stresses stiff knees, and DEXA is expensive and off-goal.",
+       "Correct. Balance goal → balance test; knee stiffness → watch the squat pattern; beginner → safe strength baseline.",
+       "Hard to access, unsafe, and off-goal.",
+       "One unreliable test doesn't cover her goals."
+      ],
+      "h": "Goal, age, complaint."
+     },
+     {
+      "q": "What does the course recommend for a beginner's strength baseline?",
+      "o": [
+       "A true 1RM",
+       "An 8–15RM, or max good-form bodyweight reps",
+       "No testing at all",
+       "A max-effort deadlift"
+      ],
+      "a": 1,
+      "w": [
+       "1RMs are for advanced or athletic clients.",
+       "Correct. It's safer and still gives a re-testable number.",
+       "You need a baseline to show progress.",
+       "Unsafe for a beginner."
+      ],
+      "h": "Beginners: 8–15RM."
+     },
+     {
+      "q": "Which assessment shows forward head and shoulder elevation in a desk worker?",
+      "o": [
+       "Sit-and-reach",
+       "Push-up and standing cable row assessments",
+       "Rockport 1-mile walk",
+       "Hand-grip dynamometer"
+      ],
+      "a": 1,
+      "w": [
+       "That's hamstring and low-back flexibility.",
+       "Correct. Watch for low-back arch, forward head and shoulder elevation.",
+       "That's cardio fitness (VO₂max).",
+       "That's grip strength."
+      ],
+      "h": "Push and pull screens."
+     },
+     {
+      "q": "A client's goal is fat loss with muscle gain. Which body-composition method is practical in a gym?",
+      "o": [
+       "BIA, trusted completely",
+       "Skinfold callipers or circumference measures, plus photos",
+       "DEXA every week",
+       "Scale weight only"
+      ],
+      "a": 1,
+      "w": [
+       "The lecturer says BIA numbers are very inaccurate.",
+       "Correct. Cheap, repeatable, and they track the change in composition.",
+       "Gold standard, but expensive and unnecessary weekly.",
+       "Scale weight can't separate fat from muscle."
+      ],
+      "h": "Pinch, tape, photo."
+     },
+     {
+      "q": "Which is the strongest 'Rationale' line?",
+      "o": [
+       "It's a standard test.",
+       "Neha wants better balance and balance declines with age, so the CDC 4-stage test gives a safe baseline to re-test in 6–8 weeks.",
+       "Everyone does this test.",
+       "It is quick."
+      ],
+      "a": 1,
+      "w": [
+       "Generic; nothing ties it to the client.",
+       "Correct. Goal + client factor + safety + re-test plan.",
+       "Not a reason.",
+       "Speed alone isn't a client-specific reason."
+      ],
+      "h": "Tie it to the person."
+     }
+    ]
+   },
+   {
+    "id": "case-warm",
+    "title": "Warm-up & Cool-down for Session 1",
+    "fact": "The course says never skip the warm-up. If a client arrives late, cut sets from the main block instead.",
+    "primer": [
+     "Warm-up ~10–12 min (max 15): general light cardio 5–6 min → dynamic mobility → exercise-specific light sets.",
+     "Static stretching belongs in the cool-down; before lifting it may reduce strength and power.",
+     "Cool-down: 5–10 min of static stretches, each held ~10–30 s.",
+     "The case study wants essay form for this part, and each choice tied to the client's level and the session type."
+    ],
+    "qs": [
+     {
+      "q": "What order does the course give for a warm-up?",
+      "o": [
+       "General light cardio → dynamic mobility → exercise-specific light sets",
+       "Static stretching → max set → cardio",
+       "Specific heavy sets → cardio",
+       "Foam rolling only"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Raise temperature, mobilise, then rehearse the movement.",
+       "Static stretching and a max set at the start are both wrong.",
+       "Heavy work comes after a ramp-up, not first.",
+       "Foam rolling alone doesn't raise temperature or rehearse the lift."
+      ],
+      "h": "General → dynamic → specific."
+     },
+     {
+      "q": "Where does long static stretching belong?",
+      "o": [
+       "In the warm-up",
+       "In the cool-down",
+       "Between heavy sets",
+       "Nowhere"
+      ],
+      "a": 1,
+      "w": [
+       "Before lifting it may reduce strength and power.",
+       "Correct. 5–10 min, holds of 10–30 s.",
+       "Not a course recommendation.",
+       "It has a place: the cool-down."
+      ],
+      "h": "Static = after."
+     },
+     {
+      "q": "For a first UPPER-body session, a sensible exercise-specific warm-up is:",
+      "o": [
+       "Bodyweight squats",
+       "Wall or incline push-ups and light band rows before the presses and pulls",
+       "A 10 km run",
+       "A max bench single"
+      ],
+      "a": 1,
+      "w": [
+       "Squats rehearse the wrong pattern for an upper-body day.",
+       "Correct. Rehearse the day's patterns at very low load.",
+       "Far too much and off-pattern.",
+       "Never a warm-up, least of all in session 1."
+      ],
+      "h": "Rehearse today's pattern."
+     },
+     {
+      "q": "Neha, 52, retired teacher. Walks 30 min daily, never lifted, mild knee stiffness in the mornings. Goal: strength and balance, 3 days a week. Which general warm-up suits her session 1?",
+      "o": [
+       "5–6 min easy cycling or brisk walking",
+       "Box jumps",
+       "Sprints",
+       "Skipping"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Low-impact and gentle on stiff knees.",
+       "High impact for stiff knees and a beginner.",
+       "Too intense for a beginner's warm-up.",
+       "Impact on stiff knees; walking or cycling is kinder."
+      ],
+      "h": "Low impact."
+     },
+     {
+      "q": "A client arrives 15 minutes late. What do you cut?",
+      "o": [
+       "The warm-up",
+       "Sets or an exercise from the main block",
+       "The whole session",
+       "The cool-down only, and skip the warm-up too"
+      ],
+      "a": 1,
+      "w": [
+       "Never skip the warm-up.",
+       "Correct. E.g. do 2 sets per exercise instead of 3.",
+       "Unnecessary.",
+       "Skipping the warm-up is the one thing the course rules out."
+      ],
+      "h": "Protect the warm-up."
+     },
+     {
+      "q": "In the table, what goes in the 'How does this suit the client?' column?",
+      "o": [
+       "The general benefit of warm-ups",
+       "Why each choice fits this client's level, history and today's session",
+       "The exercise's history",
+       "Nothing; it's optional"
+      ],
+      "a": 1,
+      "w": [
+       "That belongs in the General Rationale column.",
+       "Correct. Make it client- and session-specific.",
+       "Irrelevant.",
+       "It's marked."
+      ],
+      "h": "Client column = specific."
+     }
+    ]
+   },
+   {
+    "id": "case-vars",
+    "title": "Classifying Level & Setting Variables",
+    "fact": "Years in the gym don't define level. The course judges it by movement quality, and says if in doubt, tag the client a level lower.",
+    "primer": [
+     "Level by motor learning: beginner = cognitive, intermediate = associative (few flaws, shaky under heavy load), advanced = autonomous.",
+     "Experience is skill-specific: years of running don't make someone an intermediate lifter.",
+     "Volume ~10–20 hard sets per muscle per week (beginners at the low end); hypertrophy 65–85% 1RM, 6–12+ reps near failure; strength 85–95%, 1–5 reps.",
+     "Frequency: each muscle 2–3×/week (3 days → full body; 4 days → upper/lower). Longer rest (~2–3 min) on heavy compounds. Overload gradually; don't change a beginner's plan weekly."
+    ],
+    "qs": [
+     {
+      "q": "How does the course say to classify training level?",
+      "o": [
+       "Years of gym membership",
+       "Motor adaptation: the quality and consistency of movement",
+       "Body weight",
+       "The client's own opinion"
+      ],
+      "a": 1,
+      "w": [
+       "Time alone is called ineffective.",
+       "Correct. Cognitive → associative → autonomous.",
+       "Irrelevant.",
+       "A useful input, but you judge by movement quality."
+      ],
+      "h": "Quality, not years."
+     },
+     {
+      "q": "A client has run 5 days a week for years but has never lifted. For resistance-training variables, they are:",
+      "o": [
+       "Advanced",
+       "A beginner in resistance training",
+       "Intermediate, because they're fit",
+       "Not classifiable"
+      ],
+      "a": 1,
+      "w": [
+       "Running fitness doesn't transfer to lifting skill.",
+       "Correct. Classify by motor adaptation for the skill being trained; their cardio base helps recovery and work capacity.",
+       "Fitness isn't lifting skill.",
+       "You can, and the case study asks you to."
+      ],
+      "h": "Skill-specific."
+     },
+     {
+      "q": "Vikram, 35, sales manager. Lifted for 2 years in college, then stopped for 5. Plays 5-a-side football at weekends; his squat is consistent but shaky under load. Goal: muscle gain, 4 days a week. How would you classify him?",
+      "o": [
+       "Beginner, cognitive stage",
+       "Intermediate, associative stage",
+       "Advanced, autonomous stage",
+       "Elite"
+      ],
+      "a": 1,
+      "w": [
+       "He's past learning the basics: his movement is consistent.",
+       "Correct. Few major flaws, shaky under heavy load = associative. If unsure, start him lower.",
+       "Autonomous lifters handle heavy loads without thinking.",
+       "No."
+      ],
+      "h": "Consistent but shaky = associative."
+     },
+     {
+      "q": "What weekly volume guide does the course give per muscle group?",
+      "o": [
+       "2–4 sets",
+       "About 10–20 hard sets, with beginners at the low end",
+       "40–50 sets",
+       "Unlimited if the client enjoys it"
+      ],
+      "a": 1,
+      "w": [
+       "Too little to drive growth for most.",
+       "Correct. Hard sets near failure count.",
+       "Junk volume and poor recovery.",
+       "Recovery limits volume."
+      ],
+      "h": "10–20."
+     },
+     {
+      "q": "With 3 training days a week, how do you train each muscle at least twice a week?",
+      "o": [
+       "A bro split, one muscle per day",
+       "Full-body sessions (or A/B full-body days)",
+       "Legs only",
+       "Upper body only"
+      ],
+      "a": 1,
+      "w": [
+       "Each muscle would be hit only once a week.",
+       "Correct. Each muscle 2–3× a week.",
+       "Unbalanced.",
+       "Unbalanced."
+      ],
+      "h": "3 days → full body."
+     },
+     {
+      "q": "With 4 days a week, the course's usual split is:",
+      "o": [
+       "Upper/lower ×2",
+       "Push/pull/legs once",
+       "One muscle per day",
+       "Full body on day 1 only"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Each muscle twice a week.",
+       "PPL fits 3 or 6 days.",
+       "Frequency would be 1.",
+       "Then nothing for the rest of the week."
+      ],
+      "h": "4 days → upper/lower."
+     },
+     {
+      "q": "Rest between sets on heavy compound lifts:",
+      "o": [
+       "Shorter rest, ~30 s",
+       "Longer rest, ~2–3 min",
+       "None",
+       "Exactly 10 s"
+      ],
+      "a": 1,
+      "w": [
+       "Short rest cuts the next set's quality.",
+       "Correct. ~3 min beat 1 min for strength and size in trained lifters.",
+       "You'd lose mechanical tension.",
+       "Too short."
+      ],
+      "h": "Heavy → longer rest."
+     },
+     {
+      "q": "A body-composition client also runs. How do you limit the interference effect?",
+      "o": [
+       "Run 60 min before every lift",
+       "Keep cardio under ~30 min and fewer than 3×/week, separate from lifting (or lift first)",
+       "Never lift",
+       "Run daily to failure"
+      ],
+      "a": 1,
+      "w": [
+       "Cardio first fatigues the lifts.",
+       "Correct. HIIT interferes less than LISS; it's negligible for beginners early on.",
+       "Then no muscle gain.",
+       "Hurts recovery."
+      ],
+      "h": "Short, few, separate."
+     }
+    ]
+   },
+   {
+    "id": "case-plan",
+    "title": "Writing the Plan (E107 Unit 4 Format)",
+    "fact": "Part (c) carries 10 of the 25 marks per case, the biggest single chunk. Plan your time around it.",
+    "primer": [
+     "Sample plan columns: Day | Exercise | Sets × Reps | Rest | Muscle group.",
+     "Order: technique-heavy first, compound before isolation, big muscles before small; the client's priority can override.",
+     "Posture goals: put corrective work (stretch tight, strengthen weak) in the plan, e.g. ~15 min after the warm-up, or as the focus of the first 4 weeks.",
+     "Before the table, write 2–3 lines classifying the level and saying how it shaped your variables."
+    ],
+    "qs": [
+     {
+      "q": "Which columns does the case study's E107 Unit 4 plan table use?",
+      "o": [
+       "Day, Exercise, Sets × Reps, Rest, Muscle group",
+       "Exercise and calories only",
+       "Day and weight only",
+       "Exercise, price, brand"
+      ],
+      "a": 0,
+      "w": [
+       "Correct.",
+       "Missing most variables.",
+       "Missing most variables.",
+       "Irrelevant."
+      ],
+      "h": "D-E-S-R-M."
+     },
+     {
+      "q": "Which exercise order follows the course rules?",
+      "o": [
+       "Biceps curl → deadlift → leg press",
+       "Deadlift → lat pulldown → biceps curl",
+       "Lateral raise → squat",
+       "Calf raise → bench press → deadlift"
+      ],
+      "a": 1,
+      "w": [
+       "Isolation first fatigues small muscles you need for the big lift.",
+       "Correct. Technique-heavy compound first, isolation last.",
+       "Isolation before compound.",
+       "Smallest first is backwards."
+      ],
+      "h": "Big and technical first."
+     },
+     {
+      "q": "In a plan, '3 × 10–12' means:",
+      "o": [
+       "3 reps of 10–12 kg",
+       "3 sets of 10–12 reps",
+       "30 sets",
+       "10–12 exercises"
+      ],
+      "a": 1,
+      "w": [
+       "Load is written separately.",
+       "Correct.",
+       "No.",
+       "No."
+      ],
+      "h": "Sets × reps."
+     },
+     {
+      "q": "How do you build a posture goal into the plan?",
+      "o": [
+       "Ignore it; strength fixes it",
+       "Add corrective work: stretch the tight muscles, strengthen the weak ones, e.g. ~15 min after the warm-up",
+       "Only cardio",
+       "Only stretching at home"
+      ],
+      "a": 1,
+      "w": [
+       "The course schedules corrective work explicitly.",
+       "Correct. Or make it the focus of the first 4 weeks.",
+       "Doesn't address the imbalance.",
+       "It needs strengthening too, under supervision."
+      ],
+      "h": "Stretch short, strengthen long."
+     },
+     {
+      "q": "Why not change a beginner's plan every week?",
+      "o": [
+       "Variety is always bad",
+       "They're still learning the movements; change once the skill is mastered, then add intensity",
+       "Plans should never change",
+       "Beginners get bored with change"
+      ],
+      "a": 1,
+      "w": [
+       "Variety has a place later.",
+       "Correct. Early gains are neuromuscular.",
+       "Progression needs change eventually.",
+       "Not the course reason."
+      ],
+      "h": "Learn first, then load."
+     },
+     {
+      "q": "Which progressive-overload approach suits a beginner?",
+      "o": [
+       "Add load every set regardless of form",
+       "Add reps within the range, then a small load increase once form is solid",
+       "Max out weekly",
+       "Never progress"
+      ],
+      "a": 1,
+      "w": [
+       "Form first.",
+       "Correct. Gradual, form-led progression (double progression).",
+       "Unsafe for a beginner.",
+       "Then no adaptation."
+      ],
+      "h": "Reps, then load."
+     }
+    ]
+   },
+   {
+    "id": "case-grips",
+    "title": "Grips for Common Lifts",
+    "fact": "With a mixed (alternate) grip, the bar can't roll out of your hands. That's why heavy deadlifts use it.",
+    "primer": [
+     "Supinated (palms up): biceps curl, chin-up (more biceps). Pronated (palms down): bench press, pull-up / wide pulldown (lats), straight-bar pushdown.",
+     "Neutral (palms facing): hammer curl, rope pushdown, neutral pulldown. Kind to shoulders, wrists and elbows.",
+     "Heavy deadlifts and RDLs: alternate (mixed) or hook grip for security.",
+     "Avoid the false (thumbless) grip on bench and overhead press: the bar can slip."
+    ],
+    "qs": [
+     {
+      "q": "Grip for a barbell biceps curl:",
+      "o": [
+       "Supinated (underhand)",
+       "Pronated",
+       "Neutral",
+       "Hook"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Palms up, for the strongest biceps involvement.",
+       "A pronated curl is a reverse curl (forearms / brachioradialis).",
+       "You can't do neutral with a straight bar.",
+       "Hook is for heavy pulls."
+      ],
+      "h": "Palms up for biceps."
+     },
+     {
+      "q": "Grip for a STRAIGHT-bar cable triceps pushdown:",
+      "o": [
+       "Pronated (overhand)",
+       "Supinated only",
+       "Hook",
+       "Mixed"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. (With a rope attachment, it's neutral.)",
+       "Possible as a variation, but the standard is overhand.",
+       "No need.",
+       "No need."
+      ],
+      "h": "Overhand on a bar, neutral on a rope."
+     },
+     {
+      "q": "Grip for a wide-grip lat pulldown, and why?",
+      "o": [
+       "Pronated, wide: emphasises the lats",
+       "Supinated, narrow: emphasises biceps",
+       "Neutral: emphasises chest",
+       "Hook: for heavy loads"
+      ],
+      "a": 0,
+      "w": [
+       "Correct.",
+       "That shifts emphasis to the biceps, not a wide pulldown.",
+       "Chest isn't the target.",
+       "Not needed for a pulldown."
+      ],
+      "h": "Wide overhand = lats."
+     },
+     {
+      "q": "Grip for a heavy, near-maximal conventional deadlift, and why?",
+      "o": [
+       "Alternate (mixed) or hook: stops the bar rolling and secures the grip",
+       "False grip: more speed",
+       "Supinated both hands: biceps help",
+       "Neutral: shoulder-friendly"
+      ],
+      "a": 0,
+      "w": [
+       "Correct.",
+       "Risky; the bar can slip.",
+       "Puts the biceps at risk and isn't the course answer.",
+       "Can't be done on a straight barbell."
+      ],
+      "h": "Mixed or hook for heavy pulls."
+     },
+     {
+      "q": "Grip for a barbell bench press:",
+      "o": [
+       "Pronated, closed (thumb wrapped)",
+       "False (thumbless)",
+       "Supinated",
+       "Neutral"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Normal width targets chest; close grip targets triceps.",
+       "The bar can slip forward.",
+       "Not the standard bench grip.",
+       "Not possible on a straight bar."
+      ],
+      "h": "Wrap the thumb."
+     },
+     {
+      "q": "Grip for hammer curls:",
+      "o": [
+       "Neutral (palms facing each other)",
+       "Pronated",
+       "Supinated",
+       "Hook"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Brachialis and brachioradialis emphasis; easy on wrists and elbows.",
+       "That's a reverse curl.",
+       "That's a standard curl.",
+       "No."
+      ],
+      "h": "Hammer = neutral."
+     },
+     {
+      "q": "Grip for chin-ups, and why?",
+      "o": [
+       "Supinated: more biceps involvement while still training the back",
+       "Pronated wide: lats only",
+       "Neutral: chest",
+       "False grip: speed"
+      ],
+      "a": 0,
+      "w": [
+       "Correct.",
+       "That's a pull-up.",
+       "Chest isn't the target.",
+       "No."
+      ],
+      "h": "Chin-up = underhand."
+     },
+     {
+      "q": "Grip for a heavy barbell Romanian deadlift:",
+      "o": [
+       "Alternate (mixed) or hook, for grip security under heavy load",
+       "False grip",
+       "Neutral",
+       "Supinated both hands"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Same logic as the heavy deadlift.",
+       "Unsafe.",
+       "Not on a straight bar.",
+       "Risks the biceps; not the course answer."
+      ],
+      "h": "Heavy pull = secure grip."
+     }
+    ]
+   },
+   {
+    "id": "case-adapt",
+    "title": "Adapting a Session (Pain or Discomfort)",
+    "fact": "Coaches correct posture; they don't treat injuries. Sharp, radiating or worsening pain means stop and refer to a physio.",
+    "primer": [
+     "Ask first: where, how bad, how long, what makes it worse? Sharp, radiating or worsening → stop and refer.",
+     "For mild discomfort: remove or modify the exercises that load the sore area; substitute supported, pain-free options; reduce load and range.",
+     "Low back: swap heavy spinal-loaded hinges and unsupported bent-over rows for supported or hip-dominant options (e.g. glute bridge, chest-supported or seated cable row, leg press); add core stabilisation.",
+     "Shoulder: avoid overhead and end-range pressing; use neutral-grip dumbbell or machine presses in a pain-free range; add face pulls or band pull-aparts. Write part (e) in prose: what you change, the substitute, and why."
+    ],
+    "qs": [
+     {
+      "q": "A client reports new discomfort at the start of a session. First step?",
+      "o": [
+       "Push through; it'll warm up",
+       "Ask about location, severity and what aggravates it; if sharp, radiating or worsening, stop and refer",
+       "Double the warm-up and carry on as planned",
+       "Cancel their membership"
+      ],
+      "a": 1,
+      "w": [
+       "Unsafe.",
+       "Correct. Assess, then modify or refer.",
+       "Ignores the problem.",
+       "No."
+      ],
+      "h": "Ask, then adapt or refer."
+     },
+     {
+      "q": "Where is the coach's scope of practice?",
+      "o": [
+       "Diagnose and treat injuries",
+       "Correct posture and adapt training; refer injuries to a physiotherapist",
+       "Prescribe medication",
+       "Ignore pain"
+      ],
+      "a": 1,
+      "w": [
+       "That's a physio's or doctor's job.",
+       "Correct.",
+       "No.",
+       "No."
+      ],
+      "h": "Coach adapts, physio treats."
+     },
+     {
+      "q": "Mild low-back discomfort from sitting. Today's plan: conventional deadlift, barbell good morning, T-bar row. Best adaptation?",
+      "o": [
+       "Keep everything, lower the reps",
+       "Replace them with a glute bridge or hip thrust, chest-supported or seated cable row, and leg press; add bird dogs and planks",
+       "Max-effort deadlift to 'loosen up'",
+       "Cancel and send the client home with no plan"
+      ],
+      "a": 1,
+      "w": [
+       "They're all spinal-loaded hinges or unsupported rows.",
+       "Correct. Supported, hip-dominant, back-friendly options, plus core stability.",
+       "Unsafe.",
+       "Over-reaction for mild discomfort; adapt instead."
+      ],
+      "h": "Support the spine."
+     },
+     {
+      "q": "Mild shoulder tightness. Today's plan: barbell overhead press, dips, wide upright row. Best adaptation?",
+      "o": [
+       "Keep the overhead press but go heavier",
+       "Neutral-grip dumbbell or machine press in a pain-free range, a seated cable row, face pulls; drop dips and upright rows today",
+       "Only overhead work",
+       "Skip the warm-up"
+      ],
+      "a": 1,
+      "w": [
+       "Loads the irritated shoulder.",
+       "Correct. The course notes the neutral grip involves the shoulder less.",
+       "Aggravates it.",
+       "Never."
+      ],
+      "h": "Neutral, supported, pain-free."
+     },
+     {
+      "q": "Wrist pain after a fall; today: barbell bench, barbell curls, push-ups. A sensible swap?",
+      "o": [
+       "Neutral-grip dumbbell or machine press, hammer or rope curls, push-ups on handles",
+       "Heavier barbell work",
+       "Push-ups on bent wrists",
+       "Wrap the wrist and go max"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. The neutral grip stresses wrists and elbows less; refer if it's sharp or swollen.",
+       "Aggravates it.",
+       "Loads wrist extension.",
+       "Unsafe."
+      ],
+      "h": "Neutral for wrists."
+     },
+     {
+      "q": "How should part (e) of the case study be written?",
+      "o": [
+       "Bullet list of exercises",
+       "4–6 lines of prose naming what you modify or remove, the substitutes, and why",
+       "One word",
+       "A copied paragraph"
+      ],
+      "a": 1,
+      "w": [
+       "The brief asks for essay form.",
+       "Correct.",
+       "Not enough.",
+       "Plagiarism disqualifies."
+      ],
+      "h": "Prose: change, swap, why."
+     }
+    ]
+   },
+   {
+    "id": "case-format",
+    "title": "How the Case Study Is Marked",
+    "fact": "Each case is 25 marks: (a) 5, (b) 3, (c) 10, (d) 4, (e) 3. The project is 50 of the 250 total, and you need 60% in it too.",
+    "primer": [
+     "5–7 lines per answer unless a table or plan is needed.",
+     "Parts (b) and (e) in essay form (flowing prose), not bullets.",
+     "Apply knowledge to the specific client; the brief says it's not textbook reproduction.",
+     "No references needed for course learning; cite external facts with a hyperlinked research paper. Copy-pasting = disqualification."
+    ],
+    "qs": [
+     {
+      "q": "What length does the brief set for most answers?",
+      "o": [
+       "1 line",
+       "5–7 lines, unless a table or plan is needed",
+       "2 pages",
+       "No limit"
+      ],
+      "a": 1,
+      "w": [
+       "Too short.",
+       "Correct.",
+       "Too long.",
+       "There is one."
+      ],
+      "h": "5–7 lines."
+     },
+     {
+      "q": "Which parts must be in essay form?",
+      "o": [
+       "(a) and (c)",
+       "(b) and (e)",
+       "(d) only",
+       "All parts"
+      ],
+      "a": 1,
+      "w": [
+       "Those use tables.",
+       "Correct.",
+       "(d) is a grip table.",
+       "Tables are allowed in (a), (c) and (d)."
+      ],
+      "h": "b and e = prose."
+     },
+     {
+      "q": "Which part is worth the most marks per case?",
+      "o": [
+       "(a) tests, 5",
+       "(c) programme design, 10",
+       "(d) grips, 4",
+       "(e) adaptation, 3"
+      ],
+      "a": 1,
+      "w": [
+       "5 marks.",
+       "Correct. 10 of 25.",
+       "4 marks.",
+       "3 marks."
+      ],
+      "h": "c = 10."
+     },
+     {
+      "q": "What does the examiner want to see?",
+      "o": [
+       "Textbook definitions",
+       "Your knowledge applied to this specific client",
+       "Long reference lists",
+       "Copied model answers"
+      ],
+      "a": 1,
+      "w": [
+       "The brief explicitly says not textbook reproduction.",
+       "Correct.",
+       "Not required for course material.",
+       "Disqualifies."
+      ],
+      "h": "Apply, don't recite."
+     },
+     {
+      "q": "You use a fact from outside the course. What should you do?",
+      "o": [
+       "Nothing",
+       "Cite a research paper using a hyperlink in Word",
+       "Copy the paragraph",
+       "Remove all course facts"
+      ],
+      "a": 1,
+      "w": [
+       "External facts need a reference.",
+       "Correct.",
+       "Plagiarism.",
+       "No."
+      ],
+      "h": "Hyperlink the paper."
+     },
+     {
+      "q": "What is the pass rule for the case-study project?",
+      "o": [
+       "Just submit it",
+       "60%, i.e. at least 30 of 50, as well as 60% in every module and overall",
+       "40%",
+       "No pass mark"
+      ],
+      "a": 1,
+      "w": [
+       "It's marked.",
+       "Correct.",
+       "No.",
+       "No."
+      ],
+      "h": "60% everywhere."
+     }
+    ]
+   }
+  ],
+  "viva": [
+   {
+    "q": "Part (a) drill · Neha, 52, retired teacher. Walks 30 min daily, never lifted, mild knee stiffness in the mornings. Goal: strength and balance, 3 days a week. Pick 3 assessment tests and justify each for her.",
+    "p": [
+     "CDC 4-stage balance test: measures static balance; matches her goal and age",
+     "A strength baseline that is safe for a beginner: bodyweight sit-to-stand or squats with good form, or an 8–15RM, not a 1RM",
+     "Overhead squat assessment: shows knee, hip and ankle faults linked to her knee stiffness",
+     "For each: what it measures AND why it suits her",
+     "Says why a rejected test isn't right (e.g. Cooper run on stiff knees, 1RM for a beginner)",
+     "A re-test plan (e.g. 6–8 weeks)"
+    ],
+    "tip": "One line each: measure, why her, why not the alternative."
+   },
+   {
+    "q": "Part (b) drill · Neha, 52, retired teacher. Walks 30 min daily, never lifted, mild knee stiffness in the mornings. Goal: strength and balance, 3 days a week. Write the warm-up and cool-down for her first full-body session, in prose.",
+    "p": [
+     "General: 5–6 min low-impact cardio (easy cycle or brisk walk), kind to her knees",
+     "Dynamic mobility: hip circles, supported leg swings, ankle rolls, arm circles",
+     "Specific: bodyweight box squats and wall push-ups at very low load",
+     "Cool-down: 5–10 min static stretches (quads, hamstrings, calves, chest), held 10–30 s",
+     "Each choice tied to her level (beginner) and today's full-body session",
+     "Essay form, not bullets"
+    ],
+    "tip": "General → dynamic → specific, then static to finish."
+   },
+   {
+    "q": "Part (c) drill · Neha, 52, retired teacher. Walks 30 min daily, never lifted, mild knee stiffness in the mornings. Goal: strength and balance, 3 days a week. Classify her level, set the variables, and sketch a 3-day plan.",
+    "p": [
+     "Beginner (cognitive stage); she needs to learn the movements first",
+     "Volume at the low end (~10 sets per muscle per week)",
+     "Moderate intensity, higher reps (e.g. 10–15) with technique first",
+     "Frequency: full body 3×/week",
+     "Rest ~60–90 s on accessories, longer on compound lifts",
+     "Overload: add reps, then small load increases once form is solid",
+     "Plan table: Day | Exercise | Sets × Reps | Rest | Muscle group, compound first, with balance work included"
+    ],
+    "tip": "Write the 2–3 classification lines before the table."
+   },
+   {
+    "q": "Part (e) drill · Session 3: Neha's knees ache after a long walk yesterday. Today's plan: goblet squats, walking lunges, step-ups. How do you adapt it? Answer in prose.",
+    "p": [
+     "Ask about the pain first; if sharp, swollen or worsening, stop and refer to a physio",
+     "Remove or modify the deep knee-flexion and impact moves (lunges, step-ups)",
+     "Substitute: box squat to a higher box or light leg press in a pain-free range, glute bridge, hamstring curl",
+     "Keep upper-body and core work as planned",
+     "Reasoning: keep her training while unloading the irritated knees",
+     "4–6 lines of prose"
+    ],
+    "tip": "Name the change, the swap, and the reason."
+   },
+   {
+    "q": "Part (a) drill · Vikram, 35, sales manager. Lifted for 2 years in college, then stopped for 5. Plays 5-a-side football at weekends; his squat is consistent but shaky under load. Goal: muscle gain, 4 days a week. Pick 3 assessment tests and justify each for him.",
+    "p": [
+     "Body composition (skinfold callipers or circumference plus photos) to track muscle gain",
+     "A strength baseline via 8–12RM on main lifts, not a true 1RM after a 5-year break",
+     "A movement screen (overhead squat) given his football history and knee/hip demands",
+     "For each: what it measures AND why it suits him",
+     "Says why a rejected test isn't right (e.g. a Cooper run is off-goal)",
+     "A re-test plan"
+    ],
+    "tip": "Goal = muscle gain, so measure composition and strength."
+   },
+   {
+    "q": "Part (b) drill · Vikram, 35, sales manager. Lifted for 2 years in college, then stopped for 5. Plays 5-a-side football at weekends; his squat is consistent but shaky under load. Goal: muscle gain, 4 days a week. Write the warm-up and cool-down for his first lower-body session, in prose.",
+    "p": [
+     "General: 5 min bike or rower",
+     "Dynamic: leg swings, walking lunges, hip openers, ankle mobility",
+     "Specific: bodyweight then empty-bar squats and ramp-up sets",
+     "Cool-down: static stretches for quads, hamstrings, hip flexors, glutes and calves, 10–30 s holds",
+     "Tie each choice to his rusty lifting and football background",
+     "Essay form"
+    ],
+    "tip": "Ramp up to the first working set."
+   },
+   {
+    "q": "Part (c) drill · Vikram, 35, sales manager. Lifted for 2 years in college, then stopped for 5. Plays 5-a-side football at weekends; his squat is consistent but shaky under load. Goal: muscle gain, 4 days a week. Classify his level, set the variables, and sketch a 4-day plan.",
+    "p": [
+     "Intermediate (associative stage): consistent, but shaky under load; start conservatively after the layoff",
+     "Volume ~10–20 hard sets per muscle per week, starting around the middle",
+     "Intensity 65–85% 1RM, 6–12 reps near failure (RPE 7–8)",
+     "Frequency: upper/lower ×2, so each muscle twice a week",
+     "Rest 2–3 min on compound lifts, 60–90 s on isolation",
+     "Overload: double progression; keep the hard leg day away from match day",
+     "Plan table in E107 Unit 4 format, compound lifts first"
+    ],
+    "tip": "Explain how his level changed each variable."
+   },
+   {
+    "q": "Part (e) drill · Session 4 (upper body): Vikram has wrist pain after a fall at football. Today's plan: barbell bench press, barbell curls, push-ups. How do you adapt it? Answer in prose.",
+    "p": [
+     "Ask about the pain first; if sharp or swollen, stop and refer",
+     "Remove or modify the moves that load the wrist in extension (barbell bench, straight-bar curls, flat-palm push-ups)",
+     "Substitute: neutral-grip dumbbell or machine press, hammer or rope curls, push-ups on handles",
+     "Reasoning: the neutral grip puts less stress on wrists and elbows (course point)",
+     "4–6 lines of prose"
+    ],
+    "tip": "Neutral grips are your friend here."
+   }
+  ]
  }
 ];
 
@@ -5658,5 +6639,5 @@ export const CPT: PracticeSet = {
   passPct: 60,
   mockSize: 25,
   modules: MODULES,
-  rules: "Pass needs 60% overall and 60% in every module. MCQ paper: E101, E103, E105, E106. Viva: E104, E107, E113, E114 (the handbook text also names E106 once, so be ready to talk E106 too). CPR-AED certificate needed before the viva.",
+  rules: "Pass needs 60% overall and 60% in every module. MCQ paper: E101, E103, E105, E106. Viva: E104, E107, E113, E114 (the handbook text also names E106 once, so be ready to talk E106 too). CPR-AED certificate needed before the viva. Case-study project: 50 marks.",
 };

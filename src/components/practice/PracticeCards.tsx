@@ -23,13 +23,14 @@ function PracticeCard({ set }: { set: PracticeSet }) {
           <b className="prac-big" style={{ fontSize: 40 }}>{ready}%</b>
         </div>
         <div className="prac-split">
-          {(["mcq", "viva"] as const).map((kind) => {
+          {(["mcq", "viva", "case"] as const).map((kind) => {
             const mods = set.modules.filter((m) => m.kind === kind);
+            if (!mods.length) return null;
             const r = mods.length ? Math.round((100 * mods.reduce((n, m) => n + moduleReadiness(p, m), 0)) / mods.length) : 0;
             return (
               <div key={kind} className="stack" style={{ gap: 4 }}>
                 <div className="row" style={{ justifyContent: "space-between" }}>
-                  <span className="faint" style={{ fontSize: 12 }}>{kind === "mcq" ? "Written paper" : "Viva"}</span>
+                  <span className="faint" style={{ fontSize: 12 }}>{kind === "mcq" ? "Written paper" : kind === "viva" ? "Viva" : "Case study"}</span>
                   <span className="mono faint">{r}%</span>
                 </div>
                 <div className="bar"><span style={{ width: `${r}%` }} /></div>
@@ -42,7 +43,7 @@ function PracticeCard({ set }: { set: PracticeSet }) {
         <span className="label">Practice · Health &amp; fitness</span>
         <h3>{set.title}</h3>
         <p className="muted clamp2" style={{ fontSize: 14 }}>{set.tagline}</p>
-        <p className="mono faint">{qCount} questions · {set.modules.length} modules · mocks and viva drills</p>
+        <p className="mono faint">{qCount} questions · {set.modules.length} modules · mocks, viva and case-study drills</p>
         <div className="course-next row" style={{ justifyContent: "space-between" }}>
           <span className="faint">{t.answered ? `${t.answered} answered · ${t.accuracy}% right · ${miss} to revisit` : "Not started yet"}</span>
           <span className="row" style={{ gap: 6, fontWeight: 600 }}>{t.answered ? "Practise" : "Start"} <Icon d={ICONS.arrow} /></span>

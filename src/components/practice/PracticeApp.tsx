@@ -201,6 +201,7 @@ function HomeView({ set, p, allQ, go, startQuiz, startViva }: { set: PracticeSet
   const miss = mistakes(p, set);
   const mcq = set.modules.filter((m) => m.kind === "mcq");
   const viva = set.modules.filter((m) => m.kind === "viva");
+  const cases = set.modules.filter((m) => m.kind === "case");
   const weak = weakestTopics(p, set);
 
   // Today's plan is fixed once a day: the weakest topic and the weakest viva module at that moment.
@@ -218,6 +219,14 @@ function HomeView({ set, p, allQ, go, startQuiz, startViva }: { set: PracticeSet
     });
   const fullViva = () =>
     startViva(viva.flatMap((m) => shuffle((m.viva ?? []).map((v, idx) => ({ m, v, idx }))).slice(0, 2)), "Full viva", true);
+  // A full case = every written drill for one practice client (drills are stored 4 per client, in part order).
+  const fullCase = () => {
+    const m = cases[0];
+    if (!m?.viva?.length) return;
+    const per = 4, clients = Math.max(1, Math.floor(m.viva.length / per));
+    const c = Math.floor(Math.random() * clients);
+    startViva(m.viva.slice(c * per, c * per + per).map((v, i) => ({ m, v, idx: c * per + i })), "Full case study", true);
+  };
 
   return (
     <>
@@ -230,7 +239,7 @@ function HomeView({ set, p, allQ, go, startQuiz, startViva }: { set: PracticeSet
       <div className="row wrap" style={{ justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
         <div className="stack" style={{ gap: 6 }}>
           <h1 style={{ fontSize: 28 }}>{set.title}</h1>
-          <p className="muted">{allQ.length} questions · {viva.reduce((n, m) => n + (m.viva?.length ?? 0), 0)} viva prompts · pass mark {set.passPct}% in every module</p>
+          <p className="muted">{allQ.length} questions · {viva.reduce((n, m) => n + (m.viva?.length ?? 0), 0)} viva prompts · {cases.reduce((n, m) => n + (m.viva?.length ?? 0), 0)} case drills · pass mark {set.passPct}% in every module</p>
         </div>
         <div className="row wrap">
           <button type="button" className="btn" disabled={!miss.length} onClick={() => startQuiz(shuffle(miss).slice(0, 10), { label: "Mistake bank" })}>Mistake bank · {miss.length}</button>
@@ -262,7 +271,7 @@ function HomeView({ set, p, allQ, go, startQuiz, startViva }: { set: PracticeSet
         </div>
       </section>
 
-      <ExamSections set={set} p={p} go={go} startQuiz={startQuiz} startViva={startViva} fullWritten={fullWritten} fullViva={fullViva} />
+      <ExamSections set={set} p={p} go={go} startQuiz={startQuiz} startViva={startViva} fullWritten={fullWritten} fullViva={fullViva} fullCase={fullCase} />
     </>
   );
 }
@@ -283,7 +292,7 @@ function Donut({ value, pass }: { value: number; pass: number }) {
 
 function ReadinessCard({ set, p }: { set: PracticeSet; p: PracticeProgress }) {
   const ready = setReadiness(p, set);
-  const part = (kind: "mcq" | "viva") => {
+  const part = (kind: PracticeModule["kind"]) => {
     const ms = set.modules.filter((m) => m.kind === kind);
     return ms.length ? ms.reduce((n, m) => n + moduleReadiness(p, m), 0) / ms.length : 0;
   };
@@ -295,7 +304,7 @@ function ReadinessCard({ set, p }: { set: PracticeSet; p: PracticeProgress }) {
       <div className="row" style={{ gap: 20 }}>
         <Donut value={ready} pass={set.passPct} />
         <div className="stack grow" style={{ gap: 10, minWidth: 0 }}>
-          {([["Written paper", part("mcq")], ["Viva", part("viva")]] as const).map(([label, v]) => (
+          {([["Written paper", part("mcq")], ["Viva", part("viva")], ...(set.modules.some((m) => m.kind === "case") ? [["Case study", part("case")] as const] : [])] as const).map(([label, v]) => (
             <div key={label} className="stack" style={{ gap: 6 }}>
               <div className="row" style={{ justifyContent: "space-between" }}><span>{label}</span><span className="mono">{Math.round(v * 100)}%</span></div>
               <div className="prac-ready-bar"><span style={{ width: `${Math.round(v * 100)}%` }} /></div>
@@ -384,7 +393,7 @@ function ModuleTable({ set, p, go }: { set: PracticeSet; p: PracticeProgress; go
             <button key={m.id} type="button" className="prac-grid" onClick={() => go({ name: "module", id: m.id })}>
               <span className="mono faint">{m.id}</span>
               <b style={{ fontWeight: 600 }}>{m.name}</b>
-              <span className="muted">{m.kind === "mcq" ? "Written" : "Viva"}</span>
+              <span className="muted">{PAPER_SHORT[m.kind]}</span>
               <span className="row" style={{ gap: 10 }}>
                 <span className="prac-passbar" style={{ "--pass-at": `${set.passPct}%` } as React.CSSProperties}>
                   <span style={{ width: `${pc}%` }} />
@@ -401,26 +410,39 @@ function ModuleTable({ set, p, go }: { set: PracticeSet; p: PracticeProgress; go
   );
 }
 
-function MarkCells({ marks, pass }: { marks: number | null; pass: number }) {
+const PAPER_SHORT: Record<PracticeModule["kind"], string> = { mcq: "Written", viva: "Viva", case: "Case study" };
+
+/** 25 cells; marks out of `of` are scaled onto them (the 50-mark case study fills one cell per 2 marks). */
+function MarkCells({ marks, pass, of = 25 }: { marks: number | null; pass: number; of?: number }) {
+  const on = marks === null ? 0 : Math.round((marks * 25) / of);
+  const passCell = Math.round((pass * 25) / of);
   return (
-    <div className="prac-cells" role="img" aria-label={marks === null ? "No result yet" : `${marks} of 25, pass is ${pass}`}>
+    <div className="prac-cells" role="img" aria-label={marks === null ? "No result yet" : `${marks} of ${of}, pass is ${pass}`}>
       {Array.from({ length: 25 }, (_, i) => (
-        <span key={i} className={`${marks !== null && i < marks ? "on" : ""} ${i === pass - 1 ? "pass" : ""}`} />
+        <span key={i} className={`${i < on ? "on" : ""} ${i === passCell - 1 ? "pass" : ""}`} />
       ))}
     </div>
   );
 }
 
-function ExamSections({ set, p, go, startQuiz, startViva, fullWritten, fullViva }: {
-  set: PracticeSet; p: PracticeProgress; go: Go; startQuiz: StartQuiz; startViva: StartViva; fullWritten: () => void; fullViva: () => void;
+const PAPER: Record<PracticeModule["kind"], { title: string; sub: string; full: string; none: string; run: string }> = {
+  mcq: { title: "Written paper", sub: "Online MCQ exam", full: "Take full written mock", none: "No mock yet.", run: "Module mock" },
+  viva: { title: "Viva", sub: "Oral exam", full: "Take full viva", none: "No viva drill yet.", run: "Module drill" },
+  case: { title: "Case study project", sub: "Written assignment · 2 cases × 25 marks", full: "Practise a full case", none: "No case drill yet.", run: "Case drills" },
+};
+const outOf = (m: PracticeModule) => (m.kind === "case" ? 50 : 25);
+
+function ExamSections({ set, p, go, startQuiz, startViva, fullWritten, fullViva, fullCase }: {
+  set: PracticeSet; p: PracticeProgress; go: Go; startQuiz: StartQuiz; startViva: StartViva; fullWritten: () => void; fullViva: () => void; fullCase: () => void;
 }) {
   const passMarks = Math.round((set.passPct * 25) / 100);
-  const papers = (["mcq", "viva"] as const).map((kind) => {
+  const papers = (["mcq", "viva", "case"] as const).map((kind) => {
     const mods = set.modules.filter((m) => m.kind === kind);
-    const rows = mods.map((m) => ({ m, marks: projectedMarks(p, m) }));
+    const rows = mods.map((m) => ({ m, marks: projectedMarks(p, m, outOf(m)) }));
     const got = rows.reduce((n, r) => n + (r.marks ?? 0), 0);
-    return { kind, mods, rows, got, total: mods.length * 25, done: rows.filter((r) => r.marks !== null).length };
-  });
+    return { kind, mods, rows, got, total: mods.reduce((n, m) => n + outOf(m), 0), done: rows.filter((r) => r.marks !== null).length };
+  }).filter((x) => x.mods.length);
+  const fullFor = { mcq: fullWritten, viva: fullViva, case: fullCase };
   const all = papers.reduce((n, x) => n + x.got, 0);
   const max = papers.reduce((n, x) => n + x.total, 0);
   const anyResult = papers.some((x) => x.done > 0);
@@ -429,7 +451,7 @@ function ExamSections({ set, p, go, startQuiz, startViva, fullWritten, fullViva 
       <div className="row wrap" style={{ justifyContent: "space-between", alignItems: "flex-end", gap: 16 }}>
         <div className="stack" style={{ gap: 4 }}>
           <h2 id="prac-exam" style={{ fontSize: 18, fontWeight: 700 }}>Exam result, projected</h2>
-          <span className="faint" style={{ fontSize: 13 }}>Written paper from your mock exams. Viva from viva drills and the full viva. Practice rounds don&apos;t count here.</span>
+          <span className="faint" style={{ fontSize: 13 }}>Written paper from your mock exams. Viva and case study from drills and full runs. Practice rounds don&apos;t count here.</span>
         </div>
         <div className="row" style={{ gap: 8, alignItems: "baseline" }}>
           <b style={{ fontSize: 28, fontWeight: 800 }}>{anyResult ? all : "–"}</b>
@@ -438,28 +460,27 @@ function ExamSections({ set, p, go, startQuiz, startViva, fullWritten, fullViva 
       </div>
       <div className="prac-papers">
         {papers.map((pp) => (
-          <div key={pp.kind} className="card prac-paper">
+          <div key={pp.kind} className={`card prac-paper ${pp.kind === "case" ? "wide" : ""}`}>
             <div className="prac-table-head">
               <div className="stack" style={{ gap: 2 }}>
-                <h3 style={{ fontSize: 17, fontWeight: 700 }}>{pp.kind === "mcq" ? "Written paper" : "Viva"}</h3>
+                <h3 style={{ fontSize: 17, fontWeight: 700 }}>{PAPER[pp.kind].title}</h3>
                 <span className="faint" style={{ fontSize: 13 }}>
-                  {pp.kind === "mcq" ? "Online MCQ exam" : "Oral exam"} · {pp.mods.length} modules × 25 marks · {pp.done} of {pp.mods.length} tested
+                  {pp.kind === "case" ? PAPER.case.sub : `${PAPER[pp.kind].sub} · ${pp.mods.length} modules × 25 marks · ${pp.done} of ${pp.mods.length} tested`}
                 </span>
               </div>
               <div className="row" style={{ gap: 12 }}>
                 <span className="mono">{pp.done ? `${pp.got} / ${pp.total}` : `– / ${pp.total}`}</span>
-                <button type="button" className="btn primary" onClick={pp.kind === "mcq" ? fullWritten : fullViva}>
-                  {pp.kind === "mcq" ? "Take full written mock" : "Take full viva"}
-                </button>
+                <button type="button" className="btn primary" onClick={fullFor[pp.kind]}>{PAPER[pp.kind].full}</button>
               </div>
             </div>
             {pp.rows.map(({ m, marks }) => {
-              const ok = marks !== null && marks >= passMarks;
+              const of = outOf(m), pass = Math.round((set.passPct * of) / 100);
+              const ok = marks !== null && marks >= pass;
               const weakT = [...m.topics].sort((a, b) => topicMastery(p, a) - topicMastery(p, b))[0];
               const runModule = () =>
                 m.kind === "mcq"
                   ? startQuiz(shuffle(moduleQuestions(m)).slice(0, set.mockSize), { label: `${m.id} · mock exam`, back: m.id, mode: "mock", minutes: set.mockSize })
-                  : startViva(shuffle((m.viva ?? []).map((v, idx) => ({ m, v, idx }))), `${m.id} · viva drill`, false, m.id);
+                  : startViva(shuffle((m.viva ?? []).map((v, idx) => ({ m, v, idx }))), `${m.id} · ${m.kind === "case" ? "case drill" : "viva drill"}`, false, m.id);
               return (
                 <div key={m.id} className="prac-paper-row">
                   <div className="row" style={{ justifyContent: "space-between", alignItems: "baseline" }}>
@@ -468,19 +489,19 @@ function ExamSections({ set, p, go, startQuiz, startViva, fullWritten, fullViva 
                       <b style={{ fontWeight: 600 }}>{m.name}</b>
                     </span>
                     <span className={`mono ${marks === null ? "faint" : ok ? "prac-ok" : "prac-warn"}`} style={{ fontWeight: 600 }}>
-                      {marks === null ? "– / 25" : `${marks} / 25`}
+                      {marks === null ? `– / ${of}` : `${marks} / ${of}`}
                     </span>
                   </div>
-                  <MarkCells marks={marks} pass={passMarks} />
+                  <MarkCells marks={marks} pass={pass} of={of} />
                   <div className="row wrap" style={{ justifyContent: "space-between", fontSize: 13 }}>
                     <span className="muted">
                       {marks === null
-                        ? m.kind === "mcq" ? "No mock yet." : "No viva drill yet."
-                        : ok ? `Pass level. Weakest topic: ${weakT?.title}` : `${passMarks - marks} marks to pass. Focus: ${weakT?.title}`}
+                        ? PAPER[m.kind].none
+                        : ok ? `Pass level. Weakest topic: ${weakT?.title}` : `${pass - marks} marks to pass. Focus: ${weakT?.title}`}
                     </span>
                     <span className="row" style={{ gap: 14 }}>
                       {weakT && <button type="button" className="prac-link" onClick={() => go({ name: "intro", topicId: weakT.id })}>Drill weakest topic</button>}
-                      <button type="button" className="prac-link strong" onClick={runModule}>{m.kind === "mcq" ? "Module mock" : "Module drill"}</button>
+                      <button type="button" className="prac-link strong" onClick={runModule}>{PAPER[m.kind].run}</button>
                     </span>
                   </div>
                 </div>
@@ -492,7 +513,7 @@ function ExamSections({ set, p, go, startQuiz, startViva, fullWritten, fullViva 
       <div className="row wrap prac-legend">
         <span><i className="on" />Projected marks</span>
         <span><i />Still to earn</span>
-        <span><i className="pass" />Pass line, {passMarks} of 25</span>
+        <span><i className="pass" />Pass line, {passMarks} of 25 ({Math.round((set.passPct * 50) / 100)} of 50 for the case study)</span>
       </div>
     </section>
   );
@@ -511,7 +532,7 @@ function ModuleView({ set, p, m, go, startQuiz, startViva }: { set: PracticeSet;
       </nav>
       <section className="card pad prac-modhead" style={{ "--c": m.color } as React.CSSProperties}>
         <div className="row wrap" style={{ justifyContent: "space-between" }}>
-          <span className="label">{m.id} · {m.kind === "viva" ? "Viva module" : "MCQ module · 25 marks"}</span>
+          <span className="label">{m.id} · {m.kind === "viva" ? "Viva module" : m.kind === "case" ? "Written project · 50 marks" : "MCQ module · 25 marks"}</span>
           {mock && <span className={`pill ${mock.best >= set.passPct ? "ok" : "warn"}`}>Mock best {mock.best}% · last {mock.last}%</span>}
         </div>
         <h1 style={{ fontSize: 26, marginTop: 6 }}>{m.name}</h1>
@@ -526,8 +547,8 @@ function ModuleView({ set, p, m, go, startQuiz, startViva }: { set: PracticeSet;
               Mock exam · {set.mockSize} questions · {set.mockSize} min
             </button>
           ) : (
-            <button type="button" className="btn primary" onClick={() => startViva(shuffle((m.viva ?? []).map((v, idx) => ({ m, v, idx }))), `${m.id} · viva drill`, false, m.id)}>
-              Viva drill · {m.viva?.length ?? 0} questions
+            <button type="button" className="btn primary" onClick={() => startViva(shuffle((m.viva ?? []).map((v, idx) => ({ m, v, idx }))), `${m.id} · ${m.kind === "case" ? "case drill" : "viva drill"}`, false, m.id)}>
+              {m.kind === "case" ? "Written drills" : "Viva drill"} · {m.viva?.length ?? 0} questions
             </button>
           )}
           <button type="button" className="btn" onClick={() => startQuiz(pickSmart(p, qs, 10), { label: `${m.id} · mixed round`, back: m.id })}>Mixed round · 10 questions</button>
@@ -832,18 +853,20 @@ function VivaView({ v, setView, latest, onScore }: { v: Extract<View, { name: "v
       <div className="row" style={{ justifyContent: "space-between" }}>
         <span className="label">{v.label}</span>
         <span className="row" style={{ gap: 12 }}>
-          {v.exam && !it.shown && <VivaClock key={v.i} />}
+          {v.exam && !it.shown && it.m.kind !== "case" && <VivaClock key={v.i} />}
           <span className="mono faint">Question {v.i + 1} of {n}</span>
         </span>
       </div>
       <Meter value={v.i / n} label="Viva progress" />
-      <span className="label" style={{ color: "var(--l-muted)" }}>{it.m.id} {it.m.name} · the examiner asks</span>
+      <span className="label" style={{ color: "var(--l-muted)" }}>{it.m.id} {it.m.name} · {it.m.kind === "case" ? "the assignment asks" : "the examiner asks"}</span>
       <h2 className="prac-q">{it.v.q}</h2>
       {!it.shown ? (
         <>
           <div className="card pad muted">
-            <b style={{ color: "var(--l-text)" }}>Answer out loud first.</b>{" "}
-            {v.exam
+            <b style={{ color: "var(--l-text)" }}>{it.m.kind === "case" ? "Write your answer first." : "Answer out loud first."}</b>{" "}
+            {it.m.kind === "case"
+              ? "On paper or in a notes app, 5–7 lines (a table for plans, prose for warm-ups and adaptations), as the assignment asks. Then reveal the marking points and tick the ones you covered."
+              : v.exam
               ? "You have about 2 minutes per question, as in the oral exam. Then reveal the key points and tick the ones you covered."
               : "Aim for 45–90 seconds in full sentences, as you would to the examiner. Then reveal the key points and tick the ones you covered."}
           </div>
@@ -894,11 +917,13 @@ function VivaDoneView({ set, v, go }: { set: PracticeSet; v: Extract<View, { nam
           <div className="prac-list" style={{ marginTop: 14 }}>
             {[...per.entries()].map(([id, arr]) => {
               const m = set.modules.find((mm) => mm.id === id)!;
-              const marks = Math.round((25 * arr.reduce((a, b) => a + b, 0)) / arr.length);
+              const of = m.kind === "case" ? 50 : 25, pm = m.kind === "case" ? Math.round((set.passPct * 50) / 100) : passMarks;
+              // Same rounding as recordMock + projectedMarks, so this matches the home page.
+              const marks = Math.round((Math.round((100 * arr.reduce((a, b) => a + b, 0)) / arr.length) * of) / 100);
               return (
                 <div key={id} className="prac-li">
                   <span className="grow"><b className="mono">{id}</b> {m.name}</span>
-                  <span className={`pill ${marks >= passMarks ? "ok" : "warn"}`}>{marks} / 25 · {marks >= passMarks ? "pass" : "below pass mark"}</span>
+                  <span className={`pill ${marks >= pm ? "ok" : "warn"}`}>{marks} / {of} · {marks >= pm ? "pass" : "below pass mark"}</span>
                 </div>
               );
             })}

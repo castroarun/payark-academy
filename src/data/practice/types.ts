@@ -36,8 +36,8 @@ export interface VivaPrompt {
 export interface PracticeModule {
   id: string;
   name: string;
-  /** "mcq" = written multiple-choice paper; "viva" = oral exam */
-  kind: "mcq" | "viva";
+  /** "mcq" = written multiple-choice paper; "viva" = oral exam; "case" = written case-study project (drills use the viva flow) */
+  kind: "mcq" | "viva" | "case";
   color: string;
   blurb: string;
   topics: PracticeTopic[];

@@ -490,6 +490,7 @@ html[data-llm-theme="dark"] .llm .prac-warn { color: #fbbf24; }
 
 .llm .prac-papers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .llm .prac-paper { overflow: hidden; display: flex; flex-direction: column; }
+.llm .prac-paper.wide { grid-column: 1 / -1; }
 .llm .prac-paper-row { padding: 14px 22px; border-top: 1px solid var(--l-border); display: flex; flex-direction: column; gap: 9px; }
 .llm .prac-table-head + .prac-paper-row { border-top: 0; }
 .llm .prac-cells { display: grid; grid-template-columns: repeat(25, minmax(0, 1fr)); gap: 2px; }

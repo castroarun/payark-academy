@@ -153,7 +153,7 @@ export function vivaScore(p: PracticeProgress, m: PracticeModule): number {
 
 /** MCQ modules: questions last answered right. Viva modules: half that, half viva drill scores. */
 export function moduleReadiness(p: PracticeProgress, m: PracticeModule): number {
-  return m.kind === "viva" ? 0.5 * quizMastery(p, m) + 0.5 * vivaScore(p, m) : quizMastery(p, m);
+  return m.kind !== "mcq" ? 0.5 * quizMastery(p, m) + 0.5 * vivaScore(p, m) : quizMastery(p, m);
 }
 
 export function setReadiness(p: PracticeProgress, set: PracticeSet): number {
