@@ -4850,6 +4850,223 @@ const MODULES: PracticeModule[] = [
       "h": "Legs Push Pull, Core Bridges Hold."
      }
     ]
+   },
+   {
+    "id": "e113-resources",
+    "title": "Resource Use at the Workplace",
+    "fact": "A dripping tap wastes thousands of litres a year. The course's fix if you can't plug it: call the plumber, and put a bucket under it until then.",
+    "primer": [
+     "Water: sensor taps and showers, drinking fountains, recycle drain water (e.g. for flushing), check and fix leaks; escalate to a plumber if you can't.",
+     "Paper and materials: hand dryers, health faucets, segregate paper for recycling, members bring their own towels (or towels are chargeable).",
+     "Electricity: switch off unused areas, schedule classes, motion-sensor lights, fewer ACs plus natural ventilation, fixed shutdown times. Preventive maintenance on a schedule, ideally by the manufacturer.",
+     "Waste: Organic, Solid, Liquid, Recyclable, Hazardous. Segregate wet / dry / hazardous into colour-coded bins; keep hazardous chemicals away from people."
+    ],
+    "qs": [
+     {
+      "q": "What does the course suggest to cut water use at washroom sinks?",
+      "o": [
+       "Sensor (motion) taps",
+       "Higher water pressure",
+       "Leaving taps on low",
+       "Only cold water"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. They shut off automatically and release only what's needed.",
+       "Higher pressure wastes more.",
+       "A running tap is exactly the waste to avoid.",
+       "Temperature doesn't reduce the volume used."
+      ],
+      "h": "Taps that switch themselves off."
+     },
+     {
+      "q": "A tap is leaking and you can't plug it. What's the course's advice?",
+      "o": [
+       "Ignore it until the monthly check",
+       "Call the plumber/technician and collect the drips in a bucket meanwhile",
+       "Close the gym",
+       "Tell members to avoid the washroom and do nothing else"
+      ],
+      "a": 1,
+      "w": [
+       "Leaks waste water and make floors unsafe; act now.",
+       "Correct. Escalate, and contain it until it's fixed.",
+       "Overkill for a leak.",
+       "You still have to get it fixed."
+      ],
+      "h": "Escalate and contain."
+     },
+     {
+      "q": "Which reduces paper use in gym washrooms?",
+      "o": [
+       "More paper-towel dispensers",
+       "Hand dryers and a health faucet",
+       "Bigger dustbins",
+       "Scented tissues"
+      ],
+      "a": 1,
+      "w": [
+       "That raises paper use.",
+       "Correct. Both replace paper; members bringing their own towels helps too.",
+       "Bins don't reduce use.",
+       "Irrelevant to quantity."
+      ],
+      "h": "Dry by air, wash by water."
+     },
+     {
+      "q": "How does the course suggest stopping members overusing gym towels?",
+      "o": [
+       "Ban towels",
+       "Provide towels but charge for them, and encourage members to bring their own",
+       "Give unlimited free towels",
+       "Only staff may use towels"
+      ],
+      "a": 1,
+      "w": [
+       "Hygiene needs towels.",
+       "Correct. A small charge makes people use fewer.",
+       "Unlimited free towels encourage waste.",
+       "Members need them too."
+      ],
+      "h": "Make it chargeable."
+     },
+     {
+      "q": "Which is an electricity-saving step from the course?",
+      "o": [
+       "Run every AC all day",
+       "Motion-sensor lights in changing rooms and washrooms",
+       "Keep LCD screens on overnight",
+       "Avoid fixed shutdown timings"
+      ],
+      "a": 1,
+      "w": [
+       "Use fewer ACs in empty areas and open windows instead.",
+       "Correct. Lights switch on only when someone is there.",
+       "Turn screens and music off when not needed.",
+       "Fixed shutdown times are part of the plan."
+      ],
+      "h": "Lights that notice you."
+     },
+     {
+      "q": "Why does the course stress a scheduled preventive-maintenance program?",
+      "o": [
+       "It's cheaper to skip it",
+       "To catch loose nuts, cables and errors before they cause injuries and legal liability",
+       "Only for the look of the gym",
+       "It's only needed for cardio machines"
+      ],
+      "a": 1,
+      "w": [
+       "Skipping it costs more in accidents and repairs.",
+       "Correct. Checks weekly, every 15 days or monthly, ideally by the manufacturer.",
+       "Safety is the point.",
+       "Weights, benches and cables need checks too."
+      ],
+      "h": "Prevent, don't repair."
+     },
+     {
+      "q": "Who should ideally service expensive gym machines?",
+      "o": [
+       "Any local vendor",
+       "The manufacturer's technicians, or per the manufacturer's manual",
+       "Members",
+       "No one; replace them instead"
+      ],
+      "a": 1,
+      "w": [
+       "Local vendors may fit cheap parts and shorten the machine's life.",
+       "Correct.",
+       "Not their job, and unsafe.",
+       "Wasteful; maintenance extends machine life."
+      ],
+      "h": "Go to the maker."
+     },
+     {
+      "q": "Which list gives the five waste types taught in the course?",
+      "o": [
+       "Organic, solid, liquid, recyclable, hazardous",
+       "Wet, dry, metal, glass, paper",
+       "Food, plastic, e-waste, medical, gas",
+       "Biodegradable and non-biodegradable only"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Hook: Old Socks Leave Really Horrible smells.",
+       "Wet/dry are segregation streams, not the course's type list.",
+       "Not the course's list.",
+       "Too broad for the course's classification."
+      ],
+      "h": "OSLRH."
+     },
+     {
+      "q": "Cleaning sprays and acids used on washroom fungus fall under which waste type?",
+      "o": [
+       "Organic",
+       "Recyclable",
+       "Hazardous",
+       "Solid"
+      ],
+      "a": 2,
+      "w": [
+       "They aren't biodegradable food or garden waste.",
+       "They can't be turned into new products this way.",
+       "Correct. Toxic, flammable or corrosive: store separately, away from people.",
+       "The issue is chemical danger, not shape."
+      ],
+      "h": "Toxic, flammable, corrosive."
+     },
+     {
+      "q": "Where does dry recyclable waste (cardboard, newspapers, jars) go after segregation?",
+      "o": [
+       "Composting",
+       "A scrap dealer, who sells it to manufacturers as raw material",
+       "The drain",
+       "Burned on site"
+      ],
+      "a": 1,
+      "w": [
+       "Composting is for organic waste.",
+       "Correct. It becomes a new product.",
+       "Never.",
+       "Burning pollutes and wastes the material."
+      ],
+      "h": "Scrap dealer → factory."
+     },
+     {
+      "q": "What is waste segregation?",
+      "o": [
+       "Mixing all waste in one bin",
+       "Separating waste into wet, dry and hazardous streams in (colour-coded) bins",
+       "Burying waste",
+       "Throwing waste away from the premises"
+      ],
+      "a": 1,
+      "w": [
+       "Mixing is the opposite.",
+       "Correct. It makes collection and recycling easier.",
+       "Not segregation.",
+       "That's littering."
+      ],
+      "h": "Sort before you toss."
+     },
+     {
+      "q": "How should hazardous cleaning chemicals be handled in a gym?",
+      "o": [
+       "Kept on the gym floor for quick access",
+       "Stored separately, away from people, and not used while members are around",
+       "Mixed together for a stronger effect",
+       "Poured into the organic bin"
+      ],
+      "a": 1,
+      "w": [
+       "Exposure can harm members.",
+       "Correct.",
+       "Mixing chemicals can be dangerous.",
+       "They contaminate organic waste."
+      ],
+      "h": "Lock it away."
+     }
+    ]
    }
   ],
   "viva": [
@@ -4917,6 +5134,43 @@ const MODULES: PracticeModule[] = [
      "Progress tracking and timely adjustments improve adherence"
     ],
     "tip": "Lead with the study, then the practical benefits."
+   },
+   {
+    "q": "How would you conserve water and materials in a gym?",
+    "p": [
+     "Sensor taps and showers; drinking fountains instead of open taps",
+     "Recycle drain water (e.g. for flushing)",
+     "Check taps and hoses for leaks; plug them or call the plumber, with a bucket meanwhile",
+     "Hand dryers and health faucets to cut paper; segregate paper for recycling",
+     "Members bring their own towels, or towels are chargeable",
+     "Regular housekeeping and sanitisation on a schedule (SOP)"
+    ],
+    "tip": "Frame it as cost, hygiene and social responsibility."
+   },
+   {
+    "q": "How can a gym save electricity and keep its equipment safe?",
+    "p": [
+     "Switch off power in unused areas; schedule classes in one zone",
+     "Fewer ACs when empty, plus natural ventilation; motion-sensor lights; music and LCDs off",
+     "Fixed opening and shutdown times",
+     "Preventive maintenance on a schedule: loose nuts, cables, errors; ideally by the manufacturer",
+     "Report unusual noise or burning smells; 'out of order' signs; don't leave machines broken for long",
+     "Members re-rack weights"
+    ],
+    "tip": "Mention legal liability if maintenance is skipped."
+   },
+   {
+    "q": "Explain the types of waste and how a gym should manage them.",
+    "p": [
+     "Waste = an unwanted by-product; solid, liquid or gas",
+     "Organic (food, peels) → composting",
+     "Solid (plastic, tins, glass, ceramics); careful with broken glass",
+     "Liquid (dirty water, detergents)",
+     "Recyclable (cardboard, papers, supplement jars) → scrap dealer → manufacturer; reuse protein jars",
+     "Hazardous (cleaning chemicals) → stored away from people",
+     "Segregate wet / dry / hazardous into colour-coded bins; enough housekeeping staff and well-placed bins"
+    ],
+    "tip": "Use the hook OSLRH."
    }
   ]
  },
