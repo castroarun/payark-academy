@@ -5138,6 +5138,156 @@ const MODULES: PracticeModule[] = [
      }
     ]
    }
+   ,
+   {
+    "id": "e114-conduct",
+    "title": "Conducting Cardio, Weights, Functional & Core",
+    "fact": "The Student Handbook lists E114's units as conducting cardiovascular, weight, and functional & core training, so expect the viva to ask you to run a session, not just set one up.",
+    "primer": [
+     "Cardio: pick the zone from the goal and fitness level. Green 65–75% HRmax (50–60% HRR), yellow 76–85%, red 86–95%. Beginners start green; check with Karvonen, RPE or the talk test.",
+     "Weights: warm-up, then main lifts first (compound before isolation), demonstrate, cue one thing at a time, spot where needed, log sets, reps, load and rest.",
+     "Functional & core: functional means real-life carry-over, not fancy. Core runs stabilisation (isometric, ~1 month) → strength (dynamic) → power (med ball). Brace on compound lifts.",
+     "Every session: warm-up → main block → cool-down, and adjust on the day from how the client looks and feels."
+    ],
+    "qs": [
+     {
+      "q": "A deconditioned beginner starts cardio with you. Which zone do you begin in?",
+      "o": [
+       "Green (65–75% HRmax)",
+       "Yellow (76–85% HRmax)",
+       "Red (86–95% HRmax)",
+       "Straight into HIIT"
+      ],
+      "a": 0,
+      "w": [
+       "Correct. Green is the starting zone for beginners and anyone with low aerobic capacity.",
+       "Yellow is moderate to hard; build a green base first.",
+       "Red is for intervals with fitter clients.",
+       "HIIT isn't for beginners: recovery and adherence suffer."
+      ],
+      "h": "Traffic light: start on green."
+     },
+     {
+      "q": "No heart-rate monitor. The client can talk but is struggling to. What intensity is that?",
+      "o": [
+       "Low (under RPE 4)",
+       "Moderate (RPE 4–7)",
+       "Maximal (RPE 10)",
+       "You can't tell without a monitor"
+      ],
+      "a": 1,
+      "w": [
+       "At low intensity they'd chat easily.",
+       "Correct. Choppy speech means moderate, about RPE 4–7.",
+       "At maximal effort they couldn't speak at all.",
+       "The talk test exists for exactly this."
+      ],
+      "h": "Chat < 4 · Choppy 4–7 · Can't 7–10."
+     },
+     {
+      "q": "40-year-old client, resting HR 60, target 70% by Karvonen. What's the target heart rate?",
+      "o": [
+       "126 bpm",
+       "144 bpm",
+       "154 bpm",
+       "180 bpm"
+      ],
+      "a": 1,
+      "w": [
+       "That's 70% of 180 (the %HRmax method), not Karvonen.",
+       "Correct. (180 − 60) × 0.7 + 60 = 144.",
+       "Check the subtraction: the reserve is 180 − 60 = 120.",
+       "180 is the age-predicted max, not a training target."
+      ],
+      "h": "Reserve = Max − Rest; take your %, add Rest back."
+     },
+     {
+      "q": "In a weight-training session, what normally comes first after the warm-up?",
+      "o": [
+       "Isolation finishers",
+       "The main compound lifts",
+       "Core power throws",
+       "Static stretching"
+      ],
+      "a": 1,
+      "w": [
+       "Isolation work goes after the big lifts, when fatigue matters less.",
+       "Correct. Do compound lifts while the client is fresh, so technique and load are best.",
+       "Power work needs freshness too, but in a weights session the compound lifts lead.",
+       "Long static stretches belong in the cool-down."
+      ],
+      "h": "Big before small."
+     },
+     {
+      "q": "Your client has never done a deadlift. How do you introduce it?",
+      "o": [
+       "Load it heavy to find their max",
+       "Demonstrate, teach the hip hinge with light load, cue one point at a time",
+       "Give a written list of ten cues at once",
+       "Have them copy another gym member"
+      ],
+      "a": 1,
+      "w": [
+       "Testing a max before learning the pattern is a safety risk.",
+       "Correct. Show it, groove the hinge, then progress the load.",
+       "Too many cues at once overloads a beginner; give one at a time.",
+       "You are the coach: demonstrate and cue it yourself."
+      ],
+      "h": "Show → groove → load."
+     },
+     {
+      "q": "Which describes functional training in the INFS lecture?",
+      "o": [
+       "Unstable, fancy exercises",
+       "Movements that carry over to the client's daily life or sport",
+       "Machines only",
+       "Only bodyweight work"
+      ],
+      "a": 1,
+      "w": [
+       "Functional doesn't mean fancy.",
+       "Correct. A squat is sitting and standing; a deadlift is picking something up.",
+       "Machines can be part of a plan but don't define functional training.",
+       "Load can be anything: bodyweight, kettlebells, bands."
+      ],
+      "h": "Real-life carry-over."
+     },
+     {
+      "q": "A new client's core is weak. Which progression do you run?",
+      "o": [
+       "Med-ball slams → crunches → planks",
+       "Stabilisation (planks, holds) → strength (dead bugs, bird dogs) → power (med ball)",
+       "Only crunches, every session",
+       "Heavy squats replace core work"
+      ],
+      "a": 1,
+      "w": [
+       "That's back to front: power comes last.",
+       "Correct. Isometric local stability first (~1 month), then dynamic, then power.",
+       "Crunches alone skip stabilisation and power.",
+       "Squats need a working core; they don't replace building it."
+      ],
+      "h": "Hold → Move → Throw."
+     },
+     {
+      "q": "During a heavy back squat, what do you cue for the core?",
+      "o": [
+       "Draw in: hollow the navel",
+       "Brace: a 360° breath into the abdomen",
+       "Breathe into the upper chest",
+       "Relax the abs to move freely"
+      ],
+      "a": 1,
+      "w": [
+       "Drawing in is for learning local activation lying supine, not heavy lifts.",
+       "Correct. Bracing pumps up the 'tyre' that protects the spine.",
+       "Upper-chest breathing doesn't build intra-abdominal pressure.",
+       "A relaxed core shifts load to the lower back."
+      ],
+      "h": "Pump the tyre."
+     }
+    ]
+   }
   ],
   "viva": [
    {
@@ -5206,6 +5356,42 @@ const MODULES: PracticeModule[] = [
      "Operations: check sound, light and connectivity; review the day's cues and technique"
     ],
     "tip": "Say it all comes down to planning."
+   },
+   {
+    "q": "Walk me through conducting a cardio session for a beginner.",
+    "p": [
+     "Check readiness: screening and resting HR",
+     "Warm-up at an easy pace",
+     "Set the target zone: green, 65–75% HRmax (50–60% HRR); show the Karvonen working",
+     "Monitor with HR, RPE or the talk test, and adjust on the day",
+     "Progress duration first, then intensity; HIIT only later and sparingly",
+     "Cool-down and log the session"
+    ],
+    "tip": "Do one Karvonen sum out loud; examiners like numbers."
+   },
+   {
+    "q": "How do you conduct a weight-training session?",
+    "p": [
+     "Warm-up: general, then specific ramp-up sets",
+     "Compound lifts first, isolation after",
+     "Demonstrate, then cue one point at a time (internal or external)",
+     "Spot where needed (dumbbell press at the wrists; never the deadlift)",
+     "Control the variables: sets, reps, load, tempo, rest",
+     "Cool-down, stretch and log the session"
+    ],
+    "tip": "Tie it to the 3 I's: Inspect, Interpret, Implement."
+   },
+   {
+    "q": "How do you conduct functional and core training for a new client?",
+    "p": [
+     "Functional = real-life carry-over (squat = sit-stand, deadlift = pick up)",
+     "Choose from wants plus needs and the equipment available",
+     "Core stages: stabilisation → strength → power",
+     "Drawing in to learn; bracing on compound lifts",
+     "Balance progressions: static → dynamic, two legs → one, eyes open → closed, stable → unstable",
+     "Assess first; a trained client may start at a later stage"
+    ],
+    "tip": "Close with 'functional isn't fancy'."
    }
   ]
  }
@@ -5218,5 +5404,5 @@ export const CPT: PracticeSet = {
   passPct: 60,
   mockSize: 25,
   modules: MODULES,
-  rules: "Pass needs 60% overall and 60% in every module. MCQ paper: E101, E103, E105, E106. Viva: E104, E107, E113, E114 (CPR-AED certificate needed before the viva).",
+  rules: "Pass needs 60% overall and 60% in every module. MCQ paper: E101, E103, E105, E106. Viva: E104, E107, E113, E114 (the handbook text also names E106 once, so be ready to talk E106 too). CPR-AED certificate needed before the viva.",
 };
